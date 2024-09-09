@@ -1,7 +1,13 @@
 using UnityEngine;
 
-public class RangePlayerNormalAttack : MonoBehaviour
+public class RangePlayerNormalAttack : MonoBehaviour, IRangeSkill
 {
+    [SerializeField] private float damage = 10f;
+    [SerializeField] private bool skillType = false;
+    [SerializeField] private bool downAttack = false;
+
+    private DamageManager damageManager;
+
     private void Awake()
     {
         Destroy(gameObject, 3f);
@@ -9,17 +15,29 @@ public class RangePlayerNormalAttack : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Ground ÅÂ±×¿Í Ãæµ¹ÇÑ °æ¿ì
+        // Ground íƒœê·¸ì™€ ì¶©ëŒí•œ ê²½ìš°
         if (collision.gameObject.CompareTag("Ground"))
         {
-            Destroy(gameObject); // ÇöÀç ¿ÀºêÁ§Æ® ÆÄ±«
+            Destroy(gameObject); // í˜„ì¬ ì˜¤ë¸Œì íŠ¸ íŒŒê´´
         }
 
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            collision.gameObject.GetComponent<BotController>().TakeDamage(10f, 0f, false);
+            damageManager.DamageTransmission(gameObject, collision.gameObject);
 
-            Destroy(gameObject); // ÇöÀç ¿ÀºêÁ§Æ® ÆÄ±«
+            Destroy(gameObject); // í˜„ì¬ ì˜¤ë¸Œì íŠ¸ íŒŒê´´
         }
+    }
+
+    public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack)
+    {
+        getDamage = damage;
+        getSkillType = skillType;
+        getDownAttack = downAttack;
+    }
+
+    public void GetDamageManager(DamageManager newDamageManager)
+    {
+        damageManager = newDamageManager;
     }
 }

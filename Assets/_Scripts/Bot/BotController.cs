@@ -28,22 +28,22 @@ public class BotController : MonoBehaviour
         }
     }
 
-    // damageType : 0 => °æÁ÷ ÇÇ°İ Å¸ÀÔ
-    // damageType : 2 => ´Ù¿î ÆÇÁ¤ Å¸ÀÔ.
-    // TakeHitState : 0, 1 => °æÁ÷ ÇÇ°İ
-    // TakeHitState : 2 => ´Ù¿î ÆÇÁ¤
-    // downAttack : false => ´Ù¿î ÆÇÁ¤ ½Ã ÇÇ°İX
-    // downAttack : true => ´Ù¿î ÆÇÁ¤ ½Ã ÇÇ°İO 
-    public void TakeDamage(float damage, float damageType, bool downAttack)
+    // damageType : 0 => ê²½ì§ í”¼ê²© íƒ€ì…
+    // damageType : 2 => ë‹¤ìš´ íŒì • íƒ€ì….
+    // TakeHitState : 0, 1 => ê²½ì§ í”¼ê²©
+    // TakeHitState : 2 => ë‹¤ìš´ íŒì •
+    // downAttack : false => ë‹¤ìš´ íŒì • ì‹œ í”¼ê²©X
+    // downAttack : true => ë‹¤ìš´ íŒì • ì‹œ í”¼ê²©O 
+    public void TakeDamage(float damage, bool skillType, bool downAttack)
     {
         if (!isDowning || (isDowning && downAttack))
         {
-            if (damageType == 0)
+            if (!skillType)
             {
                 int rnd = Random.Range(0, 2);
                 animator.SetFloat("TakeHitState", rnd);
             }
-            else if (damageType == 2)
+            else
             {
                 if (!isDowning) 
                 {
@@ -56,8 +56,8 @@ public class BotController : MonoBehaviour
                 
                 isDowning = true;
 
-                // Ä³¸¯ÅÍ¸¦ ÀÏÁ¤·® À§·Î ¹Ğ¾îÁÖ´Â ÈûÀ» Ãß°¡
-                Vector3 upForce = new Vector3(0, force, 0); // yÃàÀ¸·Î 5ÀÇ ÈûÀ» °¡ÇÔ (°ªÀº ÇÊ¿ä¿¡ ¸Â°Ô Á¶Àı °¡´É)
+                // ìºë¦­í„°ë¥¼ ì¼ì •ëŸ‰ ìœ„ë¡œ ë°€ì–´ì£¼ëŠ” í˜ì„ ì¶”ê°€
+                Vector3 upForce = new Vector3(0, force, 0); // yì¶•ìœ¼ë¡œ 5ì˜ í˜ì„ ê°€í•¨ (ê°’ì€ í•„ìš”ì— ë§ê²Œ ì¡°ì ˆ ê°€ëŠ¥)
                 rb.AddForce(upForce, ForceMode.Impulse);
 
                 isGrounding = false;

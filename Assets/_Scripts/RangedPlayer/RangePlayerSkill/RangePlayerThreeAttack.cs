@@ -1,7 +1,13 @@
 using UnityEngine;
 
-public class RangePlayerThreeAttack : MonoBehaviour
+public class RangePlayerThreeAttack : MonoBehaviour, IRangeSkill
 {
+    [SerializeField] private float damage = 10f;
+    [SerializeField] private bool skillType = false;
+    [SerializeField] private bool downAttack = false;
+
+    private DamageManager damageManager;
+
     private Transform player;
     private float timer = 0f;
     private float timerArrive = 10f;
@@ -34,7 +40,19 @@ public class RangePlayerThreeAttack : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<BotController>().TakeDamage(10f, 0f, false);
+            damageManager.DamageTransmission(gameObject, other.gameObject);
         }
+    }
+
+    public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack)
+    {
+        getDamage = damage;
+        getSkillType = skillType;
+        getDownAttack = downAttack;
+    }
+
+    public void GetDamageManager(DamageManager newDamageManager)
+    {
+        damageManager = newDamageManager;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,6 +7,7 @@ public class PlayerRangeAttackController : MonoBehaviour
 {
     [SerializeField] private PlayerRangeAttackBehaviour.State state = PlayerRangeAttackBehaviour.State.None;
 
+    [SerializeField] private DamageManager damageManager;
     [SerializeField] private AimController aimObject;
     [SerializeField] private Transform rangeTransform;
     [SerializeField] private Transform rangeThreeSkillTransform;
@@ -108,6 +110,7 @@ public class PlayerRangeAttackController : MonoBehaviour
 
         if (normalObjRb != null)
         {
+            normalObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
             normalObjRb.velocity = rangeTransform.forward * rangeNormalPrefabSpeed;
         }
     }
@@ -124,6 +127,11 @@ public class PlayerRangeAttackController : MonoBehaviour
         // 오브젝트 생성
         GameObject oneSkillObj = Instantiate(rangeOneSkillPrefab, oneSkillObjPosition, Quaternion.identity);
 
+        if(oneSkillObj != null)
+        {
+            oneSkillObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
+        }
+
         playerController.SkillEnd();
     }
 
@@ -139,6 +147,7 @@ public class PlayerRangeAttackController : MonoBehaviour
         // 생성된 프리팹의 RigidBody를 정면으로 날아가도록
         if (twoSkillObjRb != null)
         {
+            twoSkillObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
             twoSkillObjRb.velocity = transform.forward * rangeTwoSkillPrefabSpeed;
         }
 
@@ -165,6 +174,7 @@ public class PlayerRangeAttackController : MonoBehaviour
 
         foreach(var obj in prefabs)
         {
+            obj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
             obj.GetComponent<RangePlayerThreeAttack>().GetPlayer(rangeThreeSkillTransform);
         }
 
@@ -185,6 +195,7 @@ public class PlayerRangeAttackController : MonoBehaviour
 
         if (fourSkillObjRb != null)
         {
+            fourSkillObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
             fourSkillObjRb.velocity = Vector3.down * rangeFourSkillPrefabSpeed;
         }
 

@@ -2,8 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangePlayerOneAttack : MonoBehaviour
+public class RangePlayerOneAttack : MonoBehaviour, IRangeSkill
 {
+    [SerializeField] private float damage = 10f;
+    [SerializeField] private bool skillType = true; 
+    [SerializeField] private bool downAttack = true;
+
+    private DamageManager damageManager;
+
     private float maxHeight = 0f;
     private float upSpeed = 20f;
 
@@ -16,7 +22,7 @@ public class RangePlayerOneAttack : MonoBehaviour
     {
         if (transform.position.y < maxHeight)
         {
-            // ±âÁ¸ positionÀ» ¹Þ¾Æ¿Í¼­ y °ªÀ» ¼öÁ¤ÇÑ ÈÄ ´Ù½Ã ÇÒ´ç
+            // ê¸°ì¡´ positionì„ ë°›ì•„ì™€ì„œ y ê°’ì„ ìˆ˜ì •í•œ í›„ ë‹¤ì‹œ í• ë‹¹
             Vector3 newPosition = transform.position;
             newPosition.y += upSpeed * Time.deltaTime;
             transform.position = newPosition;
@@ -27,8 +33,25 @@ public class RangePlayerOneAttack : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            other.GetComponent<BotController>().TakeDamage(10f, 2f, true);
+            Debug.Log($"{damage}, {skillType}, {downAttack}");
+
+            damageManager.DamageTransmission(gameObject, other.gameObject);
+
             GetComponent<BoxCollider>().enabled = false;
         }
     }
+
+    public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack)
+    {
+        getDamage = damage;
+        getSkillType = skillType;
+        getDownAttack = downAttack;
+    }
+
+    public void GetDamageManager(DamageManager newDamageManager)
+    {
+        damageManager = newDamageManager;
+    }
+
+
 }
