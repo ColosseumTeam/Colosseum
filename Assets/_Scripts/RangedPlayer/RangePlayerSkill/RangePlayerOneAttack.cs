@@ -32,9 +32,7 @@ public class RangePlayerOneAttack : MonoBehaviour, IRangeSkill
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
-        {
-            Debug.Log($"{damage}, {skillType}, {downAttack}");
-
+        {            
             damageManager.DamageTransmission(gameObject, other.gameObject);
 
             GetComponent<BoxCollider>().enabled = false;

@@ -55,8 +55,15 @@ public class CrossHairLookAt : MonoBehaviour
             // Ground 태그를 가진 오브젝트에 맞았을 경우
             if (hit.collider.CompareTag("Ground"))
             {
-                // 충돌 위치를 가져와서 원하는 작업을 수행
+                // 충돌 위치를 가져오도록
                 groundHitPosition = hit.point;
+                isGrounding = true;
+            }
+
+            // Todo: 플레이어로 수정 필요
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                groundHitPosition = hit.collider.transform.position;
                 isGrounding = true;
             }
         }

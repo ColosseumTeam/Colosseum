@@ -25,8 +25,7 @@ public class AimController : MonoBehaviour
     private LineRenderer lineRenderer;
 
     private bool isSkillReady;
-    private float isSkillState;
-    private bool isSkillPositioning;
+    private float isSkillState;    
 
     private void Awake()
     {

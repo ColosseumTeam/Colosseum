@@ -2,34 +2,33 @@ using UnityEngine;
 
 public class CameraRotation : MonoBehaviour
 {
-    [SerializeField] private float mouseSensitivity = 100f;  // ¸¶¿ì½º °¨µµ
-    [SerializeField] private Transform playerBody;  // Ä«¸Ş¶ó°¡ µû¶ó´Ù´Ò ÇÃ·¹ÀÌ¾î Æ®·£½ºÆû
+    [SerializeField] private float mouseSensitivity = 100f;  // ë§ˆìš°ìŠ¤ ê°ë„
+    [SerializeField] private Transform playerBody;  // ì¹´ë©”ë¼ê°€ ë”°ë¼ë‹¤ë‹ í”Œë ˆì´ì–´ íŠ¸ëœìŠ¤í¼
+    [SerializeField] private float maxXRotation = -10f;
+    [SerializeField] private float minXRotation = 25f;
 
-    private float maxXRotation = -10f;
-    private float minXRotation = 25f;
-
-    private float xRotation = 0f;  // XÃà È¸Àü Á¦ÇÑ
+    [SerializeField] private float xRotation = 0f;  // Xì¶• íšŒì „ ì œí•œ
 
     private void Start()
     {
-        // ¸¶¿ì½º Ä¿¼­ °íÁ¤
+        // ë§ˆìš°ìŠ¤ ì»¤ì„œ ê³ ì •
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
-        // ¸¶¿ì½º ÀÔ·Â ¹Ş±â
+        // ë§ˆìš°ìŠ¤ ì…ë ¥ ë°›ê¸°
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        // ¸¶¿ì½º YÃà¿¡ µû¸¥ Ä«¸Ş¶ó »óÇÏ È¸Àü (ÇÇÄ¡)
+        // ë§ˆìš°ìŠ¤ Yì¶•ì— ë”°ë¥¸ ì¹´ë©”ë¼ ìƒí•˜ íšŒì „ 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, maxXRotation, minXRotation);  // »óÇÏ È¸Àü Á¦ÇÑ
+        xRotation = Mathf.Clamp(xRotation, maxXRotation, minXRotation);  // ìƒí•˜ íšŒì „ ì œí•œ
 
-        // Ä«¸Ş¶óÀÇ ·ÎÄÃ XÃà È¸Àü Àû¿ë
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        // ì¹´ë©”ë¼ì˜ ë¡œì»¬ Xì¶• íšŒì „ ì ìš©
+        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);       
 
-        // ¸¶¿ì½º XÃà¿¡ µû¸¥ ÇÃ·¹ÀÌ¾î ÁÂ¿ì È¸Àü (¿ä¿ì)
+        // ë§ˆìš°ìŠ¤ Xì¶•ì— ë”°ë¥¸ í”Œë ˆì´ì–´ ì¢Œìš° íšŒì „ 
         playerBody.Rotate(Vector3.up * mouseX);
     }
 }

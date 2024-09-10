@@ -3,105 +3,105 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-// º¯¼ö
-// 1. isSkilling ½ºÅ³ ÁØºñ ³ªÅ¸³»´Â º¯¼ö
-// ¸Ş¼­µå
+// ë³€ìˆ˜
+// 1. isSkilling ìŠ¤í‚¬ ì¤€ë¹„ ë‚˜íƒ€ë‚´ëŠ” ë³€ìˆ˜
+// ë©”ì„œë“œ
 // 1. SkillReady
-// 2. OnAttackÀÇ RangePlayer¿ë ÄÚµå
+// 2. OnAttackì˜ RangePlayerìš© ì½”ë“œ
 public class PlayerController : MonoBehaviour
 {
-    // Ä³¸¯ÅÍÀÇ ÇöÀç »óÅÂ¸¦ °ü¸®ÇÏ´Â º¯¼ö
+    // ìºë¦­í„°ì˜ í˜„ì¬ ìƒíƒœë¥¼ ê´€ë¦¬í•˜ëŠ” ë³€ìˆ˜
     [SerializeField] private BehaviourBase.State state = BehaviourBase.State.None;
 
-    // Ä³¸¯ÅÍ ÀÌµ¿ ¼Óµµ, È¸Àü ¼Óµµ, °ø°İ °ü·Ã Å¸ÀÌ¸Ó ¼³Á¤
+    // ìºë¦­í„° ì´ë™ ì†ë„, íšŒì „ ì†ë„, ê³µê²© ê´€ë ¨ íƒ€ì´ë¨¸ ì„¤ì •
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float runSpeed = 10f; // ´Ş¸®±â ½Ã ¼Óµµ
+    [SerializeField] private float runSpeed = 10f; // ë‹¬ë¦¬ê¸° ì‹œ ì†ë„
     [SerializeField] private float rotationSpeed = 60f;
     [SerializeField] private float attackTimer = 0f;
     [SerializeField] private float attackElapsedTime = 0.5f;
     //[SerializeField] private float attackAfterDelay = 0.2f;
-    [SerializeField] private float jumpForce = 7f; // Á¡ÇÁ Èû
-    [SerializeField] private float maxJumpHeight = 2f; // ÃÖ´ë Á¡ÇÁ ³ôÀÌ
-    [SerializeField] private float startYPosition; // Á¡ÇÁ ½ÃÀÛ ½Ã YÃà À§Ä¡¸¦ ÀúÀå
-    [SerializeField] private float boostSpeed = 15f; // Boost ½Ã ¼Óµµ
+    [SerializeField] private float jumpForce = 7f; // ì í”„ í˜
+    [SerializeField] private float maxJumpHeight = 2f; // ìµœëŒ€ ì í”„ ë†’ì´
+    [SerializeField] private float startYPosition; // ì í”„ ì‹œì‘ ì‹œ Yì¶• ìœ„ì¹˜ë¥¼ ì €ì¥
+    [SerializeField] private float boostSpeed = 15f; // Boost ì‹œ ì†ë„
     [SerializeField] private float downTimer = 0f;
     [SerializeField] private float downEndTimer = 3f;
     [SerializeField] private float airBorneForce = 5f;
 
-    // Ä³¸¯ÅÍ ¹°¸®Àû Á¦¾î¸¦ À§ÇÑ Rigidbody ÂüÁ¶
+    // ìºë¦­í„° ë¬¼ë¦¬ì  ì œì–´ë¥¼ ìœ„í•œ Rigidbody ì°¸ì¡°
     [SerializeField] private Rigidbody rb;
 
-    // Ä³¸¯ÅÍ ¾Ö´Ï¸ŞÀÌ¼Ç Á¦¾î¸¦ À§ÇÑ Animator ÂüÁ¶
+    // ìºë¦­í„° ì• ë‹ˆë©”ì´ì…˜ ì œì–´ë¥¼ ìœ„í•œ Animator ì°¸ì¡°
     private Animator animator;
 
-    // °ø°İ »óÅÂ ¹× ÀÌµ¿ ¹æÇâÀ» ÀúÀåÇÏ´Â º¯¼ö
+    // ê³µê²© ìƒíƒœ ë° ì´ë™ ë°©í–¥ì„ ì €ì¥í•˜ëŠ” ë³€ìˆ˜
     private float attackState;
     private Vector2 moveVec;
     private bool isAttacking;
-    private bool isRunning; // ´Ş¸®±â »óÅÂ¸¦ ³ªÅ¸³»´Â º¯¼ö
-    private bool runInput; // Shift ÀÔ·Â »óÅÂ¸¦ ÃßÀûÇÏ´Â º¯¼ö
-    private bool isBoosting; // Boost »óÅÂ¸¦ ³ªÅ¸³»´Â º¯¼ö
-    private bool isJumping; // jump »óÅÂ¸¦ ³ªÅ¸³»´Â º¯¼ö
+    private bool isRunning; // ë‹¬ë¦¬ê¸° ìƒíƒœë¥¼ ë‚˜íƒ€ë‚´ëŠ” ë³€ìˆ˜
+    private bool runInput; // Shift ì…ë ¥ ìƒíƒœë¥¼ ì¶”ì í•˜ëŠ” ë³€ìˆ˜
+    private bool isBoosting; // Boost ìƒíƒœë¥¼ ë‚˜íƒ€ë‚´ëŠ” ë³€ìˆ˜
+    private bool isJumping; // jump ìƒíƒœë¥¼ ë‚˜íƒ€ë‚´ëŠ” ë³€ìˆ˜
     private bool isGrounding = true;
     private bool isSkilling;
     private bool isDowning;
 
     private void Awake()
     {
-        // Rigidbody¿Í Animator ÄÄÆ÷³ÍÆ®¸¦ °¡Á®¿È
+        // Rigidbodyì™€ Animator ì»´í¬ë„ŒíŠ¸ë¥¼ ê°€ì ¸ì˜´
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        // ´ë¹ÌÁö¸¦ ¹ŞÀº »óÅÂ¶ó¸é È°µ¿ ÁßÁö
+        // ëŒ€ë¯¸ì§€ë¥¼ ë°›ì€ ìƒíƒœë¼ë©´ í™œë™ ì¤‘ì§€
         if (state == BehaviourBase.State.Damaged || isDowning == true) { return; }
 
-        // °ø°İ »óÅÂ°¡ ¾Æ´Ï°í °ø°İ »óÅÂ°ªÀÌ 0ÀÌ ¾Æ´Ò ¶§ (Áï, °ø°İÀÌ ÁøÇà ÁßÀÏ ¶§)
-        // Á¡ÇÁ ÁßÀÏ ¶§µµ °ø°İÀº ¸øÇÏµµ·Ï ¼³Á¤
+        // ê³µê²© ìƒíƒœê°€ ì•„ë‹ˆê³  ê³µê²© ìƒíƒœê°’ì´ 0ì´ ì•„ë‹ ë•Œ (ì¦‰, ê³µê²©ì´ ì§„í–‰ ì¤‘ì¼ ë•Œ)
+        // ì í”„ ì¤‘ì¼ ë•Œë„ ê³µê²©ì€ ëª»í•˜ë„ë¡ ì„¤ì •
 
         if (state != BehaviourBase.State.Attack && attackState != 0)
         {
-            // °ø°İ Å¸ÀÌ¸Ó°¡ ¼³Á¤µÈ ½Ã°£À» ÃÊ°úÇß´ÂÁö È®ÀÎ
+            // ê³µê²© íƒ€ì´ë¨¸ê°€ ì„¤ì •ëœ ì‹œê°„ì„ ì´ˆê³¼í–ˆëŠ”ì§€ í™•ì¸
             if (attackTimer >= attackElapsedTime)
             {
-                // °ø°İ »óÅÂ ÃÊ±âÈ­ ¹× ¾Ö´Ï¸ŞÀÌ¼Ç »óÅÂ ÃÊ±âÈ­
+                // ê³µê²© ìƒíƒœ ì´ˆê¸°í™” ë° ì• ë‹ˆë©”ì´ì…˜ ìƒíƒœ ì´ˆê¸°í™”
                 attackTimer = 0f;
                 attackState = 0f;
                 animator.SetFloat("AttackState", attackState);
                 return;
             }
-            // °ø°İ Å¸ÀÌ¸Ó Áõ°¡ (ÇÁ·¹ÀÓ¸¶´Ù)
+            // ê³µê²© íƒ€ì´ë¨¸ ì¦ê°€ (í”„ë ˆì„ë§ˆë‹¤)
             attackTimer += Time.deltaTime;
         }
         else if (state == BehaviourBase.State.Attack)
         {
-            // °ø°İ »óÅÂÀÏ ¶§´Â º°µµÀÇ Ã³¸®°¡ ÀÖÀ» ¼ö ÀÖÀ½ (ÇöÀç ºó ÄÚµå ºí·Ï)
+            // ê³µê²© ìƒíƒœì¼ ë•ŒëŠ” ë³„ë„ì˜ ì²˜ë¦¬ê°€ ìˆì„ ìˆ˜ ìˆìŒ (í˜„ì¬ ë¹ˆ ì½”ë“œ ë¸”ë¡)
         }
 
-        // ´Ş¸®±â »óÅÂ¸¦ °»½Å
+        // ë‹¬ë¦¬ê¸° ìƒíƒœë¥¼ ê°±ì‹ 
         UpdateRunningState();
 
-        // Á¡ÇÁ »óÅÂ Ã¼Å©
+        // ì í”„ ìƒíƒœ ì²´í¬
         UpdateJumpState();
 
-        // Ä³¸¯ÅÍ ÀÌµ¿ Ã³¸® (ÇöÀç ÀÌµ¿ º¤ÅÍ¸¦ ±â¹İÀ¸·Î)
+        // ìºë¦­í„° ì´ë™ ì²˜ë¦¬ (í˜„ì¬ ì´ë™ ë²¡í„°ë¥¼ ê¸°ë°˜ìœ¼ë¡œ)
         Move(moveVec);
 
-        // ´Ù¿îÀÌ µÇ¾îÀÖ°í, Áö¸é¿¡ ´ê¾ÆÀÖÀ» °æ¿ì¿¡¸¸ ´Ù¿î ½Ã°£ÀÌ Èå¸£µµ·Ï ÇÔ
+        // ë‹¤ìš´ì´ ë˜ì–´ìˆê³ , ì§€ë©´ì— ë‹¿ì•„ìˆì„ ê²½ìš°ì—ë§Œ ë‹¤ìš´ ì‹œê°„ì´ íë¥´ë„ë¡ í•¨
         DownTimeCheck();
     }
 
     public void SetState(BehaviourBase.State newState)
     {
-        // ¿ÜºÎ¿¡¼­ È£Ãâ °¡´ÉÇÑ ÇÔ¼ö: Ä³¸¯ÅÍ »óÅÂ º¯°æ
+        // ì™¸ë¶€ì—ì„œ í˜¸ì¶œ ê°€ëŠ¥í•œ í•¨ìˆ˜: ìºë¦­í„° ìƒíƒœ ë³€ê²½
         state = newState;
     }
 
     private void UpdateRunningState()
     {
-        // Shift Å°°¡ ´­·ÁÀÖ°í, ÀÌµ¿ ÀÔ·ÂÀÌ ÀÖÀ¸¸ç, ´Ş¸®±â°¡ °¡´ÉÇÑ »óÅÂÀÎÁö È®ÀÎ
+        // Shift í‚¤ê°€ ëˆŒë ¤ìˆê³ , ì´ë™ ì…ë ¥ì´ ìˆìœ¼ë©°, ë‹¬ë¦¬ê¸°ê°€ ê°€ëŠ¥í•œ ìƒíƒœì¸ì§€ í™•ì¸
         if (runInput && CanRun(moveVec))
         {
             isRunning = true;
@@ -116,13 +116,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnMove(InputValue value)
     {
-        // ´ë¹ÌÁö¸¦ ¹ŞÀº »óÅÂ¶ó¸é Á¤Áö
+        // ëŒ€ë¯¸ì§€ë¥¼ ë°›ì€ ìƒíƒœë¼ë©´ ì •ì§€
         if (state == BehaviourBase.State.Damaged || isDowning == true) { return; }
 
-        // ÀÔ·Â ½Ã½ºÅÛÀ» ÅëÇØ ÀÌµ¿ ÀÔ·ÂÀ» ¹Ş¾Æ¼­ ÀÌµ¿ º¤ÅÍ¸¦ ¼³Á¤
+        // ì…ë ¥ ì‹œìŠ¤í…œì„ í†µí•´ ì´ë™ ì…ë ¥ì„ ë°›ì•„ì„œ ì´ë™ ë²¡í„°ë¥¼ ì„¤ì •
         moveVec = value.Get<Vector2>();
 
-        // ÀÌµ¿ ÀÔ·ÂÀÌ ¾øÀ¸¸é ´Ş¸®±â »óÅÂ¸¦ ÇØÁ¦
+        // ì´ë™ ì…ë ¥ì´ ì—†ìœ¼ë©´ ë‹¬ë¦¬ê¸° ìƒíƒœë¥¼ í•´ì œ
         if (moveVec == Vector2.zero)
         {
             isRunning = false;
@@ -132,46 +132,46 @@ public class PlayerController : MonoBehaviour
 
     private void Move(Vector2 input)
     {
-        // °ø°İ »óÅÂÀÏ ¶§´Â ÀÌµ¿ÇÏÁö ¾ÊÀ½
+        // ê³µê²© ìƒíƒœì¼ ë•ŒëŠ” ì´ë™í•˜ì§€ ì•ŠìŒ
         if (state == BehaviourBase.State.Attack)
         {
             return;
         }
 
-        // Boost ÁßÀÏ ¶§ÀÇ ÀÌµ¿ Ã³¸®
+        // Boost ì¤‘ì¼ ë•Œì˜ ì´ë™ ì²˜ë¦¬
         if (isBoosting)
         {
-            // ÀÔ·ÂÀÌ ¾ø°Å³ª µÚ·Î °¡´Â ÀÔ·ÂÀÏ °æ¿ì °­Á¦·Î ¾ÕÀ¸·Î ÀÌµ¿
+            // ì…ë ¥ì´ ì—†ê±°ë‚˜ ë’¤ë¡œ ê°€ëŠ” ì…ë ¥ì¼ ê²½ìš° ê°•ì œë¡œ ì•ìœ¼ë¡œ ì´ë™
             if (input == Vector2.zero || input.y < 0)
             {
-                input = new Vector2(0, 1); // ÀÌµ¿ º¤ÅÍ¸¦ ¾ÕÀ¸·Î °íÁ¤
+                input = new Vector2(0, 1); // ì´ë™ ë²¡í„°ë¥¼ ì•ìœ¼ë¡œ ê³ ì •
             }
-            // µÚ°¡ ¾Æ´Ñ ´Ù¸¥ ¹æÇâÀ¸·Î ÀÔ·ÂÀÌ ÀÖÀ» °æ¿ì ÇØ´ç ¹æÇâÀ¸·Î ÀÌµ¿
+            // ë’¤ê°€ ì•„ë‹Œ ë‹¤ë¥¸ ë°©í–¥ìœ¼ë¡œ ì…ë ¥ì´ ìˆì„ ê²½ìš° í•´ë‹¹ ë°©í–¥ìœ¼ë¡œ ì´ë™
             else
             {
-                // ±×´ë·Î input °ªÀ» »ç¿ë
+                // ê·¸ëŒ€ë¡œ input ê°’ì„ ì‚¬ìš©
             }
         }
 
-        // ÀÔ·Â°ªÀÌ Á¸ÀçÇÒ ¶§¸¸ ÀÌµ¿ Ã³¸®
+        // ì…ë ¥ê°’ì´ ì¡´ì¬í•  ë•Œë§Œ ì´ë™ ì²˜ë¦¬
         if (input != null)
         {
-            // Boost »óÅÂÀÏ ¶§´Â Boost ¼Óµµ·Î ÀÌµ¿
+            // Boost ìƒíƒœì¼ ë•ŒëŠ” Boost ì†ë„ë¡œ ì´ë™
             float speed = isBoosting ? boostSpeed : (isRunning ? runSpeed : moveSpeed);
 
             Vector3 moveDir = new Vector3(input.x, 0, input.y);
             Vector3 newPosition = rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime;
 
-            // ÇöÀç Y À§Ä¡ À¯Áö
+            // í˜„ì¬ Y ìœ„ì¹˜ ìœ ì§€
             newPosition.y = rb.position.y;
 
             rb.MovePosition(newPosition);
 
-            // ¾Ö´Ï¸ŞÀÌ¼Ç ÆÄ¶ó¹ÌÅÍ¸¦ ¾÷µ¥ÀÌÆ®ÇÏ¿© Ä³¸¯ÅÍÀÇ ¿òÁ÷ÀÓÀ» ¹İ¿µ
+            // ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë¯¸í„°ë¥¼ ì—…ë°ì´íŠ¸í•˜ì—¬ ìºë¦­í„°ì˜ ì›€ì§ì„ì„ ë°˜ì˜
             animator.SetFloat("Horizontal", input.x);
             animator.SetFloat("Vertical", input.y);
 
-            // ÀÌµ¿ º¤ÅÍ°¡ 0ÀÌ ¾Æ´Ï¸é ÀÌµ¿ Áß ¾Ö´Ï¸ŞÀÌ¼Ç, ±×·¸Áö ¾ÊÀ¸¸é Á¤Áö ¾Ö´Ï¸ŞÀÌ¼Ç ¼³Á¤
+            // ì´ë™ ë²¡í„°ê°€ 0ì´ ì•„ë‹ˆë©´ ì´ë™ ì¤‘ ì• ë‹ˆë©”ì´ì…˜, ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ ì •ì§€ ì• ë‹ˆë©”ì´ì…˜ ì„¤ì •
             if (input != Vector2.zero)
             {
                 animator.SetBool("Move", true);
@@ -186,13 +186,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnLook(InputValue value)
     {
-        // ´ë¹ÌÁö¸¦ ¹ŞÀº »óÅÂ¶ó¸é Á¤Áö
+        // ëŒ€ë¯¸ì§€ë¥¼ ë°›ì€ ìƒíƒœë¼ë©´ ì •ì§€
         if (state == BehaviourBase.State.Damaged || isDowning == true) { return; }
 
-        // ÀÔ·Â ½Ã½ºÅÛÀ» ÅëÇØ È¸Àü ÀÔ·ÂÀ» ¹Ş¾Æ¼­ Ä³¸¯ÅÍ È¸Àü Ã³¸®
+        // ì…ë ¥ ì‹œìŠ¤í…œì„ í†µí•´ íšŒì „ ì…ë ¥ì„ ë°›ì•„ì„œ ìºë¦­í„° íšŒì „ ì²˜ë¦¬
         Vector2 input = value.Get<Vector2>();
 
-        // ÀÔ·Â°ª¿¡ µû¶ó Ä³¸¯ÅÍÀÇ È¸Àü °¢µµ¸¦ ¾÷µ¥ÀÌÆ®
+        // ì…ë ¥ê°’ì— ë”°ë¼ ìºë¦­í„°ì˜ íšŒì „ ê°ë„ë¥¼ ì—…ë°ì´íŠ¸
         transform.localRotation *= Quaternion.Euler(0, input.x * rotationSpeed * Time.deltaTime, 0);
     }
 
@@ -209,46 +209,46 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack(InputValue value)
     {
-        // ´ë¹ÌÁö¸¦ ¹ŞÀº »óÅÂ¶ó¸é Á¤Áö
+        // ëŒ€ë¯¸ì§€ë¥¼ ë°›ì€ ìƒíƒœë¼ë©´ ì •ì§€
         if (state == BehaviourBase.State.Damaged || isDowning == true) { return; }
 
-        // °ø°İ ÀÔ·ÂÀÌ °¨ÁöµÇ°í Ä³¸¯ÅÍ°¡ °ø°İ ÁßÀÌ ¾Æ´Ò ¶§
+        // ê³µê²© ì…ë ¥ì´ ê°ì§€ë˜ê³  ìºë¦­í„°ê°€ ê³µê²© ì¤‘ì´ ì•„ë‹ ë•Œ
         if (value.isPressed && !isAttacking && isGrounding && !isSkilling)
         {
-            // ÀÌµ¿ ÁßÀÌ¶ó¸é ÀÌµ¿À» ¸ØÃã
+            // ì´ë™ ì¤‘ì´ë¼ë©´ ì´ë™ì„ ë©ˆì¶¤
             if (rb.velocity != Vector3.zero)
             {
                 rb.velocity = Vector3.zero;
             }
 
-            // °ø°İ ÇÃ·¡±× ¼³Á¤
+            // ê³µê²© í”Œë˜ê·¸ ì„¤ì •
             isAttacking = true;
 
-            // °ø°İ Å¸ÀÌ¸Ó ÃÊ±âÈ­
+            // ê³µê²© íƒ€ì´ë¨¸ ì´ˆê¸°í™”
             attackTimer = 0f;
 
-            // °ø°İ »óÅÂ°ª Áõ°¡ (ÄŞº¸ °ø°İ °¡´É)
+            // ê³µê²© ìƒíƒœê°’ ì¦ê°€ (ì½¤ë³´ ê³µê²© ê°€ëŠ¥)
             attackState += 0.25f;
 
-            // ¾Ö´Ï¸ŞÀÌ¼Ç ÆÄ¶ó¹ÌÅÍ ¾÷µ¥ÀÌÆ® ¹× °ø°İ Æ®¸®°Å ¼³Á¤
+            // ì• ë‹ˆë©”ì´ì…˜ íŒŒë¼ë¯¸í„° ì—…ë°ì´íŠ¸ ë° ê³µê²© íŠ¸ë¦¬ê±° ì„¤ì •
             animator.SetFloat("AttackState", attackState);
             animator.SetTrigger("Attack");
 
-            // »óÅÂ¸¦ °ø°İ »óÅÂ·Î º¯°æ
+            // ìƒíƒœë¥¼ ê³µê²© ìƒíƒœë¡œ ë³€ê²½
             state = BehaviourBase.State.Attack;
 
-            // ÃÖ´ë °ø°İ »óÅÂ°ªÀ» ³ÑÀ¸¸é ÃÊ±âÈ­ (ÄŞº¸ ¸®¼Â)
+            // ìµœëŒ€ ê³µê²© ìƒíƒœê°’ì„ ë„˜ìœ¼ë©´ ì´ˆê¸°í™” (ì½¤ë³´ ë¦¬ì…‹)
             if (attackState >= 1)
             {
                 attackState = 0;
             }
         }
 
-        // ½ºÅ³ ÁØºñ »óÅÂÀÏ ¶© ½ºÅ³ °ø°İ ¸ğ¼Ç ½ÇÇà
+        // ìŠ¤í‚¬ ì¤€ë¹„ ìƒíƒœì¼ ë• ìŠ¤í‚¬ ê³µê²© ëª¨ì…˜ ì‹¤í–‰
         else if (value.isPressed && !isAttacking && isGrounding && isSkilling)
         {
             animator.SetTrigger("Skill");
-            // ½ºÅ³ ÁØºñ Ãë¼Ò (¿¡ÀÓ ¹üÀ§ Á¶ÁØ Ãë¼Ò)
+            // ìŠ¤í‚¬ ì¤€ë¹„ ì·¨ì†Œ (ì—ì„ ë²”ìœ„ ì¡°ì¤€ ì·¨ì†Œ)
             GetComponent<PlayerRangeAttackController>().SkillReadyNonActive();
             isAttacking = true;
         }
@@ -256,30 +256,30 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttackCollider()
     {
-        // °ø°İÀÌ ³¡³µÀ» ¶§ È£ÃâµÇ¾î °ø°İ ÇÃ·¡±×¸¦ ÇØÁ¦
+        // ê³µê²©ì´ ëë‚¬ì„ ë•Œ í˜¸ì¶œë˜ì–´ ê³µê²© í”Œë˜ê·¸ë¥¼ í•´ì œ
         isAttacking = false;
     }
 
     private void OnRun(InputValue value)
     {
-        // Shift ÀÔ·Â »óÅÂ¸¦ ÃßÀû
+        // Shift ì…ë ¥ ìƒíƒœë¥¼ ì¶”ì 
         runInput = value.isPressed;
-        UpdateRunningState(); // Áï½Ã ´Ş¸®±â »óÅÂ¸¦ ¾÷µ¥ÀÌÆ®
+        UpdateRunningState(); // ì¦‰ì‹œ ë‹¬ë¦¬ê¸° ìƒíƒœë¥¼ ì—…ë°ì´íŠ¸
     }
 
     private bool CanRun(Vector2 input)
     {
-        // ÈÄ¹æ ÀÌµ¿ÀÌ ¾Æ´ÑÁö È®ÀÎ
+        // í›„ë°© ì´ë™ì´ ì•„ë‹Œì§€ í™•ì¸
         if (input.y < 0)
         {
-            return false; // µÚ·Î °¡´Â ¹æÇâÀÏ ¶§´Â ´Ş¸®Áö ¾ÊÀ½
+            return false; // ë’¤ë¡œ ê°€ëŠ” ë°©í–¥ì¼ ë•ŒëŠ” ë‹¬ë¦¬ì§€ ì•ŠìŒ
         }
 
-        // ´Ş¸®±â °¡´ÉÇÑ ¹æÇâ: w, wa, wd, a, d
+        // ë‹¬ë¦¬ê¸° ê°€ëŠ¥í•œ ë°©í–¥: w, wa, wd, a, d
         return input.y > 0 || input.x != 0;
     }
 
-    // ¹Ù´Ú ºÎ½ºÆ® Á¤Áö ¸Ş¼­µå
+    // ë°”ë‹¥ ë¶€ìŠ¤íŠ¸ ì •ì§€ ë©”ì„œë“œ
     public void BoostStop()
     {
         isBoosting = false;
@@ -288,28 +288,28 @@ public class PlayerController : MonoBehaviour
 
     private void OnBoost(InputValue value)
     {
-        // Boost ÀÔ·ÂÀÌ °¨ÁöµÇ¾ú°í, ÇöÀç Boost »óÅÂ°¡ ¾Æ´Ò ¶§
+        // Boost ì…ë ¥ì´ ê°ì§€ë˜ì—ˆê³ , í˜„ì¬ Boost ìƒíƒœê°€ ì•„ë‹ ë•Œ
         if (value.isPressed && !isBoosting)
         {
-            // ÇöÀç ÀÌµ¿ º¤ÅÍ°¡ µÚ·Î ÇâÇÏ´ÂÁö È®ÀÎ
+            // í˜„ì¬ ì´ë™ ë²¡í„°ê°€ ë’¤ë¡œ í–¥í•˜ëŠ”ì§€ í™•ì¸
             if (moveVec.y < 0)
             {
-                // µÚ·Î ÀÌµ¿ ÁßÀÌ¶ó¸é Boost¸¦ ½ÇÇàÇÏÁö ¾ÊÀ½
+                // ë’¤ë¡œ ì´ë™ ì¤‘ì´ë¼ë©´ Boostë¥¼ ì‹¤í–‰í•˜ì§€ ì•ŠìŒ
                 return;
             }
 
-            // Boost »óÅÂ ½ÃÀÛ
+            // Boost ìƒíƒœ ì‹œì‘
             isBoosting = true;
             animator.SetBool("Boost", true);
 
-            // Boost »óÅÂ¿¡¼­ ¾Ö´Ï¸ŞÀÌ¼Ç Æ®¸®°Å
+            // Boost ìƒíƒœì—ì„œ ì• ë‹ˆë©”ì´ì…˜ íŠ¸ë¦¬ê±°
             animator.SetTrigger("Boost");
         }
     }
 
     private void OnJump(InputValue value)
     {
-        // ´ë¹ÌÁö¸¦ ¹ŞÀº »óÅÂ¶ó¸é Á¤Áö
+        // ëŒ€ë¯¸ì§€ë¥¼ ë°›ì€ ìƒíƒœë¼ë©´ ì •ì§€
         if (state == BehaviourBase.State.Damaged || isDowning == true) { return; }
 
         if (value.isPressed && !isJumping && isGrounding && !isAttacking)
@@ -322,20 +322,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Start ¾Ö´Ï¸ŞÀÌ¼Ç ³¡ ÇÁ·¹ÀÓ ¾Ö´Ï¸ŞÀÌ¼Ç ÀÌº¥Æ®·Î ½ÇÇà
+    // Start ì• ë‹ˆë©”ì´ì…˜ ë í”„ë ˆì„ ì• ë‹ˆë©”ì´ì…˜ ì´ë²¤íŠ¸ë¡œ ì‹¤í–‰
     public void OnJumpKeepChangeEvent()
     {
         isJumping = true;
         animator.SetFloat("JumpHeight", 0.33f);
     }
 
-    // Keep ¾Ö´Ï¸ŞÀÌ¼Ç ³¡ ÇÁ·¹ÀÓ ¾Ö´Ï¸ŞÀÌ¼Ç ÀÌº¥Æ®·Î ½ÇÇà
+    // Keep ì• ë‹ˆë©”ì´ì…˜ ë í”„ë ˆì„ ì• ë‹ˆë©”ì´ì…˜ ì´ë²¤íŠ¸ë¡œ ì‹¤í–‰
     public void OnJumpLoopChangeEvent()
     {
         animator.SetFloat("JumpHeight", 0.66f);
     }
 
-    // ¶¥¿¡ µµ´ŞÇßÀ» ¶§ ½ÇÇàµÇ´Â Wait ¾Ö´Ï¸ŞÀÌ¼Ç ³¡ ÇÁ·¹ÀÓ ÀÌº¥Æ®·Î ½ÇÇà
+    // ë•…ì— ë„ë‹¬í–ˆì„ ë•Œ ì‹¤í–‰ë˜ëŠ” Wait ì• ë‹ˆë©”ì´ì…˜ ë í”„ë ˆì„ ì´ë²¤íŠ¸ë¡œ ì‹¤í–‰
     public void OnJumpWaitChangeEvnet()
     {
         animator.SetFloat("JumpHeight", 0f);
@@ -344,34 +344,34 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateJumpState()
     {
-        // Á¡ÇÁ°¡ ½ÃÀÛµÉ ¶§ ÇÑ ¹ø¸¸ ÈûÀ» °¡ÇÔ
+        // ì í”„ê°€ ì‹œì‘ë  ë•Œ í•œ ë²ˆë§Œ í˜ì„ ê°€í•¨
         if (isJumping)
         {
-            // Ä³¸¯ÅÍÀÇ ÃÊ±â Y À§Ä¡¸¦ ±â·Ï
+            // ìºë¦­í„°ì˜ ì´ˆê¸° Y ìœ„ì¹˜ë¥¼ ê¸°ë¡
             if (startYPosition == 0)
             {
                 startYPosition = transform.position.y;
             }
 
-            // Ä³¸¯ÅÍ°¡ ÃÖ´ë Á¡ÇÁ ³ôÀÌ¿¡ µµ´ŞÇß´ÂÁö È®ÀÎ
+            // ìºë¦­í„°ê°€ ìµœëŒ€ ì í”„ ë†’ì´ì— ë„ë‹¬í–ˆëŠ”ì§€ í™•ì¸
             if (transform.position.y >= startYPosition + maxJumpHeight)
             {
-                // ÃÖ´ë ³ôÀÌ¿¡ µµ´ŞÇÏ¸é Á¡ÇÁ¸¦ ¸ØÃã
+                // ìµœëŒ€ ë†’ì´ì— ë„ë‹¬í•˜ë©´ ì í”„ë¥¼ ë©ˆì¶¤
                 isJumping = false;
-                startYPosition = 0; // Y À§Ä¡ ÃÊ±âÈ­
+                startYPosition = 0; // Y ìœ„ì¹˜ ì´ˆê¸°í™”
             }
 
-            // yÁÂÇ¥ »ó½Â
+            // yì¢Œí‘œ ìƒìŠ¹
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
 
-    // damageType : 0 => °æÁ÷ ÇÇ°İ Å¸ÀÔ
-    // damageType : 2 => ´Ù¿î ÆÇÁ¤ Å¸ÀÔ.
-    // TakeHitState : 0, 1 => °æÁ÷ ÇÇ°İ
-    // TakeHitState : 2 => ´Ù¿î ÆÇÁ¤
-    // downAttack : false => ´Ù¿î ÆÇÁ¤ ½Ã ÇÇ°İX
-    // downAttack : true => ´Ù¿î ÆÇÁ¤ ½Ã ÇÇ°İO 
+    // damageType : 0 => ê²½ì§ í”¼ê²© íƒ€ì…
+    // damageType : 2 => ë‹¤ìš´ íŒì • íƒ€ì….
+    // TakeHitState : 0, 1 => ê²½ì§ í”¼ê²©
+    // TakeHitState : 2 => ë‹¤ìš´ íŒì •
+    // downAttack : false => ë‹¤ìš´ íŒì • ì‹œ í”¼ê²©X
+    // downAttack : true => ë‹¤ìš´ íŒì • ì‹œ í”¼ê²©O 
     public void TakeDamage(float damage, float damageType, bool downAttack)
     {
         if (!isDowning || (isDowning && downAttack))
@@ -394,8 +394,8 @@ public class PlayerController : MonoBehaviour
 
                 isDowning = true;
 
-                // Ä³¸¯ÅÍ¸¦ ÀÏÁ¤·® À§·Î ¹Ğ¾îÁÖ´Â ÈûÀ» Ãß°¡
-                Vector3 upForce = new Vector3(0, airBorneForce, 0); // yÃàÀ¸·Î 5ÀÇ ÈûÀ» °¡ÇÔ (°ªÀº ÇÊ¿ä¿¡ ¸Â°Ô Á¶Àı °¡´É)
+                // ìºë¦­í„°ë¥¼ ì¼ì •ëŸ‰ ìœ„ë¡œ ë°€ì–´ì£¼ëŠ” í˜ì„ ì¶”ê°€
+                Vector3 upForce = new Vector3(0, airBorneForce, 0); // yì¶•ìœ¼ë¡œ 5ì˜ í˜ì„ ê°€í•¨ (ê°’ì€ í•„ìš”ì— ë§ê²Œ ì¡°ì ˆ ê°€ëŠ¥)
                 rb.AddForce(upForce, ForceMode.Impulse);
 
                 isGrounding = false;
@@ -405,7 +405,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ¾Ö´Ï¸ŞÀÌ¼Ç ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç ÇÁ·¹ÀÓ¿¡ ¼³Á¤µÇ¾î ÀÖ´Â ¸Ş¼­µå
+    // ì• ë‹ˆë©”ì´ì…˜ í”¼ê²© ì• ë‹ˆë©”ì´ì…˜ í”„ë ˆì„ì— ì„¤ì •ë˜ì–´ ìˆëŠ” ë©”ì„œë“œ
     public void TakeHitNonAcitve()
     {
         isSkilling = false;
