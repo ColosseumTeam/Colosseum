@@ -320,7 +320,8 @@ AnimatorState:
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3320709275186643082}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: 3957484453184861793}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -464,7 +465,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blend Tree
+  m_Name: Right Click Skill
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 5fcbfd453d7d56d4e8ec2d95d0232056, type: 2}
@@ -490,7 +491,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: AttackState
     m_Mirror: 0
-  m_BlendParameter: eState
+  m_BlendParameter: RightClickState
   m_BlendParameterY: AttackState
   m_MinThreshold: 0
   m_MaxThreshold: 1
@@ -1124,7 +1125,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: eState
+  - m_Name: RightClickState
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1539,6 +1540,18 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &3957484453184861793
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc7279bb173da945b469c4bbedf84ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1101 &4344821632800131430
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

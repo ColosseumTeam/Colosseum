@@ -1,142 +1,209 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
+using static PlayerFighterAttackController;
 
 public class PlayerFighterAttackController : MonoBehaviour
 {
-    [SerializeField] private BehaviourBase.State state = BehaviourBase.State.None;
+    public enum Skill
+    {
+        LeftClick,
+        RightClick,
+        Q,
+        ShiftClick,
+        E,
+    }
 
-    [SerializeField] private AimController aimObject;
-    [SerializeField] private Transform rangeTransform;
-    //[SerializeField] private GameObject rangeNormalSkillPrefab;
-    //[SerializeField] private GameObject rangeTwoSkillPrefab;
-    //[SerializeField] private GameObject rangeFourSkillPrefab;
-    //[SerializeField] private float rangeNormalPrefabSpeed = 15f;
-    //[SerializeField] private float rangeTwoSkillPrefabSpeed = 10f;
-    //[SerializeField] private float rangeFourSkillPrefabSpeed = 15f;
-    //[SerializeField] private float rangeFourSkillSpawnHeight = 20f;
+    [Header("Primary Setting")]
+    [SerializeField] private AimController aimController;
+    [SerializeField] private GameObject shiftClickSkillPrefab;
+    [SerializeField] private LayerMask groundLayerMask;
+    [SerializeField] private DamageManager damageManager;
+
+    [Header("Skill Collider")]
+    [SerializeField] private CapsuleCollider rightClickSkillCollider;
 
     private Animator animator;
-    private bool isSkillReady;
+    private float eState;
+    private bool isAttacking;
+    private bool isPressedShift;
+    private Vector3 skillPos;
+    private int qCount;
+
+    public DamageManager DamageManager { get; private set; }
+    public bool IsQSkillOn { get; set; }
+
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
     }
 
-    public void GetState(BehaviourBase.State newState)
+    // Right Click Skill
+    private void OnRangeOneSkill(InputValue value)
     {
-        state = newState;
-    }
-
-    public void SkillReadyNonActive()
-    {
-        // Ω∫≈≥ ¡ÿ∫Ò √Îº“(Ω∫≈≥ π¸¿ß ¡∂¡ÿ √Îº“)
-        isSkillReady = false;
-        aimObject.SkillReadyNonActive();
-    }
-
-    private void SkillReady(float skillState)
-    {
-        // Ω∫≈≥ ¡ÿ∫Ò ¡ﬂ¿Ã æ∆¥“ ∂ß
-        if (!isSkillReady)
+        if (value.isPressed && !isAttacking)
         {
-            // Ω∫≈≥ Ω««‡ ¡ﬂ √º≈©
-            isSkillReady = true;
-            // Ω∫≈≥ ¡ÿ∫Ò Ω««‡(Ω∫≈≥ π¸¿ß ¡∂¡ÿ Ω««‡)
-            aimObject.SkillReadyAcitve(skillState);
-            GetComponent<PlayerController>().SkillReady();
+            isAttacking = true;
+            if (eState > 1f)
+            {
+                eState = 0f;
+            }
+            animator.SetTrigger("Skill");
+            animator.SetInteger("SkillState", 0);
         }
     }
 
-    // √ππ¯¬∞ Ω∫≈≥ πﬂµø ∏ﬁº≠µÂ
-    private void OnRightClick(InputValue value)
+    // Q Skill
+    private void OnRangeTwoSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady)
+        if (value.isPressed)
         {
-            SkillStateChagned(0f);
+            if (!IsQSkillOn)
+            {
+                IsQSkillOn = true;
+                animator.SetTrigger("Skill");
+                animator.SetInteger("SkillState", 1);
+                // Todo: Í≥µÏ§ëÏóê Îñ†ÏûàÎäî Îèå ÏÉùÏÑ±ÌïòÎäî Ìï®Ïàò ÎßåÎì§Ïñ¥ÏÑú Ïï†ÎãàÎ©îÏù¥ÏÖò Ïù¥Î≤§Ìä∏Ïóê Ï†ÅÏö©
+            }
+            else
+            {
+                // Todo: Q Ïä§ÌÇ¨ ÌîÑÎ¶¨Ìåπ ÏÉùÏÑ±ÌïòÍ≥† ÎÇ†ÏïÑÍ∞ÄÎäî Ìö®Í≥º
+                // Todo: Q Í≥µÏ§ëÏóê Îñ†ÏûàÎäî Ïò§Î∏åÏ†ùÌä∏ ÌïòÎÇò Ïà®Í∏∞Í∏∞
+                qCount--;
+
+                if (qCount == 0)
+                {
+                    IsQSkillOn = false;
+                }
+            }
         }
     }
 
-    // µŒπ¯¬∞ Ω∫≈≥ πﬂµø ∏ﬁº≠µÂ
-    private void OnQ(InputValue value)
+    public void QSkillInit(int count)
     {
-        if (value.isPressed && !isSkillReady)
+        qCount = count;
+    }
+
+    // Shift + Click
+    private void OnAttack(InputValue value)
+    {
+        if (value.isPressed && isPressedShift)
         {
-            SkillStateChagned(1f);
+            isPressedShift = false;
+            aimController.SkillReadyNonActive();
+
+            Ray ray = Camera.main.ScreenPointToRay(aimController.transform.position);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayerMask))
+            {
+                skillPos = hit.point;
+            }
+            else
+            {
+                float skillDistance = 3f;
+                Vector3 dir = Camera.main.ScreenToWorldPoint(aimController.transform.position);
+                Debug.Log($"dir: {dir}");
+                float dirZ = Mathf.Sqrt(Mathf.Abs(skillDistance * skillDistance - (dir.x * dir.x) - (dir.y * dir.y)));
+                dir = Camera.main.ScreenToWorldPoint(new Vector3(aimController.transform.position.x, aimController.transform.position.y, dirZ));
+                //dirZ = dirZ >= 0 ? dirZ : -dirZ;
+                //skillPos = transform.forward.z >= 0f ? transform.position + new Vector3(-dir.x, dir.y, dirZ) : transform.position + new Vector3(-dir.x, dir.y, -dirZ);
+                skillPos = transform.position + new Vector3(dir.x, dir.y, -dir.z);
+                Debug.Log($"skillPos: {skillPos}");
+            }
+
+            animator.SetTrigger("Skill");
+            animator.SetInteger("SkillState", 2);
         }
     }
 
-    // ººπ¯¬∞ Ω∫≈≥ πﬂµø ∏ﬁº≠µÂ
-    private void OnShiftClick(InputValue value)
+    public void OnInstantiateShiftClickSkillPrefab()
     {
-        if (value.isPressed && !isSkillReady)
-        {
-            SkillStateChagned(2f);
-        }
+        Instantiate(shiftClickSkillPrefab, skillPos, Quaternion.identity);
     }
 
-    // ≥◊π¯¬∞ Ω∫≈≥ πﬂµø ∏ﬁº≠µÂ (E)
     private void OnE(InputValue value)
     {
-        if (value.isPressed && !isSkillReady)
+        if (value.isPressed)
         {
-            SkillStateChagned(3f);
+            animator.SetTrigger("Skill");
+            animator.SetInteger("SkillState", 3);
         }
     }
 
-    private void SkillStateChagned(float state)
+    private void OnEmotion1(InputValue value)
     {
-        animator.SetFloat("SkillState", state);
-        //SkillReady(state);
+        if (value.isPressed)
+        {
+            animator.SetTrigger("Emotion1");
+        }
     }
 
-    // ±‚∫ª ∞¯∞› Ω√ ∆Ø¡§ «¡∑π¿”ø°º≠ Ω««‡µ«¥¬ ±‚∫ª ∞¯∞› ¿Ã∫•∆Æ
-    //public void NormalRangeAttackEvent()
-    //{
-    //    // «¡∏Æ∆’ ª˝º∫
-    //    GameObject normalObj = Instantiate(rangeNormalSkillPrefab, rangeTransform.position, rangeTransform.rotation);
+    private void OnShift(InputValue value)
+    {
+        //if (value.isPressed)
+        //{
+        //    isPressedShift = true;
+        //}
+        if (!isPressedShift)
+        {
+            isPressedShift = true;
+            aimController.SkillReadyAcitve(0f);
+        }
+        else if (isPressedShift)
+        {
+            isPressedShift = false;
+            aimController.SkillReadyNonActive();
+        }
+    }
 
-    //    // ª˝º∫µ» «¡∏Æ∆’ RigidBody ¬¸¡∂
-    //    Rigidbody normalObjRb = normalObj.GetComponent<Rigidbody>();
+    private void OnAttackEnd()
+    {
+        // Í≥µÍ≤©Ïù¥ ÎÅùÎÇ¨ÏùÑ Îïå Ìò∏Ï∂úÎêòÏñ¥ Í≥µÍ≤© ÌîåÎûòÍ∑∏Î•º Ìï¥Ï†ú
+        isAttacking = false;
+    }
 
-    //    // ª˝º∫µ» «¡∏Æ∆’¿« RigidBody∏¶ ¡§∏È¿∏∑Œ ≥Øæ∆∞°µµ∑œ
-    //    if (normalObjRb != null)
-    //    {
-    //        normalObjRb.velocity = transform.forward * rangeNormalPrefabSpeed;
-    //    }
-    //}
+    public void AttackColliderOn(Skill skill)
+    {
+        switch (skill)
+        {
+            case Skill.RightClick:
+                rightClickSkillCollider.enabled = true;
+                break;
 
-    //// µŒ π¯¬∞ Ω∫≈≥ ªÁøÎ Ω√ ∆Ø¡§ «¡∑π¿”ø°º≠ Ω««‡µ«¥¬ Ω∫≈≥ ∞¯∞› ¿Ã∫•∆Æ
-    //public void TwoRangeSkillAttackEvent()
-    //{
-    //    // «¡∏Æ∆’ ª˝º∫
-    //    GameObject twoSkillObj = Instantiate(rangeTwoSkillPrefab, rangeTransform.position, rangeTransform.rotation);
+            case Skill.Q:
 
-    //    // ª˝º∫µ» «¡∏Æ∆’ RigidBody ¬¸¡∂
-    //    Rigidbody twoSkillObjRb = twoSkillObj.GetComponent<Rigidbody>();
+                break;
 
-    //    // ª˝º∫µ» «¡∏Æ∆’¿« RigidBody∏¶ ¡§∏È¿∏∑Œ ≥Øæ∆∞°µµ∑œ
-    //    if (twoSkillObjRb != null)
-    //    {
-    //        twoSkillObjRb.velocity = transform.forward * rangeTwoSkillPrefabSpeed;
-    //    }
-    //}
+            case Skill.ShiftClick:
 
-    //// ≥◊ π¯¬∞ Ω∫≈≥ ªÁøÎ Ω√ ∆Ø¡§ «¡∑π¿”ø°º≠ Ω««‡µ«¥¬ Ω∫≈≥ ∞¯∞› ¿Ã∫•∆Æ
-    //public void FourRangeSkillAttackEvent()
-    //{
-    //    Vector3 fourSkillObjPosition = new Vector3(
-    //        aimObject.GetGroundIndicatorCenter().x,
-    //        aimObject.GetGroundIndicatorCenter().y + rangeFourSkillSpawnHeight,
-    //        aimObject.GetGroundIndicatorCenter().z);
+                break;
 
-    //    GameObject fourSkillObj = Instantiate(rangeFourSkillPrefab, fourSkillObjPosition, Quaternion.identity);
+            case Skill.E:
 
-    //    Rigidbody fourSkillObjRb = fourSkillObj.GetComponent<Rigidbody>();
+                break;
+        }
+    }
 
-    //    if (fourSkillObjRb != null)
-    //    {
-    //        fourSkillObjRb.velocity = Vector3.down * rangeFourSkillPrefabSpeed;
-    //    }
-    //}
+    public void AttackColliderOff(Skill skill)
+    {
+        switch (skill)
+        {
+            case Skill.RightClick:
+                rightClickSkillCollider.enabled = false;
+                break;
+
+            case Skill.Q:
+
+                break;
+
+            case Skill.ShiftClick:
+
+                break;
+
+            case Skill.E:
+
+                break;
+        }
+    }
 }
