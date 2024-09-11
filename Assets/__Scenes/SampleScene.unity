@@ -163,7 +163,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 2007378d2f9bd924381ce2d9892628eb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -427,7 +427,6 @@ MonoBehaviour:
   playerBody: {fileID: 2013914597}
   maxXRotation: 5
   minXRotation: 20
-  positionAdjustmentFactor: 0.05
   xRotation: 0
 --- !u!81 &389608238
 AudioListener:
@@ -1122,6 +1121,8 @@ MonoBehaviour:
   isDowning: 0
   isGrounding: 0
   downTime: 0
+  downEndTime: 3
+  force: 10
 --- !u!54 &1206010472
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1500,6 +1501,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c20413fcd62349147b5da66f2a27c84a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2013914599}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c20413fcd62349147b5da66f2a27c84a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2013914606}
   m_SourcePrefab: {fileID: 100100000, guid: c20413fcd62349147b5da66f2a27c84a, type: 3}
 --- !u!4 &2013914597 stripped
 Transform:
@@ -1661,6 +1665,29 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2013914606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2013914598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22721a96b91ea034ba543547976de72b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillCheckList: 01010101
+  skillCoolTimer:
+  - 0
+  - 0
+  - 0
+  - 0
+  skillCoolTimerEnd:
+  - 4
+  - 4
+  - 4
+  - 4
 --- !u!1001 &5188414731875643911
 PrefabInstance:
   m_ObjectHideFlags: 0

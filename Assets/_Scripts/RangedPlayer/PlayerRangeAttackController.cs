@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,6 +25,7 @@ public class PlayerRangeAttackController : MonoBehaviour
     [SerializeField] private float rangeFourSkillSpawnHeight = 20f;
 
     private PlayerController playerController;
+    private RangePlayerCoolTImeManager rangePlayerCoolTImeManager;
     private Animator animator;
     private bool isSkillReady;
 
@@ -31,6 +33,7 @@ public class PlayerRangeAttackController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
+        rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();
     }
 
     public void GetState(PlayerRangeAttackBehaviour.State newState)
@@ -61,8 +64,9 @@ public class PlayerRangeAttackController : MonoBehaviour
     // 첫번째 스킬 발동 메서드
     private void OnRangeOneSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady)
+        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[0])
         {
+            rangePlayerCoolTImeManager.SKillChecking(0);
             SkillStateChagned(0f);
         }
     }
@@ -70,8 +74,9 @@ public class PlayerRangeAttackController : MonoBehaviour
     // 두번째 스킬 발동 메서드
     private void OnRangeTwoSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady)
+        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[1])
         {
+            rangePlayerCoolTImeManager.SKillChecking(1);
             SkillStateChagned(1f);
         }
     }
@@ -79,8 +84,9 @@ public class PlayerRangeAttackController : MonoBehaviour
     // 세번째 스킬 발동 메서드
     private void OnRangeThreeSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady)
+        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[2])
         {
+            rangePlayerCoolTImeManager.SKillChecking(2);
             SkillStateChagned(2f);
         }
     }
@@ -88,8 +94,9 @@ public class PlayerRangeAttackController : MonoBehaviour
     // 네번째 스킬 발동 메서드
     private void OnRangeFourSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady)
+        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[3])
         {
+            rangePlayerCoolTImeManager.SKillChecking(3);
             SkillStateChagned(3f);
         }
     }

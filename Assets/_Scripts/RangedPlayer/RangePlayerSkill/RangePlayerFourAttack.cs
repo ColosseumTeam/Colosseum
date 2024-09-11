@@ -6,6 +6,7 @@ public class RangePlayerFourAttack : MonoBehaviour, IRangeSkill
     [SerializeField] private bool skillType = true;
     [SerializeField] private bool downAttack = true;
 
+    private GameObject enemyObj;
     private DamageManager damageManager;
 
     private void Awake()
@@ -13,21 +14,25 @@ public class RangePlayerFourAttack : MonoBehaviour, IRangeSkill
         Destroy(gameObject, 3f);
     }
 
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
-        // Ground 태그와 충돌한 경우
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            Destroy(gameObject); // 현재 오브젝트 파괴
+        // 대미지를 2번 주기 위해 적에 닿았을 때 한 번, 지면에 닿았을 때 한 번 대미지를 주도록 함
+        if (other.gameObject.CompareTag("Ground"))
+        {            
+            downAttack = false;
+
+            damageManager.DamageTransmission(gameObject, enemyObj);
+            Destroy(gameObject);
         }
 
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (other.gameObject.CompareTag("Enemy"))
         {
-            damageManager.DamageTransmission(gameObject, collision.gameObject);
-
-            Destroy(gameObject); // 현재 오브젝트 파괴
+            enemyObj = other.gameObject;
+            damageManager.DamageTransmission(gameObject, other.gameObject);
         }
     }
+
 
     public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack)
     {
