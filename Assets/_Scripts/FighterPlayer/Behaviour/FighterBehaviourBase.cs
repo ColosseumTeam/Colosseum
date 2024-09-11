@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class FighterBehaviourBase : StateMachineBehaviour
 {
-    protected float rightClickTimer;
+    protected PlayerController playerController;
 
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
+
+        playerController = animator.GetComponent<PlayerController>();
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

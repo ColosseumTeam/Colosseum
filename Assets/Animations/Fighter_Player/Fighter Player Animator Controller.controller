@@ -55,18 +55,6 @@ BlendTree:
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 2
---- !u!114 &-8918120767439771868
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b701676c8f7395e479fb64f3898fea5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1107 &-8775040159781285239
 AnimatorStateMachine:
   serializedVersion: 6
@@ -1304,7 +1292,7 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours:
-  - {fileID: -8918120767439771868}
+  - {fileID: 4217968924950028076}
   m_AnyStatePosition: {x: 190, y: 110, z: 0}
   m_EntryPosition: {x: -70, y: 240, z: 0}
   m_ExitPosition: {x: 230, y: 430, z: 0}
@@ -1493,7 +1481,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Q
-  m_Speed: 1
+  m_Speed: 1.8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8193945063119451348}
@@ -1550,6 +1538,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fc7279bb173da945b469c4bbedf84ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4217968924950028076
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b701676c8f7395e479fb64f3898fea5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1101 &4344821632800131430

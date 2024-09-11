@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -24,12 +25,18 @@ public class PlayerFighterAttackController : MonoBehaviour
     [Header("Skill Collider")]
     [SerializeField] private CapsuleCollider rightClickSkillCollider;
 
+    [Header("Skill Object")]
+    [SerializeField] private Transform qSkillGroup;
+    [SerializeField] private GameObject qSkillPrefab;
+
     private Animator animator;
     private float eState;
     private bool isAttacking;
     private bool isPressedShift;
     private Vector3 skillPos;
     private int qCount;
+
+    private bool isReadyToShootQ;
 
     public DamageManager DamageManager { get; private set; }
     public bool IsQSkillOn { get; set; }
@@ -65,17 +72,25 @@ public class PlayerFighterAttackController : MonoBehaviour
                 IsQSkillOn = true;
                 animator.SetTrigger("Skill");
                 animator.SetInteger("SkillState", 1);
-                // Todo: 공중에 떠있는 돌 생성하는 함수 만들어서 애니메이션 이벤트에 적용
+                // Todo: 공중에 떠있는 돌 애니메이션 이벤트에 적용
             }
             else
             {
-                // Todo: Q 스킬 프리팹 생성하고 날아가는 효과
-                // Todo: Q 공중에 떠있는 오브젝트 하나 숨기기
+                if (!isReadyToShootQ)
+                {
+                    return;
+                }
+
+                GameObject stone = Instantiate(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
+                stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
                 qCount--;
 
-                if (qCount == 0)
+                qSkillGroup.GetChild(qCount).gameObject.SetActive(false);
+
+                if (qCount <= 0)
                 {
                     IsQSkillOn = false;
+                    isReadyToShootQ = false;
                 }
             }
         }
@@ -84,6 +99,13 @@ public class PlayerFighterAttackController : MonoBehaviour
     public void QSkillInit(int count)
     {
         qCount = count;
+
+        for (int i = 0; i < qSkillGroup.childCount; i++)
+        {
+            qSkillGroup.GetChild(i).gameObject.SetActive(true);
+        }
+
+        isReadyToShootQ = true;
     }
 
     // Shift + Click
@@ -119,7 +141,7 @@ public class PlayerFighterAttackController : MonoBehaviour
 
     public void OnInstantiateShiftClickSkillPrefab()
     {
-        Instantiate(shiftClickSkillPrefab, skillPos, Quaternion.identity);
+        Instantiate(shiftClickSkillPrefab, skillPos, transform.rotation);
     }
 
     private void OnE(InputValue value)
@@ -139,7 +161,7 @@ public class PlayerFighterAttackController : MonoBehaviour
         }
     }
 
-    private void OnShift(InputValue value)
+    private void OnRangeThreeSkill(InputValue value)
     {
         //if (value.isPressed)
         //{
