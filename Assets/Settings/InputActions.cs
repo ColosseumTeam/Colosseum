@@ -57,15 +57,6 @@ namespace UnityEngine.InputSystem
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Run"",
-                    ""type"": ""Value"",
-                    ""id"": ""8e2c3a1e-8dee-4cc0-9fec-cc49a467f5e6"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""984d388b-0511-482d-a916-79798e1928b0"",
@@ -85,12 +76,12 @@ namespace UnityEngine.InputSystem
                 },
                 {
                     ""name"": ""RangeOneSkill"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""2be21e90-084c-4233-896b-cba7f3178075"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""RangeTwoSkill"",
@@ -123,6 +114,15 @@ namespace UnityEngine.InputSystem
                     ""name"": ""Dance"",
                     ""type"": ""Button"",
                     ""id"": ""5a4709ba-cd0a-40b8-88b0-c964a6e95fb4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShiftCheck"",
+                    ""type"": ""Button"",
+                    ""id"": ""77fc5a2c-304c-4f40-9c3b-841c9fff2b2e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -352,28 +352,6 @@ namespace UnityEngine.InputSystem
                 },
                 {
                     ""name"": """",
-                    ""id"": ""5d24db18-1bb8-4ffa-8862-03d452138d4d"",
-                    ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Run"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""240c8468-122a-42c2-8062-f72c05f128de"",
-                    ""path"": ""<XRController>/{Primary2DAxis}"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XR"",
-                    ""action"": ""Run"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""119b57d1-b2c3-427e-b976-131e552607f5"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -397,7 +375,7 @@ namespace UnityEngine.InputSystem
                 {
                     ""name"": """",
                     ""id"": ""b7e91617-8004-4500-b101-bf78354d3502"",
-                    ""path"": ""<Keyboard>/Q"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -419,7 +397,7 @@ namespace UnityEngine.InputSystem
                 {
                     ""name"": """",
                     ""id"": ""e40bb72b-e341-4c79-a82e-45257c7da725"",
-                    ""path"": ""<Keyboard>/E"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -441,7 +419,7 @@ namespace UnityEngine.InputSystem
                 {
                     ""name"": """",
                     ""id"": ""22dbf73e-1d64-4832-9a2d-5e1f7a36e7fd"",
-                    ""path"": ""<Keyboard>/R"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -463,7 +441,7 @@ namespace UnityEngine.InputSystem
                 {
                     ""name"": """",
                     ""id"": ""cd3a20fc-e6ae-49f1-90cc-89ba378a0f0c"",
-                    ""path"": ""<Keyboard>/T"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -485,7 +463,7 @@ namespace UnityEngine.InputSystem
                 {
                     ""name"": """",
                     ""id"": ""110a653a-cc6c-482c-9109-d6ed1b0a58f4"",
-                    ""path"": ""<Keyboard>/Y"",
+                    ""path"": ""<Keyboard>/E"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -523,6 +501,28 @@ namespace UnityEngine.InputSystem
                     ""processors"": """",
                     ""groups"": ""XR"",
                     ""action"": ""Dance"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62cdde3a-087c-4702-94e0-26b456fffa61"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ShiftCheck"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e76f35c2-0030-494d-a25f-8018d49dfda7"",
+                    ""path"": ""<XRController>/{Primary2DAxis}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XR"",
+                    ""action"": ""ShiftCheck"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1133,7 +1133,6 @@ namespace UnityEngine.InputSystem
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
             m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
-            m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Boost = m_Player.FindAction("Boost", throwIfNotFound: true);
             m_Player_RangeOneSkill = m_Player.FindAction("RangeOneSkill", throwIfNotFound: true);
@@ -1141,6 +1140,7 @@ namespace UnityEngine.InputSystem
             m_Player_RangeThreeSkill = m_Player.FindAction("RangeThreeSkill", throwIfNotFound: true);
             m_Player_RangeFourSkill = m_Player.FindAction("RangeFourSkill", throwIfNotFound: true);
             m_Player_Dance = m_Player.FindAction("Dance", throwIfNotFound: true);
+            m_Player_ShiftCheck = m_Player.FindAction("ShiftCheck", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1218,7 +1218,6 @@ namespace UnityEngine.InputSystem
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Look;
         private readonly InputAction m_Player_Attack;
-        private readonly InputAction m_Player_Run;
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Boost;
         private readonly InputAction m_Player_RangeOneSkill;
@@ -1226,6 +1225,7 @@ namespace UnityEngine.InputSystem
         private readonly InputAction m_Player_RangeThreeSkill;
         private readonly InputAction m_Player_RangeFourSkill;
         private readonly InputAction m_Player_Dance;
+        private readonly InputAction m_Player_ShiftCheck;
         public struct PlayerActions
         {
             private @InputActions m_Wrapper;
@@ -1233,7 +1233,6 @@ namespace UnityEngine.InputSystem
             public InputAction @Move => m_Wrapper.m_Player_Move;
             public InputAction @Look => m_Wrapper.m_Player_Look;
             public InputAction @Attack => m_Wrapper.m_Player_Attack;
-            public InputAction @Run => m_Wrapper.m_Player_Run;
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @Boost => m_Wrapper.m_Player_Boost;
             public InputAction @RangeOneSkill => m_Wrapper.m_Player_RangeOneSkill;
@@ -1241,6 +1240,7 @@ namespace UnityEngine.InputSystem
             public InputAction @RangeThreeSkill => m_Wrapper.m_Player_RangeThreeSkill;
             public InputAction @RangeFourSkill => m_Wrapper.m_Player_RangeFourSkill;
             public InputAction @Dance => m_Wrapper.m_Player_Dance;
+            public InputAction @ShiftCheck => m_Wrapper.m_Player_ShiftCheck;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1259,9 +1259,6 @@ namespace UnityEngine.InputSystem
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
-                @Run.started += instance.OnRun;
-                @Run.performed += instance.OnRun;
-                @Run.canceled += instance.OnRun;
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
@@ -1283,6 +1280,9 @@ namespace UnityEngine.InputSystem
                 @Dance.started += instance.OnDance;
                 @Dance.performed += instance.OnDance;
                 @Dance.canceled += instance.OnDance;
+                @ShiftCheck.started += instance.OnShiftCheck;
+                @ShiftCheck.performed += instance.OnShiftCheck;
+                @ShiftCheck.canceled += instance.OnShiftCheck;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -1296,9 +1296,6 @@ namespace UnityEngine.InputSystem
                 @Attack.started -= instance.OnAttack;
                 @Attack.performed -= instance.OnAttack;
                 @Attack.canceled -= instance.OnAttack;
-                @Run.started -= instance.OnRun;
-                @Run.performed -= instance.OnRun;
-                @Run.canceled -= instance.OnRun;
                 @Jump.started -= instance.OnJump;
                 @Jump.performed -= instance.OnJump;
                 @Jump.canceled -= instance.OnJump;
@@ -1320,6 +1317,9 @@ namespace UnityEngine.InputSystem
                 @Dance.started -= instance.OnDance;
                 @Dance.performed -= instance.OnDance;
                 @Dance.canceled -= instance.OnDance;
+                @ShiftCheck.started -= instance.OnShiftCheck;
+                @ShiftCheck.performed -= instance.OnShiftCheck;
+                @ShiftCheck.canceled -= instance.OnShiftCheck;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -1513,7 +1513,6 @@ namespace UnityEngine.InputSystem
             void OnMove(InputAction.CallbackContext context);
             void OnLook(InputAction.CallbackContext context);
             void OnAttack(InputAction.CallbackContext context);
-            void OnRun(InputAction.CallbackContext context);
             void OnJump(InputAction.CallbackContext context);
             void OnBoost(InputAction.CallbackContext context);
             void OnRangeOneSkill(InputAction.CallbackContext context);
@@ -1521,6 +1520,7 @@ namespace UnityEngine.InputSystem
             void OnRangeThreeSkill(InputAction.CallbackContext context);
             void OnRangeFourSkill(InputAction.CallbackContext context);
             void OnDance(InputAction.CallbackContext context);
+            void OnShiftCheck(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {

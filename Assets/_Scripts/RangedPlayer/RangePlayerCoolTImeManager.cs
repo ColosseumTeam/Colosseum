@@ -17,7 +17,7 @@ public class RangePlayerCoolTImeManager : MonoBehaviour
         }
     }
 
-    public void SKillChecking(int index)
+    public void SkillChecking(int index)
     {
         skillCheckList[index] = false;
     }

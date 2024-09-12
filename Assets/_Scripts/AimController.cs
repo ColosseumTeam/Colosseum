@@ -94,7 +94,7 @@ public class AimController : MonoBehaviour
         // 스킬 타입 파악
         isSkillState = newSkillState;
 
-        // LineRenderer를 활성화하여 사각형이 보이도록 함
+        // LineRenderer를 활성화하여 범위를 보이도록 함
         lineRenderer.enabled = true;
     }
 
@@ -193,7 +193,8 @@ public class AimController : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(rect.position);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
         {
-            Vector3 hitPoint = hit.point;
+            //Vector3 hitPoint = hit.point;
+            hitPoint = crossHairEvent.GroundHitPositionTransmission();
 
             int segmentCount = 100;
             float radius = fourGroundCircleSize;
@@ -215,7 +216,7 @@ public class AimController : MonoBehaviour
     private void HitPointPositionSave()
     {
         Ray ray = mainCamera.ScreenPointToRay(rect.position);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer) && isSkillState != 0)
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer) && (isSkillState != 0 || isSkillState != 3))
         {
             hitPoint = hit.point;
         }
@@ -223,6 +224,11 @@ public class AimController : MonoBehaviour
 
     public Vector3 GetGroundIndicatorCenter()
     {
+        if(isSkillState == 0 || isSkillState == 3)
+        {
+            return crossHairEvent.GroundHitPositionTransmission();
+        }
+
         return hitPoint;
     }
 }

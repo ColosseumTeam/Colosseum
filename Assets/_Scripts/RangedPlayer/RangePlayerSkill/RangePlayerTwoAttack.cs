@@ -1,10 +1,11 @@
 using UnityEngine;
 
-public class RangePlayerTwoAttack : MonoBehaviour, IRangeSkill
+public class RangePlayerTwoAttack : MonoBehaviour, ISkill
 {
     [SerializeField] private float damage = 10f;
     [SerializeField] private bool skillType = false;
     [SerializeField] private bool downAttack = false;
+    [SerializeField] private float stiffnessTime = 1f;
 
     private DamageManager damageManager;
 
@@ -28,11 +29,12 @@ public class RangePlayerTwoAttack : MonoBehaviour, IRangeSkill
         }
     }
 
-    public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack)
+    public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack, out float getStiffnessTime)
     {
         getDamage = damage;
         getSkillType = skillType;
         getDownAttack = downAttack;
+        getStiffnessTime = stiffnessTime;
     }
 
     public void GetDamageManager(DamageManager newDamageManager)

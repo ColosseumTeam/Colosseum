@@ -33,23 +33,27 @@ public class BotController : MonoBehaviour
     // skillType : true => 다운 판정
     // downAttack : false => 다운 판정 시 피격X
     // downAttack : true => 다운 판정 시 피격O 
+    // stiffnessTime : 경직 시간
     // TakeHitState : 0, 1 => 피격 모션
     // TakeHitState : 2 => 다운 모션
     // TakeHitState : 3 => 다운 상태 유지 모션
-    public void TakeDamage(float damage, bool skillType, bool downAttack)
+    public void TakeDamage(float damage, bool skillType, bool downAttack, float stiffnessTime)
     {
         if (!isDowning || (isDowning && downAttack))
         {
             if (!skillType)
             {
                 int rnd = Random.Range(0, 2);
+
+                animator.speed = stiffnessTime;
+
                 animator.SetFloat("TakeHitState", rnd);
             }
             else
             {
                 if (!isDowning) 
                 {
-                    animator.SetFloat("TakeHitState", 2);
+                    animator.SetFloat("TakeHitState", 2);                    
                 }
                 else if (isDowning)
                 {
@@ -57,11 +61,9 @@ public class BotController : MonoBehaviour
                 }
                 
                 isDowning = true;
-                
-                Vector3 upForce = new Vector3(0, force, 0);
-                rb.AddForce(upForce, ForceMode.Impulse);
 
-                isGrounding = false;
+                Vector3 upForce = new Vector3(0, force, 0);
+                rb.AddForce(upForce, ForceMode.Impulse);                
             }
 
             animator.SetTrigger("TakeHit");
@@ -70,7 +72,9 @@ public class BotController : MonoBehaviour
 
     public void IdleAnimationChanged()
     {
-        animator.SetTrigger("Idle");
+        animator.speed = 1f;
+        animator.SetTrigger("Idle");        
+
         isDowning = false;
         downTime = 0f;
     }
