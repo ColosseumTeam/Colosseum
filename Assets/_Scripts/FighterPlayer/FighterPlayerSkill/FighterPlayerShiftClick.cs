@@ -6,4 +6,13 @@ public class FighterPlayerShiftClick : MonoBehaviour
     {
         Destroy(gameObject, 3f);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            // Todo: 데미지 처리 필요.
+            Debug.Log("ShiftClick Skill Hit");
+        }
+    }
 }

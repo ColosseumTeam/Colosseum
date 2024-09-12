@@ -18,9 +18,9 @@ public class PlayerFighterAttackController : MonoBehaviour
 
     [Header("Primary Setting")]
     [SerializeField] private AimController aimController;
-    [SerializeField] private GameObject shiftClickSkillPrefab;
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private DamageManager damageManager;
+    [SerializeField] private CrossHairLookAt crossHairLookAt;
 
     [Header("Skill Collider")]
     [SerializeField] private CapsuleCollider rightClickSkillCollider;
@@ -28,7 +28,10 @@ public class PlayerFighterAttackController : MonoBehaviour
     [Header("Skill Object")]
     [SerializeField] private Transform qSkillGroup;
     [SerializeField] private GameObject qSkillPrefab;
+    [SerializeField] private GameObject shiftClickSkillPrefab;
+    [SerializeField] private GameObject eSkillPrefab;
 
+    private PlayerController playerController;
     private Animator animator;
     private float eState;
     private bool isAttacking;
@@ -44,7 +47,9 @@ public class PlayerFighterAttackController : MonoBehaviour
 
     private void Awake()
     {
+        playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
+        crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
     }
 
     // Right Click Skill
@@ -109,6 +114,24 @@ public class PlayerFighterAttackController : MonoBehaviour
     }
 
     // Shift + Click
+    private void OnRangeThreeSkill(InputValue value)
+    {
+        // Action type을 Value로 변경.
+        float input = value.Get<float>();
+
+        if (input == 1f)
+        {
+            isPressedShift = true;
+            aimController.SkillReadyAcitve(0f);
+        }
+        if (input == 0f)
+        {
+            Debug.Log("Canceled");
+            isPressedShift = false;
+            aimController.SkillReadyNonActive();
+        }
+    }
+
     private void OnAttack(InputValue value)
     {
         if (value.isPressed && isPressedShift)
@@ -116,6 +139,8 @@ public class PlayerFighterAttackController : MonoBehaviour
             isPressedShift = false;
             aimController.SkillReadyNonActive();
 
+            skillPos = crossHairLookAt.GroundHitPositionTransmission();
+            /*
             Ray ray = Camera.main.ScreenPointToRay(aimController.transform.position);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayerMask))
             {
@@ -131,8 +156,8 @@ public class PlayerFighterAttackController : MonoBehaviour
                 //dirZ = dirZ >= 0 ? dirZ : -dirZ;
                 //skillPos = transform.forward.z >= 0f ? transform.position + new Vector3(-dir.x, dir.y, dirZ) : transform.position + new Vector3(-dir.x, dir.y, -dirZ);
                 skillPos = transform.position + new Vector3(dir.x, dir.y, -dir.z);
-                Debug.Log($"skillPos: {skillPos}");
             }
+            */
 
             animator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 2);
@@ -144,13 +169,21 @@ public class PlayerFighterAttackController : MonoBehaviour
         Instantiate(shiftClickSkillPrefab, skillPos, transform.rotation);
     }
 
-    private void OnE(InputValue value)
+    // E Skill
+    private void OnRangeFourSkill(InputValue value)
     {
         if (value.isPressed)
         {
+            skillPos = crossHairLookAt.GroundHitPositionTransmission();
+
             animator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 3);
         }
+    }
+
+    public void OnInstantiateESkillPrefab()
+    {
+        Instantiate(eSkillPrefab, skillPos, transform.rotation);
     }
 
     private void OnEmotion1(InputValue value)
@@ -158,24 +191,6 @@ public class PlayerFighterAttackController : MonoBehaviour
         if (value.isPressed)
         {
             animator.SetTrigger("Emotion1");
-        }
-    }
-
-    private void OnRangeThreeSkill(InputValue value)
-    {
-        //if (value.isPressed)
-        //{
-        //    isPressedShift = true;
-        //}
-        if (!isPressedShift)
-        {
-            isPressedShift = true;
-            aimController.SkillReadyAcitve(0f);
-        }
-        else if (isPressedShift)
-        {
-            isPressedShift = false;
-            aimController.SkillReadyNonActive();
         }
     }
 

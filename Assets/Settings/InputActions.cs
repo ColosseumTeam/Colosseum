@@ -103,12 +103,12 @@ namespace UnityEngine.InputSystem
                 },
                 {
                     ""name"": ""RangeThreeSkill"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""edd3d8b5-4ba2-473a-9e2e-172f15290645"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""RangeFourSkill"",

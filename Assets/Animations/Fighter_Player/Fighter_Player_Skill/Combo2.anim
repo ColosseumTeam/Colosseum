@@ -37857,6 +37857,13 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0
+    functionName: SkillReady
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.16666667
     functionName: AttackColliderOn
     data: 
@@ -37873,6 +37880,13 @@ AnimationClip:
     messageOptions: 0
   - time: 0.28333333
     functionName: OnAttackEnd
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.28333333
+    functionName: SkillEnd
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
