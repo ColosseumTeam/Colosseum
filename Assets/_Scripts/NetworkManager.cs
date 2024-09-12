@@ -6,14 +6,20 @@ using UnityEngine.UI;
 
 public class NetworkManager : MonoBehaviour
 {
+    [Header("Network Setting")]
     [SerializeField] private NetworkRunner runnerPrefab;
     [SerializeField] private InputField roomText;
     [SerializeField] private int maxPlayerCount;
+    [SerializeField] private string gameSceneName = "Game";
+
+    [Header("Canvas")]
+    [SerializeField] private Canvas lobbyCanvas;
+    [SerializeField] private Canvas roomCanvas;
 
     private NetworkRunner runner;
 
 
-    public async void StartGame()
+    public async void JoinRoom()
     {
         await Disconnect();
 
@@ -38,13 +44,19 @@ public class NetworkManager : MonoBehaviour
 
         if (startTask.Result.Ok)
         {
-            //StatusText.text = "";
-            //PanelGroup.gameObject.SetActive(false);
+            lobbyCanvas.enabled = false;
+            roomCanvas.enabled = true;
         }
         else
         {
             //StatusText.text = $"Connection Failed: {startTask.Result.ShutdownReason}";
+            Debug.Log("Failed Connecting");
         }
+    }
+
+    public void GameStart()
+    {
+        runner.LoadScene(gameSceneName);
     }
 
     public async void DisconnectClicked()
