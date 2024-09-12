@@ -7,9 +7,13 @@ public class DamageManager : MonoBehaviour
         float damage;
         bool skillType;
         bool downAttack;
+        float stiffnessTime;
 
-        skillObj.GetComponent<IRangeSkill>().GetSkillState(out damage, out skillType, out downAttack);
+        skillObj.GetComponent<ISkill>().GetSkillState(out damage, out skillType, out downAttack, out stiffnessTime);
 
-        targetObj.GetComponent<BotController>().TakeDamage(damage, skillType, downAttack);
+        if (targetObj != null)
+        {
+            targetObj.GetComponent<BotController>().TakeDamage(damage, skillType, downAttack, stiffnessTime);
+        }
     }
 }

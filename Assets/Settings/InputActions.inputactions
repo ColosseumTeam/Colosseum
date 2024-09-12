@@ -33,15 +33,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Run",
-                    "type": "Value",
-                    "id": "8e2c3a1e-8dee-4cc0-9fec-cc49a467f5e6",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Jump",
                     "type": "Button",
                     "id": "984d388b-0511-482d-a916-79798e1928b0",
@@ -61,12 +52,12 @@
                 },
                 {
                     "name": "RangeOneSkill",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "2be21e90-084c-4233-896b-cba7f3178075",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "RangeTwoSkill",
@@ -99,6 +90,15 @@
                     "name": "Dance",
                     "type": "Button",
                     "id": "5a4709ba-cd0a-40b8-88b0-c964a6e95fb4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ShiftCheck",
+                    "type": "Button",
+                    "id": "77fc5a2c-304c-4f40-9c3b-841c9fff2b2e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -328,28 +328,6 @@
                 },
                 {
                     "name": "",
-                    "id": "5d24db18-1bb8-4ffa-8862-03d452138d4d",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "240c8468-122a-42c2-8062-f72c05f128de",
-                    "path": "<XRController>/{Primary2DAxis}",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "XR",
-                    "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "119b57d1-b2c3-427e-b976-131e552607f5",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -373,7 +351,7 @@
                 {
                     "name": "",
                     "id": "b7e91617-8004-4500-b101-bf78354d3502",
-                    "path": "<Keyboard>/Q",
+                    "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -395,7 +373,7 @@
                 {
                     "name": "",
                     "id": "e40bb72b-e341-4c79-a82e-45257c7da725",
-                    "path": "<Keyboard>/E",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -417,7 +395,7 @@
                 {
                     "name": "",
                     "id": "22dbf73e-1d64-4832-9a2d-5e1f7a36e7fd",
-                    "path": "<Keyboard>/R",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -439,7 +417,7 @@
                 {
                     "name": "",
                     "id": "cd3a20fc-e6ae-49f1-90cc-89ba378a0f0c",
-                    "path": "<Keyboard>/T",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -461,7 +439,7 @@
                 {
                     "name": "",
                     "id": "110a653a-cc6c-482c-9109-d6ed1b0a58f4",
-                    "path": "<Keyboard>/Y",
+                    "path": "<Keyboard>/E",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -499,6 +477,28 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "Dance",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "62cdde3a-087c-4702-94e0-26b456fffa61",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ShiftCheck",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e76f35c2-0030-494d-a25f-8018d49dfda7",
+                    "path": "<XRController>/{Primary2DAxis}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "XR",
+                    "action": "ShiftCheck",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

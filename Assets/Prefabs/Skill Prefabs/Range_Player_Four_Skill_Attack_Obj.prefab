@@ -149,3 +149,5 @@ MonoBehaviour:
   damage: 10
   skillType: 1
   downAttack: 1
+  attackTime: 0
+  attackTimeEnd: 1

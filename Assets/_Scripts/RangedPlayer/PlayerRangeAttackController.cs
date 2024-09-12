@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerRangeAttackController : MonoBehaviour
 {
@@ -27,7 +28,9 @@ public class PlayerRangeAttackController : MonoBehaviour
     private PlayerController playerController;
     private RangePlayerCoolTImeManager rangePlayerCoolTImeManager;
     private Animator animator;
+    private int isCoolTimeSkill;
     private bool isSkillReady;
+    private bool isOneSkillReady;
 
     private void Awake()
     {
@@ -35,12 +38,22 @@ public class PlayerRangeAttackController : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();
     }
+    
 
     public void GetState(PlayerRangeAttackBehaviour.State newState)
     {
         state = newState;
     }
 
+    // 스킬에 따른 애니메이션 선정 메서드 및 스킬 준비를 알리는 메서드
+    private void SkillStateChagned(float state)
+    {
+        isSkillReady = true;
+        animator.SetFloat("SkillState", state);
+        SkillReady(state);
+    }
+
+    // 스킬 준비 및 시전 상태를 취소하는 메서드
     public void SkillReadyNonActive()
     {
         // 스킬 준비 취소(스킬 범위 조준 취소)
@@ -48,26 +61,60 @@ public class PlayerRangeAttackController : MonoBehaviour
         aimObject.SkillReadyNonActive();
     }
 
+    // 스킬을 준비하며 발생하는 메서드
     private void SkillReady(float skillState)
     {
         // 스킬 준비 중이 아닐 때
-        if (!isSkillReady)
+        if (isSkillReady)
         {
-            // 스킬 실행 중 체크
+            // 스킬 준비 및 시전 상태로 전환
             isSkillReady = true;
-            // 스킬 준비 실행(스킬 범위 조준 실행)
+
+            // 스킬 준비 실행 (스킬 범위 조준 실행)
             aimObject.SkillReadyAcitve(skillState);
+        }
+    }
+
+    private void OnAttack(InputValue value)
+    {
+        if (value.isPressed && isSkillReady)
+        {
+            // 두 개의 버튼을 클릭해야 하는 SkillOne은 예외처리
+            if (isOneSkillReady)
+            {
+                SkillStateChagned(0f);
+                isOneSkillReady = false;
+            }
+
+            animator.SetTrigger("Skill");
+
+            // 스킬 쿨타임 시작
+            rangePlayerCoolTImeManager.SkillChecking(isCoolTimeSkill);
+
+            // 스킬 사용 중임을 PlayerController에게 전달
             GetComponent<PlayerController>().SkillReady();
+
+            // 스킬 준비 취소 (에임 범위 조준 취소)
+            GetComponent<PlayerRangeAttackController>().SkillReadyNonActive();            
         }
     }
 
     // 첫번째 스킬 발동 메서드
     private void OnRangeOneSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[0])
+        float input = value.Get<float>();
+
+        if (input == 1f && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[0])
         {
-            rangePlayerCoolTImeManager.SKillChecking(0);
-            SkillStateChagned(0f);
+            isCoolTimeSkill = 0;
+
+            isSkillReady = true;
+            isOneSkillReady = true;
+        }       
+        else
+        {
+            isSkillReady = false;
+            isOneSkillReady = false;            
         }
     }
 
@@ -75,8 +122,8 @@ public class PlayerRangeAttackController : MonoBehaviour
     private void OnRangeTwoSkill(InputValue value)
     {
         if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[1])
-        {
-            rangePlayerCoolTImeManager.SKillChecking(1);
+        {            
+            isCoolTimeSkill = 1;
             SkillStateChagned(1f);
         }
     }
@@ -86,7 +133,7 @@ public class PlayerRangeAttackController : MonoBehaviour
     {
         if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[2])
         {
-            rangePlayerCoolTImeManager.SKillChecking(2);
+            isCoolTimeSkill = 2;
             SkillStateChagned(2f);
         }
     }
@@ -96,15 +143,9 @@ public class PlayerRangeAttackController : MonoBehaviour
     {
         if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[3])
         {
-            rangePlayerCoolTImeManager.SKillChecking(3);
+            isCoolTimeSkill = 3;
             SkillStateChagned(3f);
         }
-    }
-
-    private void SkillStateChagned(float state)
-    {
-        animator.SetFloat("SkillState", state);
-        SkillReady(state);
     }
 
     // 기본 공격 시 특정 프레임에서 실행되는 기본 공격 이벤트
@@ -117,7 +158,7 @@ public class PlayerRangeAttackController : MonoBehaviour
 
         if (normalObjRb != null)
         {
-            normalObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
+            normalObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             normalObjRb.velocity = rangeTransform.forward * rangeNormalPrefabSpeed;
         }
     }
@@ -128,15 +169,15 @@ public class PlayerRangeAttackController : MonoBehaviour
         // aimObject.GetGroundIndicatorCenter()로부터 일정 거리 아래에서 오브젝트 생성
         Vector3 oneSkillObjPosition = new Vector3(
             aimObject.GetGroundIndicatorCenter().x,
-            aimObject.GetGroundIndicatorCenter().y - 0.9f, 
+            aimObject.GetGroundIndicatorCenter().y - 0.9f,
             aimObject.GetGroundIndicatorCenter().z);
 
         // 오브젝트 생성
         GameObject oneSkillObj = Instantiate(rangeOneSkillPrefab, oneSkillObjPosition, Quaternion.identity);
 
-        if(oneSkillObj != null)
+        if (oneSkillObj != null)
         {
-            oneSkillObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
+            oneSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
         }
 
         playerController.SkillEnd();
@@ -154,7 +195,7 @@ public class PlayerRangeAttackController : MonoBehaviour
         // 생성된 프리팹의 RigidBody를 정면으로 날아가도록
         if (twoSkillObjRb != null)
         {
-            twoSkillObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
+            twoSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             twoSkillObjRb.velocity = transform.forward * rangeTwoSkillPrefabSpeed;
         }
 
@@ -179,9 +220,9 @@ public class PlayerRangeAttackController : MonoBehaviour
             offsetRotation = -15f;
         }
 
-        foreach(var obj in prefabs)
+        foreach (var obj in prefabs)
         {
-            obj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
+            obj.GetComponent<ISkill>().GetDamageManager(damageManager);
             obj.GetComponent<RangePlayerThreeAttack>().GetPlayer(rangeThreeSkillTransform);
         }
 
@@ -202,7 +243,7 @@ public class PlayerRangeAttackController : MonoBehaviour
 
         if (fourSkillObjRb != null)
         {
-            fourSkillObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
+            fourSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             fourSkillObjRb.velocity = Vector3.down * rangeFourSkillPrefabSpeed;
         }
 
