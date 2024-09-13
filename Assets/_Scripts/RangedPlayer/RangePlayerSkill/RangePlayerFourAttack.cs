@@ -8,6 +8,7 @@ public class RangePlayerFourAttack : MonoBehaviour, ISkill
     [SerializeField] private bool downAttack = true;
     [SerializeField] private float attackTime = 0f;
     [SerializeField] private float attackTimeEnd = 0.1f;
+    [SerializeField] private GameObject afterAttackObject;
 
     private bool isAttacking;
     private GameObject enemyObj;
@@ -27,6 +28,8 @@ public class RangePlayerFourAttack : MonoBehaviour, ISkill
             attackTime += Time.deltaTime;
             if(attackTime >= attackTimeEnd)
             {
+                Instantiate(afterAttackObject, enemyObj.transform.position, Quaternion.identity);
+
                 damageManager.DamageTransmission(gameObject, enemyObj);
                 Destroy(gameObject);
             }            
@@ -39,7 +42,10 @@ public class RangePlayerFourAttack : MonoBehaviour, ISkill
         {
             enemyObj = other.gameObject;
             damageManager.DamageTransmission(gameObject, other.gameObject);
+        }
 
+        if (other.gameObject.CompareTag("Ground"))
+        {
             isAttacking = true;
             attackTime = 0f;
         }

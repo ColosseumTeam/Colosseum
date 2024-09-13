@@ -3,10 +3,11 @@ using UnityEngine;
 public class RangePlayerTwoAttack : MonoBehaviour, ISkill
 {
     [SerializeField] private float damage = 10f;
-    [SerializeField] private bool skillType = false;
+    [SerializeField] private bool skillType = true;
     [SerializeField] private bool downAttack = false;
-    [SerializeField] private float stiffnessTime = 1f;
-
+    [SerializeField] private float knockBackFoce = 10f;
+    [SerializeField] private float knockBackEndForce = 500f;
+    
     private DamageManager damageManager;
 
     private void Awake()
@@ -18,14 +19,21 @@ public class RangePlayerTwoAttack : MonoBehaviour, ISkill
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            Destroy(gameObject); 
+            Destroy(gameObject);
         }
 
         if (collision.gameObject.CompareTag("Enemy"))
-        {
+        {            
+            Collider[] colls = Physics.OverlapSphere(this.transform.position, 1f, 1 << LayerMask.NameToLayer("Enemy"));
+
+            foreach (Collider coll in colls)
+            {
+                coll.GetComponent<Rigidbody>().AddExplosionForce(knockBackEndForce, this.transform.position, knockBackFoce);
+            }
+
             damageManager.DamageTransmission(gameObject, collision.gameObject);
 
-            Destroy(gameObject); 
+            Destroy(gameObject);
         }
     }
 
@@ -34,7 +42,9 @@ public class RangePlayerTwoAttack : MonoBehaviour, ISkill
         getDamage = damage;
         getSkillType = skillType;
         getDownAttack = downAttack;
-        getStiffnessTime = stiffnessTime;
+
+        // 다운 스킬이기에 경직 시간이 필요로 하지 않음
+        getStiffnessTime = 0f;
     }
 
     public void GetDamageManager(DamageManager newDamageManager)

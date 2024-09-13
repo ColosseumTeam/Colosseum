@@ -6,13 +6,14 @@ public class RangePlayerThreeAttack : MonoBehaviour, ISkill
     [SerializeField] private bool skillType = false;
     [SerializeField] private bool downAttack = false;
     [SerializeField] private float stiffnessTime = 1f;
+    [SerializeField] private float dealingPeriodTime = 0f;
+    [SerializeField] private float dealingPeriodEndTIme = 0.5f;
 
     private DamageManager damageManager;
-
     private Transform player;
+    private GameObject otherGameObject;
     private float timer = 0f;
     private float timerArrive = 10f;
-
     private bool timerCheck;
 
     private void Update()
@@ -21,13 +22,17 @@ public class RangePlayerThreeAttack : MonoBehaviour, ISkill
         {
             transform.position = player.transform.position;
             timer += Time.deltaTime;
-            if(timer >= timerArrive)
+            if (timer >= timerArrive)
             {
                 timerCheck = false;
                 Destroy(gameObject);
             }
         }
 
+        if (otherGameObject != null)
+        {
+            DealingPeriodEvent();
+        }
     }
 
     public void GetPlayer(Transform newPlayer)
@@ -37,12 +42,27 @@ public class RangePlayerThreeAttack : MonoBehaviour, ISkill
         timer = 0f;
     }
 
+    private void DealingPeriodEvent()
+    {
+        dealingPeriodTime += Time.deltaTime;
+        if (dealingPeriodTime >= dealingPeriodEndTIme)
+        {
+            damageManager.DamageTransmission(gameObject, otherGameObject);
+            dealingPeriodTime = 0f;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            damageManager.DamageTransmission(gameObject, other.gameObject);
+            otherGameObject = other.gameObject;
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        otherGameObject = null;
     }
 
     public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack, out float getStiffnessTime)

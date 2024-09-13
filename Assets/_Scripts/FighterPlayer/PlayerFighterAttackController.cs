@@ -128,7 +128,7 @@ public class PlayerFighterAttackController : MonoBehaviour
         {
             Debug.Log("Canceled");
             isPressedShift = false;
-            aimController.SkillReadyNonActive();
+            aimController.AimSkillReadyNonActive();
         }
     }
 
@@ -137,7 +137,7 @@ public class PlayerFighterAttackController : MonoBehaviour
         if (value.isPressed && isPressedShift)
         {
             isPressedShift = false;
-            aimController.SkillReadyNonActive();
+            aimController.AimSkillReadyNonActive();
 
             skillPos = crossHairLookAt.GroundHitPositionTransmission();
             /*

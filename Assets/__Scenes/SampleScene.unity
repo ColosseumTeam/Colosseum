@@ -351,7 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9751a4fecdda7204fbf482de914d48a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crosshair: {fileID: 906152766}
+  crosshair: {fileID: 0}
   objectToRotate: {fileID: 160786061}
   distance: 8
   endPoint: {x: 0, y: 0, z: 0}
@@ -719,10 +719,6 @@ MonoBehaviour:
   minYPosition: -450
   maxYPosition: 450
   oneGroundRangeSize: 2
-  twoGroundRangeSize: 2
-  twoGroundLengthSize: 5.3
-  threeGroundCircleSize: 5
-  fourGroundCircleSize: 2
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -936,6 +932,10 @@ PrefabInstance:
     - target: {fileID: 100016, guid: d917c7129a9e4c74e84188b278d96de7, type: 3}
       propertyPath: m_Name
       value: Bot
+      objectReference: {fileID: 0}
+    - target: {fileID: 100016, guid: d917c7129a9e4c74e84188b278d96de7, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 100016, guid: d917c7129a9e4c74e84188b278d96de7, type: 3}
       propertyPath: m_TagString
@@ -1383,6 +1383,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 8ea7b4a2907600c45b0aedb8d6fb2b6e, type: 2}
     - target: {fileID: -5815158712768949242, guid: c20413fcd62349147b5da66f2a27c84a, type: 3}
+      propertyPath: m_AABB.m_Center.x
+      value: 0.0008054078
+      objectReference: {fileID: 0}
+    - target: {fileID: -5815158712768949242, guid: c20413fcd62349147b5da66f2a27c84a, type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 1.515788
+      objectReference: {fileID: 0}
+    - target: {fileID: -5815158712768949242, guid: c20413fcd62349147b5da66f2a27c84a, type: 3}
+      propertyPath: m_AABB.m_Center.z
+      value: 0.001471169
+      objectReference: {fileID: 0}
+    - target: {fileID: -5815158712768949242, guid: c20413fcd62349147b5da66f2a27c84a, type: 3}
+      propertyPath: m_AABB.m_Extent.x
+      value: 0.1887024
+      objectReference: {fileID: 0}
+    - target: {fileID: -5815158712768949242, guid: c20413fcd62349147b5da66f2a27c84a, type: 3}
+      propertyPath: m_AABB.m_Extent.z
+      value: 0.2180383
+      objectReference: {fileID: 0}
+    - target: {fileID: -5815158712768949242, guid: c20413fcd62349147b5da66f2a27c84a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c086f2cb73d8b564fa3547a82eaa9cee, type: 2}
@@ -1499,9 +1519,6 @@ MonoBehaviour:
   maxJumpHeight: 0.5
   startYPosition: 0
   boostSpeed: 15
-  downTimer: 0
-  downEndTimer: 3
-  airBorneForce: 5
   rb: {fileID: 0}
 --- !u!65 &2013914601
 BoxCollider:

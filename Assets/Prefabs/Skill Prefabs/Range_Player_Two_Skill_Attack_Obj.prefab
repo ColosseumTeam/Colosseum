@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8854392979552755637}
   - component: {fileID: 2596105938012267122}
   - component: {fileID: 8678420802314633458}
-  - component: {fileID: -5680510384909437672}
+  - component: {fileID: -7093529104264150599}
   m_Layer: 0
   m_Name: Range_Player_Two_Skill_Attack_Obj
   m_TagString: Untagged
@@ -134,7 +134,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 36
   m_CollisionDetection: 0
---- !u!114 &-5680510384909437672
+--- !u!114 &-7093529104264150599
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,6 +143,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8879378916739146850}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca2a67d4c582bce48b88fa6611c8ff6b, type: 3}
+  m_Script: {fileID: 11500000, guid: c961d61373f40e745ba237ea3a4925fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
+  skillType: 1
+  downAttack: 0
+  knockBackFoce: 10
+  knockBackEndForce: 1000

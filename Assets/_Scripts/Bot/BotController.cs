@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BotController : MonoBehaviour
@@ -41,6 +42,7 @@ public class BotController : MonoBehaviour
     {
         if (!isDowning || (isDowning && downAttack))
         {
+            // 경직 스킬을 맞았을 때
             if (!skillType)
             {
                 int rnd = Random.Range(0, 2);
@@ -49,11 +51,12 @@ public class BotController : MonoBehaviour
 
                 animator.SetFloat("TakeHitState", rnd);
             }
+            // 다운 스킬을 맞았을 때
             else
             {
                 if (!isDowning) 
                 {
-                    animator.SetFloat("TakeHitState", 2);                    
+                    animator.SetFloat("TakeHitState", 2);
                 }
                 else if (isDowning)
                 {
@@ -81,9 +84,15 @@ public class BotController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if(collision.gameObject.tag == "Ground")
         {
             isGrounding = true;
         }
     }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        isGrounding = false;
+    }
+
 }

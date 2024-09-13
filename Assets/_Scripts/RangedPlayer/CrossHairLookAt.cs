@@ -14,31 +14,39 @@ public class CrossHairLookAt : MonoBehaviour
 
     void Update()
     {
-        // 크로스헤어의 RectTransform을 참조
-        RectTransform crosshairRect = crosshair.GetComponent<RectTransform>();
-
-        // Canvas 상에서 크로스헤어의 위치를 참조
-        Vector3 crosshairScreenPos = crosshairRect.position;
-
-        // 화면 좌표를 월드 좌표로 변환 
-        Vector3 crosshairWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(crosshairScreenPos.x, crosshairScreenPos.y, distance));
-
-        // 오브젝트가 크로스헤어를 바라보게 방향을 계산
-        direction = crosshairWorldPos - objectToRotate.position;
-
-        // 오브젝트를 크로스헤어 방향으로 회전
-        objectToRotate.rotation = Quaternion.LookRotation(direction);
-
-        // 끝 지점 참조
-        endPoint = objectToRotate.position + direction.normalized * distance;
-
-        EndPointUntilRay();
-
-        if (!isGrounding)
+        if (crosshair != null)
         {
-            // Ray 발사 로직 추가
-            ShootRayFromEndPoint();
+            // 크로스헤어의 RectTransform을 참조
+            RectTransform crosshairRect = crosshair.GetComponent<RectTransform>();
+
+            // Canvas 상에서 크로스헤어의 위치를 참조
+            Vector3 crosshairScreenPos = crosshairRect.position;
+
+            // 화면 좌표를 월드 좌표로 변환 
+            Vector3 crosshairWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(crosshairScreenPos.x, crosshairScreenPos.y, distance));
+
+            // 오브젝트가 크로스헤어를 바라보게 방향을 계산
+            direction = crosshairWorldPos - objectToRotate.position;
+
+            // 오브젝트를 크로스헤어 방향으로 회전
+            objectToRotate.rotation = Quaternion.LookRotation(direction);
+
+            // 끝 지점 참조
+            endPoint = objectToRotate.position + direction.normalized * distance;
+
+            EndPointUntilRay();
+
+            if (!isGrounding)
+            {
+                // Ray 발사 로직 추가
+                ShootRayFromEndPoint();
+            }
         }
+    }
+
+    public void CameraReceive(GameObject cameraObject)
+    {
+        crosshair = cameraObject;
     }
 
     private void EndPointUntilRay()
