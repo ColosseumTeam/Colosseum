@@ -489,7 +489,10 @@ MonoBehaviour:
   gameSceneName: Game
   lobbyCanvas: {fileID: 1073386453}
   roomCanvas: {fileID: 1129076297}
+<<<<<<< HEAD
   runner: {fileID: 0}
+=======
+>>>>>>> MultiPlay
 --- !u!1 &112233928
 GameObject:
   m_ObjectHideFlags: 0
@@ -7762,7 +7765,10 @@ MonoBehaviour:
   characterModelGroup: {fileID: 645035691}
   iconGroup: {fileID: 1438960363}
   iconPrefab: {fileID: 595002417659338708, guid: 9e8d6bbc54b9076479e558bd1ae228d4, type: 3}
+<<<<<<< HEAD
   clickedModel: {fileID: 0}
+=======
+>>>>>>> MultiPlay
 --- !u!1 &1638164839
 GameObject:
   m_ObjectHideFlags: 0
