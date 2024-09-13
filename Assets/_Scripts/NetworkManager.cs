@@ -1,5 +1,6 @@
 using Fusion;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,7 +9,7 @@ public class NetworkManager : MonoBehaviour
 {
     [Header("Network Setting")]
     [SerializeField] private NetworkRunner runnerPrefab;
-    [SerializeField] private InputField roomText;
+    [SerializeField] private TMP_InputField roomText;
     [SerializeField] private int maxPlayerCount;
     [SerializeField] private string gameSceneName = "Game";
 
