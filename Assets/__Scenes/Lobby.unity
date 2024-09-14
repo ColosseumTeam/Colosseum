@@ -449,6 +449,7 @@ GameObject:
   m_Component:
   - component: {fileID: 101819226}
   - component: {fileID: 101819227}
+  - component: {fileID: 101819228}
   m_Layer: 0
   m_Name: Network Manager
   m_TagString: Untagged
@@ -489,6 +490,28 @@ MonoBehaviour:
   gameSceneName: Game
   lobbyCanvas: {fileID: 1073386453}
   roomCanvas: {fileID: 1129076297}
+  myReadyCheckBox: {fileID: 1981206473}
+  enemyReadyCheckBox: {fileID: 802426926}
+  _isReady: 0
+  _isEnemyReady: 0
+--- !u!114 &101819228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101819224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2599170184
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 101819227}
 --- !u!1 &112233928
 GameObject:
   m_ObjectHideFlags: 0
@@ -2608,7 +2631,7 @@ GameObject:
   - component: {fileID: 802426927}
   - component: {fileID: 802426926}
   m_Layer: 5
-  m_Name: Check Image
+  m_Name: Enemy Check Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2640,7 +2663,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802426924}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -8819,7 +8842,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1842916992}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 101819227}
+        m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
+        m_MethodName: ReadyButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1842916992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9223,7 +9258,7 @@ GameObject:
   - component: {fileID: 1981206474}
   - component: {fileID: 1981206473}
   m_Layer: 5
-  m_Name: Check Image
+  m_Name: My Check Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9255,7 +9290,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1981206471}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 

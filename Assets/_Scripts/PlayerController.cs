@@ -1,4 +1,5 @@
 using System;
+using Fusion;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,7 +9,7 @@ using UnityEngine.InputSystem;
 // 메서드
 // 1. SkillReady
 // 2. OnAttack의 RangePlayer용 코드
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     // 캐릭터의 현재 상태를 관리하는 변수
     [SerializeField] private BehaviourBase.State state = BehaviourBase.State.None;
