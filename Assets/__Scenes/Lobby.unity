@@ -449,7 +449,6 @@ GameObject:
   m_Component:
   - component: {fileID: 101819226}
   - component: {fileID: 101819227}
-  - component: {fileID: 101819228}
   m_Layer: 0
   m_Name: Network Manager
   m_TagString: Untagged
@@ -487,31 +486,9 @@ MonoBehaviour:
   runnerPrefab: {fileID: 3880697578239190824, guid: 9b0af6e428c97834eb2f60ce27618abb, type: 3}
   roomText: {fileID: 998887773}
   maxPlayerCount: 2
-  gameSceneName: Game
+  joinButton: {fileID: 1889261099}
   lobbyCanvas: {fileID: 1073386453}
   roomCanvas: {fileID: 1129076297}
-  myReadyCheckBox: {fileID: 1981206473}
-  enemyReadyCheckBox: {fileID: 802426926}
-  _isReady: 0
-  _isEnemyReady: 0
---- !u!114 &101819228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101819224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 2599170184
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 101819227}
 --- !u!1 &112233928
 GameObject:
   m_ObjectHideFlags: 0
@@ -4693,6 +4670,8 @@ GameObject:
   - component: {fileID: 1129076297}
   - component: {fileID: 1129076296}
   - component: {fileID: 1129076295}
+  - component: {fileID: 1129076300}
+  - component: {fileID: 1129076299}
   m_Layer: 5
   m_Name: Canvas - Room
   m_TagString: Untagged
@@ -4783,6 +4762,41 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1129076299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129076294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2090042254
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1129076300}
+--- !u!114 &1129076300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129076294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 442e52d6731b4ad49838d8263426afae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameSceneName: Game
+  myReadyCheckBox: {fileID: 1981206473}
+  enemyReadyCheckBox: {fileID: 802426926}
+  _isReady: 0
+  _isEnemyReady: 0
 --- !u!1 &1130797587
 GameObject:
   m_ObjectHideFlags: 0
@@ -8843,8 +8857,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 101819227}
-        m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
+      - m_Target: {fileID: 1129076300}
+        m_TargetAssemblyTypeName: RoomManager, Assembly-CSharp
         m_MethodName: ReadyButton
         m_Mode: 1
         m_Arguments:

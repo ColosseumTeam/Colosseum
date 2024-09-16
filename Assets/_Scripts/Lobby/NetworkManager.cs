@@ -5,29 +5,25 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class NetworkManager : NetworkBehaviour
+public class NetworkManager : MonoBehaviour
 {
     [Header("Network Setting")]
     [SerializeField] private NetworkRunner runnerPrefab;
     [SerializeField] private TMP_InputField roomText;
     [SerializeField] private int maxPlayerCount;
-    [SerializeField] private string gameSceneName = "Game";
+    [SerializeField] private Button joinButton;
 
     [Header("Canvas")]
     [SerializeField] private Canvas lobbyCanvas;
     [SerializeField] private Canvas roomCanvas;
 
-    [Header("Objects")]
-    [SerializeField] private Image myReadyCheckBox;
-    [SerializeField] private Image enemyReadyCheckBox;
-
     private NetworkRunner runner;
-    [Networked] public bool isReady { get; private set; }
-    [Networked] public bool isEnemyReady { get; private set; }
 
 
     public async void JoinRoom()
     {
+        joinButton.interactable = false;
+
         await Disconnect();
 
         runner = Instantiate(runnerPrefab);
@@ -59,49 +55,8 @@ public class NetworkManager : NetworkBehaviour
             //StatusText.text = $"Connection Failed: {startTask.Result.ShutdownReason}";
             Debug.Log("Failed Connecting");
         }
-    }
 
-    public void ReadyButton()
-    {
-        if (!myReadyCheckBox.enabled)
-        {
-            myReadyCheckBox.enabled = true;
-            //isReady = true;
-            RPC_GetReady();
-        }
-        else
-        {
-            myReadyCheckBox.enabled = false;
-            //isReady = false;
-            RPC_GetNotReady();
-        }
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
-    public void RPC_GetReady()
-    {
-        enemyReadyCheckBox.enabled = true;
-        //isEnemyReady = true;
-
-        Debug.Log("GetReadyRPC");
-        //GameStart();
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
-    public void RPC_GetNotReady()
-    {
-        enemyReadyCheckBox.enabled = false;
-        // = false;
-
-        Debug.Log("GetNotReadyRPC");
-    }
-
-    public void GameStart()
-    {
-        if (isReady && isEnemyReady)
-        {
-            runner.LoadScene(gameSceneName);
-        }
+        joinButton.interactable = true;
     }
 
     public async void DisconnectClicked()

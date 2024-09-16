@@ -32,8 +32,12 @@ public class CharacterSelection : MonoBehaviour
 
     public void ClickedIcon(int index)
     {
-        clickedModel.SetActive(false);
-        clickedModel = characterModelGroup.GetChild(index).gameObject;
-        clickedModel.SetActive(true);
+        GameObject clickedCharacter = characterModelGroup.GetChild(index).gameObject;
+        if (clickedModel != clickedCharacter)
+        {
+            clickedModel.SetActive(false);
+            clickedModel = clickedCharacter;
+            clickedModel.SetActive(true);
+        }
     }
 }
