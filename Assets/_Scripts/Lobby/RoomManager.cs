@@ -40,6 +40,7 @@ public class RoomManager : NetworkBehaviour
         isEnemyReady = true;
 
         Debug.Log("GetReadyRPC");
+
         GameStart();
     }
 
@@ -54,7 +55,7 @@ public class RoomManager : NetworkBehaviour
 
     private void GameStart()
     {
-        if (isReady && isEnemyReady)
+        if (isReady && isEnemyReady && Runner.IsSceneAuthority)
         {
             Runner.LoadScene(gameSceneName);
         }
