@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+//using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerRangeAttackController : MonoBehaviour
 {
@@ -24,54 +26,119 @@ public class PlayerRangeAttackController : MonoBehaviour
     [SerializeField] private float rangeFourSkillSpawnHeight = 20f;
 
     private PlayerController playerController;
+    private RangePlayerCoolTImeManager rangePlayerCoolTImeManager;
     private Animator animator;
+    private Vector3 rangeHitPosition;
+    private int isCoolTimeSkill;
     private bool isSkillReady;
+    private bool isOneSkillReady;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
+        rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();
     }
+    
 
     public void GetState(PlayerRangeAttackBehaviour.State newState)
     {
         state = newState;
     }
 
+    // 스킬에 따른 애니메이션 선정 메서드 및 스킬 준비를 알리는 메서드
+    private void SkillStateChagned(float state)
+    {
+        if (!isSkillReady)
+        {
+            isSkillReady = true;
+            animator.SetFloat("SkillState", state);
+
+            RangeAttackOn();
+        }
+    }
+
+    // 스킬 준비 및 시전 상태를 취소하는 메서드
     public void SkillReadyNonActive()
     {
         // 스킬 준비 취소(스킬 범위 조준 취소)
         isSkillReady = false;
-        aimObject.SkillReadyNonActive();
+        playerController.SkillEnd();
+        aimObject.AimSkillReadyNonActive();
     }
 
-    private void SkillReady(float skillState)
+    private void HitPositionGrasp(int index)
     {
-        // 스킬 준비 중이 아닐 때
-        if (!isSkillReady)
+        aimObject.SkillReadyAcitve(index);
+
+        if(index == 0)
         {
-            // 스킬 실행 중 체크
-            isSkillReady = true;
-            // 스킬 준비 실행(스킬 범위 조준 실행)
-            aimObject.SkillReadyAcitve(skillState);
-            GetComponent<PlayerController>().SkillReady();
+            rangeHitPosition = new Vector3(  
+            aimObject.GetGroundIndicatorCenter().x,
+            aimObject.GetGroundIndicatorCenter().y - 0.9f,
+            aimObject.GetGroundIndicatorCenter().z);
+        }
+
+        if(index == 3)
+        {
+            rangeHitPosition = new Vector3(
+            aimObject.GetGroundIndicatorCenter().x,
+            aimObject.GetGroundIndicatorCenter().y + rangeFourSkillSpawnHeight,
+            aimObject.GetGroundIndicatorCenter().z);
+        }
+    }
+
+    private void RangeAttackOn()
+    {
+        HitPositionGrasp(isCoolTimeSkill);
+
+        animator.SetTrigger("Skill");
+
+        // 스킬 쿨타임 시작
+        rangePlayerCoolTImeManager.SkillChecking(isCoolTimeSkill);
+
+        GetComponent<PlayerController>().SkillReady();
+    }
+
+    private void OnAttack(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            // 두 개의 버튼을 클릭해야 하는 SkillOne은 예외처리
+            if (isOneSkillReady)
+            {
+                SkillStateChagned(0f);
+
+                animator.SetFloat("SkillState", 0f);
+
+                RangeAttackOn();
+            }
         }
     }
 
     // 첫번째 스킬 발동 메서드
     private void OnRangeOneSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady)
+        float input = value.Get<float>();
+
+        if (input == 1f && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[0])
         {
-            SkillStateChagned(0f);
+            isCoolTimeSkill = 0;
+
+            isOneSkillReady = true;
+        }
+        else if (input == 0f)
+        {
+            isOneSkillReady = false;
         }
     }
 
     // 두번째 스킬 발동 메서드
     private void OnRangeTwoSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady)
-        {
+        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[1])
+        {            
+            isCoolTimeSkill = 1;
             SkillStateChagned(1f);
         }
     }
@@ -79,8 +146,9 @@ public class PlayerRangeAttackController : MonoBehaviour
     // 세번째 스킬 발동 메서드
     private void OnRangeThreeSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady)
-        {
+        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[2])
+        {            
+            isCoolTimeSkill = 2;
             SkillStateChagned(2f);
         }
     }
@@ -88,16 +156,11 @@ public class PlayerRangeAttackController : MonoBehaviour
     // 네번째 스킬 발동 메서드
     private void OnRangeFourSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady)
-        {
+        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[3])
+        {            
+            isCoolTimeSkill = 3;
             SkillStateChagned(3f);
         }
-    }
-
-    private void SkillStateChagned(float state)
-    {
-        animator.SetFloat("SkillState", state);
-        SkillReady(state);
     }
 
     // 기본 공격 시 특정 프레임에서 실행되는 기본 공격 이벤트
@@ -110,7 +173,7 @@ public class PlayerRangeAttackController : MonoBehaviour
 
         if (normalObjRb != null)
         {
-            normalObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
+            normalObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             normalObjRb.velocity = rangeTransform.forward * rangeNormalPrefabSpeed;
         }
     }
@@ -119,20 +182,15 @@ public class PlayerRangeAttackController : MonoBehaviour
     public void OneRangeAttackEvent()
     {
         // aimObject.GetGroundIndicatorCenter()로부터 일정 거리 아래에서 오브젝트 생성
-        Vector3 oneSkillObjPosition = new Vector3(
-            aimObject.GetGroundIndicatorCenter().x,
-            aimObject.GetGroundIndicatorCenter().y - 0.9f, 
-            aimObject.GetGroundIndicatorCenter().z);
+        Vector3 oneSkillObjPosition = rangeHitPosition;
 
         // 오브젝트 생성
         GameObject oneSkillObj = Instantiate(rangeOneSkillPrefab, oneSkillObjPosition, Quaternion.identity);
 
-        if(oneSkillObj != null)
+        if (oneSkillObj != null)
         {
-            oneSkillObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
+            oneSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
         }
-
-        playerController.SkillEnd();
     }
 
     // 두 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
@@ -147,11 +205,9 @@ public class PlayerRangeAttackController : MonoBehaviour
         // 생성된 프리팹의 RigidBody를 정면으로 날아가도록
         if (twoSkillObjRb != null)
         {
-            twoSkillObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
+            twoSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             twoSkillObjRb.velocity = transform.forward * rangeTwoSkillPrefabSpeed;
         }
-
-        playerController.SkillEnd();
     }
 
     // 세 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
@@ -172,22 +228,17 @@ public class PlayerRangeAttackController : MonoBehaviour
             offsetRotation = -15f;
         }
 
-        foreach(var obj in prefabs)
+        foreach (var obj in prefabs)
         {
-            obj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
+            obj.GetComponent<ISkill>().GetDamageManager(damageManager);
             obj.GetComponent<RangePlayerThreeAttack>().GetPlayer(rangeThreeSkillTransform);
         }
-
-        playerController.SkillEnd();
     }
 
     // 네 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
     public void FourRangeSkillAttackEvent()
     {
-        Vector3 fourSkillObjPosition = new Vector3(
-            aimObject.GetGroundIndicatorCenter().x,
-            aimObject.GetGroundIndicatorCenter().y + rangeFourSkillSpawnHeight,
-            aimObject.GetGroundIndicatorCenter().z);
+        Vector3 fourSkillObjPosition = rangeHitPosition;
 
         GameObject fourSkillObj = Instantiate(rangeFourSkillPrefab, fourSkillObjPosition, Quaternion.identity);
 
@@ -195,11 +246,9 @@ public class PlayerRangeAttackController : MonoBehaviour
 
         if (fourSkillObjRb != null)
         {
-            fourSkillObj.GetComponent<IRangeSkill>().GetDamageManager(damageManager);
+            fourSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             fourSkillObjRb.velocity = Vector3.down * rangeFourSkillPrefabSpeed;
         }
-
-        playerController.SkillEnd();
     }
 
     // 1번 키를 누를 경우 춤 추도록 하는 메서드

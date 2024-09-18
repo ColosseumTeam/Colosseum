@@ -101,7 +101,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -149,3 +149,6 @@ MonoBehaviour:
   damage: 10
   skillType: 1
   downAttack: 1
+  attackTime: 0
+  attackTimeEnd: 1
+  afterAttackObject: {fileID: 5292468484537704289, guid: 113d48e60a3d5624bae0bf7ad162bc04, type: 3}

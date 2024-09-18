@@ -1,4 +1,5 @@
 using System;
+using Fusion;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,25 +9,20 @@ using UnityEngine.InputSystem;
 // 메서드
 // 1. SkillReady
 // 2. OnAttack의 RangePlayer용 코드
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     // 캐릭터의 현재 상태를 관리하는 변수
     [SerializeField] private BehaviourBase.State state = BehaviourBase.State.None;
 
     // 캐릭터 이동 속도, 회전 속도, 공격 관련 타이머 설정
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float runSpeed = 10f; // 달리기 시 속도
     [SerializeField] private float rotationSpeed = 60f;
     [SerializeField] private float attackTimer = 0f;
     [SerializeField] private float attackElapsedTime = 0.5f;
-    //[SerializeField] private float attackAfterDelay = 0.2f;
     [SerializeField] private float jumpForce = 7f; // 점프 힘
     [SerializeField] private float maxJumpHeight = 2f; // 최대 점프 높이
     [SerializeField] private float startYPosition; // 점프 시작 시 Y축 위치를 저장
     [SerializeField] private float boostSpeed = 15f; // Boost 시 속도
-    [SerializeField] private float downTimer = 0f;
-    [SerializeField] private float downEndTimer = 3f;
-    [SerializeField] private float airBorneForce = 5f;
 
     // 캐릭터 물리적 제어를 위한 Rigidbody 참조
     [SerializeField] private Rigidbody rb;
@@ -38,8 +34,6 @@ public class PlayerController : MonoBehaviour
     private float attackState;
     private Vector2 moveVec;
     private bool isAttacking;
-    private bool isRunning; // 달리기 상태를 나타내는 변수
-    private bool runInput; // Shift 입력 상태를 추적하는 변수
     private bool isBoosting; // Boost 상태를 나타내는 변수
     private bool isJumping; // jump 상태를 나타내는 변수
     private bool isGrounding = true;
@@ -51,6 +45,13 @@ public class PlayerController : MonoBehaviour
         // Rigidbody와 Animator 컴포넌트를 가져옴
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+
+        GameObject cameraObject = GetComponentInChildren<Camera>().gameObject;
+        if(cameraObject != null)
+        {
+            GameObject aimObject = FindAnyObjectByType<AimController>().gameObject;
+            cameraObject.GetComponent<CrossHairLookAt>().CameraReceive(aimObject);            
+        }
     }
 
     private void Update()
@@ -80,17 +81,11 @@ public class PlayerController : MonoBehaviour
             // 공격 상태일 때는 별도의 처리가 있을 수 있음 (현재 빈 코드 블록)
         }
 
-        // 달리기 상태를 갱신
-        UpdateRunningState();
-
         // 점프 상태 체크
         UpdateJumpState();
 
         // 캐릭터 이동 처리 (현재 이동 벡터를 기반으로)
         Move(moveVec);
-
-        // 다운이 되어있고, 지면에 닿아있을 경우에만 다운 시간이 흐르도록 함
-        DownTimeCheck();
     }
 
     public void SetState(BehaviourBase.State newState)
@@ -99,25 +94,11 @@ public class PlayerController : MonoBehaviour
         state = newState;
     }
 
-    private void UpdateRunningState()
-    {
-        // Shift 키가 눌려있고, 이동 입력이 있으며, 달리기가 가능한 상태인지 확인
-        if (runInput && CanRun(moveVec))
-        {
-            isRunning = true;
-            animator.SetBool("Run", true);
-        }
-        else
-        {
-            isRunning = false;
-            animator.SetBool("Run", false);
-        }
-    }
-
     private void OnMove(InputValue value)
     {
         // 대미지를 받은 상태라면 정지
-        if (state == BehaviourBase.State.Damaged || isDowning == true) { return; }
+        if (state == BehaviourBase.State.Damaged || isDowning) { return; }
+        if (isSkilling) { animator.SetBool("Move", false); }
 
         // 입력 시스템을 통해 이동 입력을 받아서 이동 벡터를 설정
         moveVec = value.Get<Vector2>();
@@ -125,7 +106,6 @@ public class PlayerController : MonoBehaviour
         // 이동 입력이 없으면 달리기 상태를 해제
         if (moveVec == Vector2.zero)
         {
-            isRunning = false;
             animator.SetBool("Run", false);
         }
     }
@@ -133,7 +113,7 @@ public class PlayerController : MonoBehaviour
     private void Move(Vector2 input)
     {
         // 공격 상태일 때는 이동하지 않음
-        if (state == BehaviourBase.State.Attack)
+        if (state == BehaviourBase.State.Attack || isSkilling)
         {
             return;
         }
@@ -146,18 +126,13 @@ public class PlayerController : MonoBehaviour
             {
                 input = new Vector2(0, 1); // 이동 벡터를 앞으로 고정
             }
-            // 뒤가 아닌 다른 방향으로 입력이 있을 경우 해당 방향으로 이동
-            else
-            {
-                // 그대로 input 값을 사용
-            }
         }
 
         // 입력값이 존재할 때만 이동 처리
         if (input != null)
         {
             // Boost 상태일 때는 Boost 속도로 이동
-            float speed = isBoosting ? boostSpeed : (isRunning ? runSpeed : moveSpeed);
+            float speed = isBoosting ? boostSpeed : moveSpeed;
 
             Vector3 moveDir = new Vector3(input.x, 0, input.y);
             Vector3 newPosition = rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime;
@@ -210,7 +185,7 @@ public class PlayerController : MonoBehaviour
     private void OnAttack(InputValue value)
     {
         // 대미지를 받은 상태라면 정지
-        if (state == BehaviourBase.State.Damaged || isDowning == true) { return; }
+        if (state == BehaviourBase.State.Damaged || isDowning) { return; }
 
         // 공격 입력이 감지되고 캐릭터가 공격 중이 아닐 때
         if (value.isPressed && !isAttacking && isGrounding && !isSkilling)
@@ -243,40 +218,12 @@ public class PlayerController : MonoBehaviour
                 attackState = 0;
             }
         }
-
-        // 스킬 준비 상태일 땐 스킬 공격 모션 실행
-        else if (value.isPressed && !isAttacking && isGrounding && isSkilling)
-        {
-            animator.SetTrigger("Skill");
-            // 스킬 준비 취소 (에임 범위 조준 취소)
-            GetComponent<PlayerRangeAttackController>().SkillReadyNonActive();
-            isAttacking = true;
-        }
     }
 
     private void OnAttackCollider()
     {
         // 공격이 끝났을 때 호출되어 공격 플래그를 해제
         isAttacking = false;
-    }
-
-    private void OnRun(InputValue value)
-    {
-        // Shift 입력 상태를 추적
-        runInput = value.isPressed;
-        UpdateRunningState(); // 즉시 달리기 상태를 업데이트
-    }
-
-    private bool CanRun(Vector2 input)
-    {
-        // 후방 이동이 아닌지 확인
-        if (input.y < 0)
-        {
-            return false; // 뒤로 가는 방향일 때는 달리지 않음
-        }
-
-        // 달리기 가능한 방향: w, wa, wd, a, d
-        return input.y > 0 || input.x != 0;
     }
 
     // 바닥 부스트 정지 메서드
@@ -365,71 +312,18 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
-
-    // damageType : 0 => 경직 피격 타입
-    // damageType : 2 => 다운 판정 타입.
-    // TakeHitState : 0, 1 => 경직 피격
-    // TakeHitState : 2 => 다운 판정
-    // downAttack : false => 다운 판정 시 피격X
-    // downAttack : true => 다운 판정 시 피격O 
-    public void TakeDamage(float damage, float damageType, bool downAttack)
-    {
-        if (!isDowning || (isDowning && downAttack))
-        {
-            if (damageType == 0)
-            {
-                int rnd = UnityEngine.Random.Range(0, 2);
-                animator.SetFloat("TakeHitState", rnd);
-            }
-            else if (damageType == 2)
-            {
-                if (!isDowning)
-                {
-                    animator.SetFloat("TakeHitState", 2);
-                }
-                else if (isDowning)
-                {
-                    animator.SetFloat("TakeHitState", 3);
-                }
-
-                isDowning = true;
-
-                // 캐릭터를 일정량 위로 밀어주는 힘을 추가
-                Vector3 upForce = new Vector3(0, airBorneForce, 0); // y축으로 5의 힘을 가함 (값은 필요에 맞게 조절 가능)
-                rb.AddForce(upForce, ForceMode.Impulse);
-
-                isGrounding = false;
-            }
-
-            animator.SetBool("TakeHit", true);
-        }
-    }
-
-    // 애니메이션 피격 애니메이션 프레임에 설정되어 있는 메서드
-    public void TakeHitNonAcitve()
-    {
-        isSkilling = false;
-        isAttacking = false;
-        isDowning = false;
-    }
-
-    private void DownTimeCheck()
-    {
-        if (isDowning && isGrounding)
-        {
-            downTimer += Time.deltaTime;
-            if (downTimer >= downEndTimer)
-            {
-                animator.SetBool("TakeHit", false);
-            }
-        }
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Ground" && isGrounding == false)
         {
             animator.SetFloat("JumpHeight", 1f);
         }
+    }
+
+    // 애니메이션 피격 애니메이션 프레임에 설정되어 있는 메서드
+    public void PlayerTakeHitStopAction()
+    {
+        isSkilling = false;
+        isAttacking = false;
     }
 }

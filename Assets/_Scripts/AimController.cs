@@ -10,10 +10,6 @@ public class AimController : MonoBehaviour
     [SerializeField] private float minYPosition = -450f;
     [SerializeField] private float maxYPosition = 450f;
     [SerializeField] private float oneGroundRangeSize = 2f; // 지면에 표시할 사각형의 크기
-    [SerializeField] private float twoGroundRangeSize = 2f;
-    [SerializeField] private float twoGroundLengthSize = 2f;
-    [SerializeField] private float threeGroundCircleSize = 5f;
-    [SerializeField] private float fourGroundCircleSize = 2f;
     [SerializeField] private LayerMask groundLayer; // 지면 레이어
     [SerializeField] private Transform targetObject; // 특정 오브젝트
 
@@ -69,17 +65,10 @@ public class AimController : MonoBehaviour
             {
                 DrawGroundIndicator();
             }
-            else if (isSkillState == 1)
-            {
-                DrawFixedRectangleInFrontOfTarget();
-            }
-            else if (isSkillState == 2)
-            {
-                DrawCircleAroundTarget();
-            }
+
             else if (isSkillState == 3)
             {
-                DrawCircleGroundIndicator();
+                hitPoint = crossHairEvent.GroundHitPositionTransmission();
             }
 
             HitPointPositionSave();
@@ -94,11 +83,11 @@ public class AimController : MonoBehaviour
         // 스킬 타입 파악
         isSkillState = newSkillState;
 
-        // LineRenderer를 활성화하여 사각형이 보이도록 함
-        lineRenderer.enabled = true;
+        // LineRenderer를 활성화하여 범위를 보이도록 함
+        // lineRenderer.enabled = true;
     }
 
-    public void SkillReadyNonActive()
+    public void AimSkillReadyNonActive()
     {
         // 스킬 사용 후 스킬 준비 해제
         isSkillReady = false;
@@ -131,91 +120,10 @@ public class AimController : MonoBehaviour
         lineRenderer.SetPosition(4, topLeft); // 마지막 점은 시작점과 동일해야 사각형이 완성됨
     }
 
-    private void DrawFixedRectangleInFrontOfTarget()
-    {
-        // 이전에 그려진 모양을 지우기 위해 점 개수를 0으로 설정
-        lineRenderer.positionCount = 0;
-
-        if (targetObject != null)
-        {
-            float forwardOffset = 4f;
-            Vector3 center = targetObject.position + targetObject.forward * (twoGroundRangeSize + forwardOffset);
-
-            float rectangleWidth = twoGroundRangeSize;
-            float rectangleLength = twoGroundRangeSize * twoGroundLengthSize;
-
-            Vector3 topLeft = center + targetObject.rotation * new Vector3(-rectangleWidth / 2, 0, -rectangleLength / 2);
-            Vector3 topRight = center + targetObject.rotation * new Vector3(rectangleWidth / 2, 0, -rectangleLength / 2);
-            Vector3 bottomLeft = center + targetObject.rotation * new Vector3(-rectangleWidth / 2, 0, rectangleLength / 2);
-            Vector3 bottomRight = center + targetObject.rotation * new Vector3(rectangleWidth / 2, 0, rectangleLength / 2);
-
-            // 새로 그리기 위해 점 개수 설정
-            lineRenderer.positionCount = 5;
-
-            lineRenderer.SetPosition(0, topLeft);
-            lineRenderer.SetPosition(1, topRight);
-            lineRenderer.SetPosition(2, bottomRight);
-            lineRenderer.SetPosition(3, bottomLeft);
-            lineRenderer.SetPosition(4, topLeft);
-        }
-    }
-
-    private void DrawCircleAroundTarget()
-    {
-        // 이전에 그려진 모양을 지우기 위해 점 개수를 0으로 설정
-        lineRenderer.positionCount = 0;
-
-        if (targetObject != null)
-        {
-            int segmentCount = 100;
-
-            lineRenderer.positionCount = segmentCount + 1;
-
-            Vector3 center = targetObject.position;
-
-            for (int i = 0; i <= segmentCount; i++)
-            {
-                float angle = i * 2 * Mathf.PI / segmentCount;
-                float x = Mathf.Cos(angle) * threeGroundCircleSize;
-                float z = Mathf.Sin(angle) * threeGroundCircleSize;
-                Vector3 pointPosition = new Vector3(x, 0, z) + center;
-
-                lineRenderer.SetPosition(i, pointPosition);
-            }
-        }
-    }
-
-    private void DrawCircleGroundIndicator()
-    {
-        // 이전에 그려진 모양을 지우기 위해 점 개수를 0으로 설정
-        lineRenderer.positionCount = 0;
-
-        Ray ray = mainCamera.ScreenPointToRay(rect.position);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
-        {
-            Vector3 hitPoint = hit.point;
-
-            int segmentCount = 100;
-            float radius = fourGroundCircleSize;
-
-            lineRenderer.positionCount = segmentCount + 1;
-
-            for (int i = 0; i <= segmentCount; i++)
-            {
-                float angle = i * 2 * Mathf.PI / segmentCount;
-                float x = Mathf.Cos(angle) * radius;
-                float z = Mathf.Sin(angle) * radius;
-                Vector3 pointPosition = new Vector3(x, 0, z) + hitPoint;
-
-                lineRenderer.SetPosition(i, pointPosition);
-            }
-        }
-    }
-
     private void HitPointPositionSave()
     {
         Ray ray = mainCamera.ScreenPointToRay(rect.position);
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer) && isSkillState != 0)
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer) && (isSkillState != 0 || isSkillState != 3))
         {
             hitPoint = hit.point;
         }
@@ -223,6 +131,11 @@ public class AimController : MonoBehaviour
 
     public Vector3 GetGroundIndicatorCenter()
     {
+        if(isSkillState == 0 || isSkillState == 3)
+        {
+            return crossHairEvent.GroundHitPositionTransmission();
+        }
+
         return hitPoint;
     }
 }
