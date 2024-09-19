@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RoomManager : NetworkBehaviour
@@ -13,8 +10,8 @@ public class RoomManager : NetworkBehaviour
     [SerializeField] private Image myReadyCheckBox;
     [SerializeField] private Image enemyReadyCheckBox;
 
-    [Networked] public bool isReady { get; private set; }
-    [Networked] public bool isEnemyReady { get; private set; }
+    public bool isReady { get; private set; }
+    public bool isEnemyReady { get; private set; }
 
 
     public void ReadyButton()
@@ -33,13 +30,27 @@ public class RoomManager : NetworkBehaviour
         }
     }
 
+    public void RPCWhenPlayerJoined()
+    {
+        if (isReady)
+        {
+            RPC_GetReady();
+        }
+    }
+
+    public void RPCWhenPlayerLeft()
+    {
+        enemyReadyCheckBox.enabled = false;
+        isEnemyReady = false;
+    }
+
     [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
     private void RPC_GetReady()
     {
         enemyReadyCheckBox.enabled = true;
         isEnemyReady = true;
 
-        GameStart();
+        RPC_GameStart();
     }
 
     [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
@@ -49,7 +60,8 @@ public class RoomManager : NetworkBehaviour
         isEnemyReady = false;
     }
 
-    private void GameStart()
+    [Rpc]
+    private void RPC_GameStart()
     {
         if (isReady && isEnemyReady && Runner.IsSceneAuthority)
         {

@@ -14,6 +14,7 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
 
     private Dictionary<PlayerRef, PlayerStatus> _playerStatusDictionary = new Dictionary<PlayerRef, PlayerStatus>();
     public event Action<SceneRef> onAllPlayersLoadedScene;
+    private RoomManager roomManager;
 
 
     private void Awake()
@@ -24,6 +25,7 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         //    return;
         //}
         DontDestroyOnLoad(this);
+        roomManager = FindAnyObjectByType<RoomManager>();
     }
 
     public void SceneLoadDone(in SceneLoadDoneArgs sceneInfo)
@@ -49,6 +51,10 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
                     _playerStatusDictionary[activePlayer] = playerStatus;
             }
         }
+        else
+        {
+            roomManager.RPCWhenPlayerJoined();
+        }
 
         if (_playerStatusDictionary.TryAdd(player, playerStatus) == false)
             _playerStatusDictionary[player] = playerStatus;
@@ -58,7 +64,13 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
     {
         Debug.Log("PlayerLeft");
         _playerStatusDictionary.Remove(player);
+
         Rpc_SendPlayerLeft(Runner, player);
+
+        if (player != Runner.LocalPlayer)
+        {
+            roomManager.RPCWhenPlayerLeft();
+        }
     }
 
     [Rpc]

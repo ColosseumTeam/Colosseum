@@ -88,9 +88,4 @@ public class NetworkManager : MonoBehaviour
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
-    public void CheckRunner()
-    {
-        Debug.Log(runner != null);
-    }
 }
