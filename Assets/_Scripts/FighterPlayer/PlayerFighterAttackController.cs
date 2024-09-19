@@ -1,9 +1,5 @@
-using System.Security.Cryptography.X509Certificates;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.HID;
-using static PlayerFighterAttackController;
 
 public class PlayerFighterAttackController : MonoBehaviour
 {

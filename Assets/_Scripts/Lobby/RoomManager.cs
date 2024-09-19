@@ -39,8 +39,6 @@ public class RoomManager : NetworkBehaviour
         enemyReadyCheckBox.enabled = true;
         isEnemyReady = true;
 
-        Debug.Log("GetReadyRPC");
-
         GameStart();
     }
 
@@ -49,15 +47,13 @@ public class RoomManager : NetworkBehaviour
     {
         enemyReadyCheckBox.enabled = false;
         isEnemyReady = false;
-
-        Debug.Log("GetNotReadyRPC");
     }
 
     private void GameStart()
     {
         if (isReady && isEnemyReady && Runner.IsSceneAuthority)
         {
-            Runner.LoadScene(gameSceneName);
+            Runner.LoadScene(SceneRef.FromIndex(2));
         }
     }
 }

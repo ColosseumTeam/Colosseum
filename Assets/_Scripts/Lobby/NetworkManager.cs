@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static PlayerJoinedStatusManager;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -86,5 +87,10 @@ public class NetworkManager : MonoBehaviour
         Debug.LogWarning(shutdownStatus);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void CheckRunner()
+    {
+        Debug.Log(runner != null);
     }
 }
