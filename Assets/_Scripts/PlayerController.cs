@@ -1,6 +1,8 @@
+using Fusion;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 // 변수
@@ -8,12 +10,15 @@ using UnityEngine.InputSystem;
 // 메서드
 // 1. SkillReady
 // 2. OnAttack의 RangePlayer용 코드
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     // 캐릭터의 현재 상태를 관리하는 변수
     [SerializeField] private BehaviourBase.State state = BehaviourBase.State.None;
 
     // 캐릭터 이동 속도, 회전 속도, 공격 관련 타이머 설정
+    [SerializeField] private float hp = 100f;
+    [SerializeField] private float maxHp = 100f;
+    [SerializeField] private Image hpImage;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 60f;
     [SerializeField] private float attackTimer = 0f;
@@ -317,6 +322,12 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetFloat("JumpHeight", 1f);
         }
+    }
+
+    public void TakeDamage(float damage, bool skillType, bool downAttack, float stiffnessTime)
+    {
+        hp -= damage;
+        hpImage.fillAmount = hp / maxHp;
     }
 
     // 애니메이션 피격 애니메이션 프레임에 설정되어 있는 메서드

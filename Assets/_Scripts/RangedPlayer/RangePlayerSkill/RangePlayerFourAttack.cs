@@ -26,7 +26,7 @@ public class RangePlayerFourAttack : MonoBehaviour, ISkill
             downAttack = false;
 
             attackTime += Time.deltaTime;
-            if(attackTime >= attackTimeEnd)
+            if(attackTime >= attackTimeEnd && enemyObj != null)
             {
                 Instantiate(afterAttackObject, enemyObj.transform.position, Quaternion.identity);
 

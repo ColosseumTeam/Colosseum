@@ -11,6 +11,15 @@ public class BotController : MonoBehaviour
     [SerializeField] private float downTime = 0f;
     [SerializeField] private float downEndTime = 3f;
     [SerializeField] private float force = 10f;
+    [SerializeField] private float attackReadyTime = 0f;
+    [SerializeField] private float attackReadyEndTime = 5f;
+    [SerializeField] private DamageManager damageManager;
+
+    [SerializeField] private Transform botAttackPosition;
+    [SerializeField] private GameObject botSkillObj;
+    [SerializeField] private float botSkillSpeed = 15f;
+
+    private bool isAttacking = false;
 
     private void Awake()
     {
@@ -20,6 +29,16 @@ public class BotController : MonoBehaviour
 
     private void Update()
     {
+        if (!isAttacking)
+        {
+            attackReadyTime += Time.deltaTime;
+            if(attackReadyTime >= attackReadyEndTime)
+            {
+                animator.SetTrigger("Attack");
+                attackReadyTime = 0f;
+            }
+        }        
+
         if (isDowning && isGrounding)
         {
             downTime += Time.deltaTime;
@@ -80,6 +99,19 @@ public class BotController : MonoBehaviour
 
         isDowning = false;
         downTime = 0f;
+    }
+
+    public void BotNormalAttack()
+    {
+        GameObject normalObj = Instantiate(botSkillObj, botAttackPosition.position, botAttackPosition.rotation);
+
+        Rigidbody normalObjRb = normalObj.GetComponent<Rigidbody>();
+
+        if (normalObjRb != null)
+        {
+            normalObj.GetComponent<ISkill>().GetDamageManager(damageManager);
+            normalObjRb.velocity = botAttackPosition.forward * botSkillSpeed;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
