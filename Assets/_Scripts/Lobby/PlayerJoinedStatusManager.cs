@@ -19,7 +19,7 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
 
     private void Awake()
     {
-        //if (FindAnyObjectByType<PlayerJoinedStatusManager>())
+        //if (FindAnyObjectByType<PlayerJoinedStatusManager>() != this)
         //{
         //    Destroy(gameObject);
         //    return;
@@ -45,6 +45,8 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
 
         if (player == Runner.LocalPlayer)
         {
+            roomManager.MyCharacterModel.SetActive(true);
+            roomManager.RPCEnemyPlayerJoined();
             foreach (var activePlayer in Runner.ActivePlayers)
             {
                 if (_playerStatusDictionary.TryAdd(activePlayer, playerStatus) == false)
@@ -65,9 +67,12 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         Debug.Log("PlayerLeft");
         _playerStatusDictionary.Remove(player);
 
-        Rpc_SendPlayerLeft(Runner, player);
-
-        if (player != Runner.LocalPlayer)
+        if (player == Runner.LocalPlayer)
+        {
+            Rpc_SendPlayerLeft(Runner, player);
+            roomManager.RPCEnemyPlayerLeft();
+        }
+        else
         {
             roomManager.RPCWhenPlayerLeft();
         }

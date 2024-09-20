@@ -5,6 +5,9 @@ public class GameManager : NetworkBehaviour
 {
     // for test. 나중에 캐릭터 선택창에서 정한 캐릭터 정보를 받아와 적용시켜줘야 함.
     [SerializeField] private NetworkObject characterPrefab;
+    [SerializeField] private AimController aimController;
+
+    public AimController AimController { get { return aimController; } }
 
     private PlayerJoinedStatusManager playerJoinedStatusManager;
 
