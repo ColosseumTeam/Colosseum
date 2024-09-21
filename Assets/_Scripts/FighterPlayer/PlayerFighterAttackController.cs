@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -46,8 +47,8 @@ public class PlayerFighterAttackController : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
-        crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
-        gameManager = FindAnyObjectByType<GameManager>();
+        //crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
+        gameManager = FindObjectOfType<GameManager>();
         damageManager = gameManager.GetComponent<DamageManager>();
         aimController = gameManager.AimController;
     }

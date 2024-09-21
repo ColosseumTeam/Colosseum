@@ -4,6 +4,7 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Fusion.Addons.SimpleKCC;
 
 
 // 변수
@@ -31,6 +32,8 @@ public class PlayerController : NetworkBehaviour
 
     // 캐릭터 물리적 제어를 위한 Rigidbody 참조
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private GameObject cameraRig;
+    [SerializeField] private SimpleKCC kcc;
 
     // 캐릭터 애니메이션 제어를 위한 Animator 참조
     private Animator animator;
@@ -51,16 +54,26 @@ public class PlayerController : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
 
-        GameObject cameraObject = GetComponentInChildren<Camera>().gameObject;
-        if(cameraObject != null)
+        //GameObject cameraObject = GetComponentInChildren<Camera>().gameObject;
+        //if(cameraObject != null)
+        //{
+        //    GameObject aimObject = FindAnyObjectByType<AimController>().gameObject;
+        //    cameraObject.GetComponent<CrossHairLookAt>().CameraReceive(aimObject);            
+        //}
+    }
+
+    private void Start()
+    {
+        if (HasStateAuthority)
         {
-            GameObject aimObject = FindAnyObjectByType<AimController>().gameObject;
-            cameraObject.GetComponent<CrossHairLookAt>().CameraReceive(aimObject);            
+            cameraRig.SetActive(true);
         }
     }
 
-    private void Update()
+    public override void FixedUpdateNetwork()
     {
+        base.FixedUpdateNetwork();
+
         // 대미지를 받은 상태라면 활동 중지
         if (state == BehaviourBase.State.Damaged || isDowning == true) { return; }
 
@@ -141,11 +154,14 @@ public class PlayerController : NetworkBehaviour
 
             Vector3 moveDir = new Vector3(input.x, 0, input.y);
             Vector3 newPosition = rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime;
+            //Vector3 newPosition = kcc.Position + transform.TransformDirection(moveDir) * speed * Time.deltaTime;
 
             // 현재 Y 위치 유지
-            newPosition.y = rb.position.y;
+            newPosition.y = transform.position.y;
 
-            rb.MovePosition(newPosition);
+            //rb.MovePosition(newPosition);
+            kcc.Move(newPosition);
+            Debug.Log(newPosition);
 
             // 애니메이션 파라미터를 업데이트하여 캐릭터의 움직임을 반영
             animator.SetFloat("Horizontal", input.x);
