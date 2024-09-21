@@ -1525,7 +1525,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   moveSpeed: 5
-  runSpeed: 10
   rotationSpeed: 60
   attackTimer: 0
   attackElapsedTime: 0.5
@@ -1533,9 +1532,6 @@ MonoBehaviour:
   maxJumpHeight: 0.5
   startYPosition: 0
   boostSpeed: 15
-  downTimer: 0
-  downEndTimer: 3
-  airBorneForce: 5
   rb: {fileID: 0}
 --- !u!114 &6312660040278632750
 MonoBehaviour:
@@ -1555,6 +1551,7 @@ MonoBehaviour:
     m_Bits: 64
   damageManager: {fileID: 0}
   crossHairLookAt: {fileID: 0}
+  gameManager: {fileID: 0}
   rightClickSkillCollider: {fileID: 1398172267353170186}
   qSkillGroup: {fileID: 4312934275212748976}
   qSkillPrefab: {fileID: 8153478097008842475, guid: c4115bb2b4c388143b8162f347b6b504, type: 3}

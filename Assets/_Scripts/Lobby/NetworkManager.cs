@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static PlayerJoinedStatusManager;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class NetworkManager : MonoBehaviour
     [SerializeField] private NetworkRunner runnerPrefab;
     [SerializeField] private TMP_InputField roomText;
     [SerializeField] private int maxPlayerCount;
-    [SerializeField] private string gameSceneName = "Game";
+    [SerializeField] private Button joinButton;
 
     [Header("Canvas")]
     [SerializeField] private Canvas lobbyCanvas;
@@ -22,6 +23,8 @@ public class NetworkManager : MonoBehaviour
 
     public async void JoinRoom()
     {
+        joinButton.interactable = false;
+
         await Disconnect();
 
         runner = Instantiate(runnerPrefab);
@@ -53,11 +56,8 @@ public class NetworkManager : MonoBehaviour
             //StatusText.text = $"Connection Failed: {startTask.Result.ShutdownReason}";
             Debug.Log("Failed Connecting");
         }
-    }
 
-    public void GameStart()
-    {
-        runner.LoadScene(gameSceneName);
+        joinButton.interactable = true;
     }
 
     public async void DisconnectClicked()

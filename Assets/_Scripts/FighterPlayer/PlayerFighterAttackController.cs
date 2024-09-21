@@ -1,9 +1,5 @@
-using System.Security.Cryptography.X509Certificates;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.HID;
-using static PlayerFighterAttackController;
 
 public class PlayerFighterAttackController : MonoBehaviour
 {
@@ -21,6 +17,7 @@ public class PlayerFighterAttackController : MonoBehaviour
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private DamageManager damageManager;
     [SerializeField] private CrossHairLookAt crossHairLookAt;
+    [SerializeField] private GameManager gameManager;
 
     [Header("Skill Collider")]
     [SerializeField] private CapsuleCollider rightClickSkillCollider;
@@ -50,10 +47,51 @@ public class PlayerFighterAttackController : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
+        gameManager = FindAnyObjectByType<GameManager>();
+        damageManager = gameManager.GetComponent<DamageManager>();
+        aimController = gameManager.AimController;
+    }
+
+    // Shift + Click
+    private void OnRangeOneSkill(InputValue value)
+    {
+        // Action type을 Value로 변경.
+        float input = value.Get<float>();
+
+        if (input == 1f)
+        {
+            isPressedShift = true;
+            aimController.SkillReadyAcitve(0f);
+        }
+        if (input == 0f)
+        {
+            Debug.Log("Canceled");
+            isPressedShift = false;
+            aimController.AimSkillReadyNonActive();
+        }
+    }
+
+    private void OnAttack(InputValue value)
+    {
+        if (value.isPressed && isPressedShift)
+        {
+            isPressedShift = false;
+            aimController.AimSkillReadyNonActive();
+
+            skillPos = crossHairLookAt.GroundHitPositionTransmission();
+
+            animator.SetTrigger("Skill");
+            animator.SetInteger("SkillState", 2);
+        }
+    }
+
+    public void OnInstantiateShiftClickSkillPrefab()
+    {
+        Instantiate(shiftClickSkillPrefab, skillPos, transform.rotation);
     }
 
     // Right Click Skill
-    private void OnRangeOneSkill(InputValue value)
+    private void OnRangeTwoSkill(InputValue value)
     {
         if (value.isPressed && !isAttacking)
         {
@@ -68,7 +106,7 @@ public class PlayerFighterAttackController : MonoBehaviour
     }
 
     // Q Skill
-    private void OnRangeTwoSkill(InputValue value)
+    private void OnRangeThreeSkill(InputValue value)
     {
         if (value.isPressed)
         {
@@ -111,62 +149,6 @@ public class PlayerFighterAttackController : MonoBehaviour
         }
 
         isReadyToShootQ = true;
-    }
-
-    // Shift + Click
-    private void OnRangeThreeSkill(InputValue value)
-    {
-        // Action type을 Value로 변경.
-        float input = value.Get<float>();
-
-        if (input == 1f)
-        {
-            isPressedShift = true;
-            aimController.SkillReadyAcitve(0f);
-        }
-        if (input == 0f)
-        {
-            Debug.Log("Canceled");
-            isPressedShift = false;
-            aimController.AimSkillReadyNonActive();
-        }
-    }
-
-    private void OnAttack(InputValue value)
-    {
-        if (value.isPressed && isPressedShift)
-        {
-            isPressedShift = false;
-            aimController.AimSkillReadyNonActive();
-
-            skillPos = crossHairLookAt.GroundHitPositionTransmission();
-            /*
-            Ray ray = Camera.main.ScreenPointToRay(aimController.transform.position);
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayerMask))
-            {
-                skillPos = hit.point;
-            }
-            else
-            {
-                float skillDistance = 3f;
-                Vector3 dir = Camera.main.ScreenToWorldPoint(aimController.transform.position);
-                Debug.Log($"dir: {dir}");
-                float dirZ = Mathf.Sqrt(Mathf.Abs(skillDistance * skillDistance - (dir.x * dir.x) - (dir.y * dir.y)));
-                dir = Camera.main.ScreenToWorldPoint(new Vector3(aimController.transform.position.x, aimController.transform.position.y, dirZ));
-                //dirZ = dirZ >= 0 ? dirZ : -dirZ;
-                //skillPos = transform.forward.z >= 0f ? transform.position + new Vector3(-dir.x, dir.y, dirZ) : transform.position + new Vector3(-dir.x, dir.y, -dirZ);
-                skillPos = transform.position + new Vector3(dir.x, dir.y, -dir.z);
-            }
-            */
-
-            animator.SetTrigger("Skill");
-            animator.SetInteger("SkillState", 2);
-        }
-    }
-
-    public void OnInstantiateShiftClickSkillPrefab()
-    {
-        Instantiate(shiftClickSkillPrefab, skillPos, transform.rotation);
     }
 
     // E Skill
