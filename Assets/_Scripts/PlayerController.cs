@@ -41,6 +41,7 @@ public class PlayerController : NetworkBehaviour
     // 공격 상태 및 이동 방향을 저장하는 변수
     private float attackState;
     private Vector2 moveVec;
+    private Vector2 rotationVec;
     private bool isAttacking;
     private bool isBoosting; // Boost 상태를 나타내는 변수
     private bool isJumping; // jump 상태를 나타내는 변수
@@ -104,6 +105,7 @@ public class PlayerController : NetworkBehaviour
 
         // 캐릭터 이동 처리 (현재 이동 벡터를 기반으로)
         Move(moveVec);
+        Look(rotationVec);
     }
 
     public void SetState(BehaviourBase.State newState)
@@ -147,35 +149,30 @@ public class PlayerController : NetworkBehaviour
         }
 
         // 입력값이 존재할 때만 이동 처리
-        if (input != null)
+        if (input != Vector2.zero)
         {
             // Boost 상태일 때는 Boost 속도로 이동
             float speed = isBoosting ? boostSpeed : moveSpeed;
 
             Vector3 moveDir = new Vector3(input.x, 0, input.y);
-            //Vector3 newPosition = rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime;
-            Vector3 newPosition = kcc.Position + transform.TransformDirection(moveDir) * speed * Runner.DeltaTime;
+            Vector3 newPosition = transform.TransformDirection(moveDir) * speed * Runner.DeltaTime;
 
             // 현재 Y 위치 유지
             newPosition.y = transform.position.y;
 
-            //rb.MovePosition(newPosition);
             kcc.Move(newPosition);
-            Debug.Log(newPosition);
+            Debug.Log(moveDir);
 
             // 애니메이션 파라미터를 업데이트하여 캐릭터의 움직임을 반영
             animator.SetFloat("Horizontal", input.x);
             animator.SetFloat("Vertical", input.y);
 
+            animator.SetBool("Move", true);
+        }
+        else
+        {
             // 이동 벡터가 0이 아니면 이동 중 애니메이션, 그렇지 않으면 정지 애니메이션 설정
-            if (input != Vector2.zero)
-            {
-                animator.SetBool("Move", true);
-            }
-            else
-            {
-                animator.SetBool("Move", false);
-            }
+            animator.SetBool("Move", false);
         }
     }
 
@@ -189,7 +186,12 @@ public class PlayerController : NetworkBehaviour
         Vector2 input = value.Get<Vector2>();
 
         // 입력값에 따라 캐릭터의 회전 각도를 업데이트
-        transform.localRotation *= Quaternion.Euler(0, input.x * rotationSpeed * Time.deltaTime, 0);
+        rotationVec = input;
+    }
+
+    private void Look(Vector2 input)
+    {
+        kcc.AddLookRotation(0, input.x * rotationSpeed * Runner.DeltaTime);
     }
 
     public void SkillReady()
