@@ -46,7 +46,7 @@ public class PlayerFighterAttackController : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
-        crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
+        //crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
         gameManager = FindAnyObjectByType<GameManager>();
         damageManager = gameManager.GetComponent<DamageManager>();
         aimController = gameManager.AimController;

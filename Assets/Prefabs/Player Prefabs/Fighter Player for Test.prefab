@@ -3137,7 +3137,7 @@ GameObject:
   - component: {fileID: 7039735646730250647}
   - component: {fileID: 5513945395785779221}
   - component: {fileID: 7108571392344828822}
-  - component: {fileID: 6491228234657788952}
+  - component: {fileID: 1275802338372360415}
   m_Layer: 0
   m_Name: Fighter Player for Test
   m_TagString: Untagged
@@ -3398,7 +3398,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   damageManager: {fileID: 0}
-  crossHairLookAt: {fileID: 0}
+  crossHairLookAt: {fileID: 1264273697295819384}
   gameManager: {fileID: 0}
   rightClickSkillCollider: {fileID: 5229549627569907406}
   qSkillGroup: {fileID: 7234061850492326333}
@@ -3423,7 +3423,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 7108571392344828822}
-  - {fileID: 6491228234657788952}
+  - {fileID: 1275802338372360415}
 --- !u!114 &7108571392344828822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3460,7 +3460,7 @@ MonoBehaviour:
     StepRequireGroundTarget: 0
     SnapDistance: 0.25
     SnapSpeed: 4
---- !u!114 &6491228234657788952
+--- !u!114 &1275802338372360415
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3469,10 +3469,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5807765186431249564}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49c37fba7ca34014e9457bad9c228d82, type: 3}
+  m_Script: {fileID: 11500000, guid: 314853bcc8c06b74baf9737f1c2c3f5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  hp: 100
+  maxHp: 100
+  hpImage: {fileID: 0}
   moveSpeed: 5
   rotationSpeed: 60
   attackTimer: 0
@@ -3482,7 +3485,6 @@ MonoBehaviour:
   startYPosition: 0
   boostSpeed: 15
   rb: {fileID: 0}
-  kcc: {fileID: 7108571392344828822}
 --- !u!1 &5827901597588553388
 GameObject:
   m_ObjectHideFlags: 0

@@ -51,12 +51,12 @@ public class PlayerController : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
 
-        GameObject cameraObject = GetComponentInChildren<Camera>().gameObject;
-        if(cameraObject != null)
-        {
-            GameObject aimObject = FindAnyObjectByType<AimController>().gameObject;
-            cameraObject.GetComponent<CrossHairLookAt>().CameraReceive(aimObject);            
-        }
+        //GameObject cameraObject = GetComponentInChildren<Camera>().gameObject;
+        //if(cameraObject != null)
+        //{
+        //    GameObject aimObject = FindAnyObjectByType<AimController>().gameObject;
+        //    cameraObject.GetComponent<CrossHairLookAt>().CameraReceive(aimObject);            
+        //}
     }
 
     private void Update()
