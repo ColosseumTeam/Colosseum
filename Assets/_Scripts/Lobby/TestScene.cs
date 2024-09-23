@@ -5,17 +5,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class NetworkManager : MonoBehaviour
+public class TestScene : MonoBehaviour
 {
     [Header("Network Setting")]
     [SerializeField] private NetworkRunner runnerPrefab;
     [SerializeField] private TMP_InputField roomText;
     [SerializeField] private int maxPlayerCount;
     [SerializeField] private Button joinButton;
-
-    [Header("Canvas")]
-    [SerializeField] private Canvas lobbyCanvas;
-    [SerializeField] private Canvas roomCanvas;
 
     private NetworkRunner runner;
 
@@ -42,21 +38,22 @@ public class NetworkManager : MonoBehaviour
             Scene = sceneInfo,
         };
 
+        Debug.Log("Starting client...");
         var startTask = runner.StartGame(args);
         await startTask;
+        Debug.Log("Connected to server");
 
         if (startTask.Result.Ok)
         {
-            lobbyCanvas.enabled = false;
-            roomCanvas.enabled = true;
+            Debug.Log("Loading Game scene");
+            await runner.LoadScene(SceneRef.FromIndex(2));
+            Debug.Log("Loaded Game scene");
         }
         else
         {
             //StatusText.text = $"Connection Failed: {startTask.Result.ShutdownReason}";
             Debug.Log("Failed Connecting");
         }
-
-        joinButton.interactable = true;
     }
 
     public async void DisconnectClicked()

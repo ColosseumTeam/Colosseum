@@ -3137,7 +3137,7 @@ GameObject:
   - component: {fileID: 7039735646730250647}
   - component: {fileID: 5513945395785779221}
   - component: {fileID: 7108571392344828822}
-  - component: {fileID: 1275802338372360415}
+  - component: {fileID: 8675407130086857828}
   m_Layer: 0
   m_Name: Fighter Player for Test
   m_TagString: Untagged
@@ -3423,7 +3423,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 7108571392344828822}
-  - {fileID: 1275802338372360415}
+  - {fileID: 8675407130086857828}
 --- !u!114 &7108571392344828822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3442,10 +3442,10 @@ MonoBehaviour:
     Radius: 0.35
     Height: 1.8
     Extent: 0.035
-    ColliderLayer: 0
+    ColliderLayer: 9
     CollisionLayerMask:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 832
     ProxyInterpolationMode: 0
     MaxPenetrationSteps: 8
     CCDRadiusMultiplier: 0.75
@@ -3460,7 +3460,7 @@ MonoBehaviour:
     StepRequireGroundTarget: 0
     SnapDistance: 0.25
     SnapSpeed: 4
---- !u!114 &1275802338372360415
+--- !u!114 &8675407130086857828
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3485,6 +3485,8 @@ MonoBehaviour:
   startYPosition: 0
   boostSpeed: 15
   rb: {fileID: 0}
+  cameraRig: {fileID: 2471055506994107653}
+  kcc: {fileID: 7108571392344828822}
 --- !u!1 &5827901597588553388
 GameObject:
   m_ObjectHideFlags: 0

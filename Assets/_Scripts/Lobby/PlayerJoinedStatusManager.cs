@@ -45,8 +45,8 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
 
         if (player == Runner.LocalPlayer)
         {
-            roomManager.MyCharacterModel.SetActive(true);
-            roomManager.RPCEnemyPlayerJoined();
+            roomManager?.MyCharacterModel?.SetActive(true);
+            roomManager?.RPCEnemyPlayerJoined();
             foreach (var activePlayer in Runner.ActivePlayers)
             {
                 if (_playerStatusDictionary.TryAdd(activePlayer, playerStatus) == false)
@@ -55,7 +55,7 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         }
         else
         {
-            roomManager.RPCWhenPlayerJoined();
+            roomManager?.RPCWhenPlayerJoined();
         }
 
         if (_playerStatusDictionary.TryAdd(player, playerStatus) == false)
@@ -70,11 +70,11 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         if (player == Runner.LocalPlayer)
         {
             Rpc_SendPlayerLeft(Runner, player);
-            roomManager.RPCEnemyPlayerLeft();
+            roomManager?.RPCEnemyPlayerLeft();
         }
         else
         {
-            roomManager.RPCWhenPlayerLeft();
+            roomManager?.RPCWhenPlayerLeft();
         }
     }
 

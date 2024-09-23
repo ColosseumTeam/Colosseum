@@ -28,6 +28,7 @@ public class Test_PlayerController : NetworkBehaviour
     // 캐릭터 물리적 제어를 위한 Rigidbody 참조
     [SerializeField] private Rigidbody rb;
     [SerializeField] private SimpleKCC kcc;
+    [SerializeField] private GameObject cameraRig;
 
     // 캐릭터 애니메이션 제어를 위한 Animator 참조
     private Animator animator;
@@ -54,6 +55,14 @@ public class Test_PlayerController : NetworkBehaviour
         //    GameObject aimObject = FindAnyObjectByType<AimController>().gameObject;
         //    cameraObject.GetComponent<CrossHairLookAt>().CameraReceive(aimObject);            
         //}
+    }
+
+    private void Start()
+    {
+        if (HasStateAuthority)
+        {
+            cameraRig.SetActive(true);
+        }
     }
 
     public override void FixedUpdateNetwork()

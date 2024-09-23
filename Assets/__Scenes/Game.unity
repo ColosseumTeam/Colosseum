@@ -908,6 +908,12 @@ MonoBehaviour:
   downTime: 0
   downEndTime: 3
   force: 10
+  attackReadyTime: 0
+  attackReadyEndTime: 5
+  damageManager: {fileID: 0}
+  botAttackPosition: {fileID: 0}
+  botSkillObj: {fileID: 0}
+  botSkillSpeed: 15
 --- !u!54 &1206010472
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1033,7 +1039,7 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 3417388448
+  SortKey: 2101187376
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
