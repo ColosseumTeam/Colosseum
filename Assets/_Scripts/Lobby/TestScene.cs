@@ -38,20 +38,22 @@ public class TestScene : MonoBehaviour
             Scene = sceneInfo,
         };
 
+        Debug.Log("Starting client...");
         var startTask = runner.StartGame(args);
         await startTask;
+        Debug.Log("Connected to server");
 
         if (startTask.Result.Ok)
         {
-            runner.LoadScene(SceneRef.FromIndex(2));
+            Debug.Log("Loading Game scene");
+            await runner.LoadScene(SceneRef.FromIndex(2));
+            Debug.Log("Loaded Game scene");
         }
         else
         {
             //StatusText.text = $"Connection Failed: {startTask.Result.ShutdownReason}";
             Debug.Log("Failed Connecting");
         }
-
-        joinButton.interactable = true;
     }
 
     public async void DisconnectClicked()

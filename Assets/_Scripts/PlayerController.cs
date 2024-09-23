@@ -131,7 +131,7 @@ public class PlayerController : NetworkBehaviour
     private void Move(Vector2 input)
     {
         // 공격 상태일 때는 이동하지 않음
-        if (state == BehaviourBase.State.Attack || isSkilling)
+        if (state == BehaviourBase.State.Attack || isSkilling || !HasStateAuthority)
         {
             return;
         }
@@ -153,8 +153,8 @@ public class PlayerController : NetworkBehaviour
             float speed = isBoosting ? boostSpeed : moveSpeed;
 
             Vector3 moveDir = new Vector3(input.x, 0, input.y);
-            Vector3 newPosition = rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime;
-            //Vector3 newPosition = kcc.Position + transform.TransformDirection(moveDir) * speed * Time.deltaTime;
+            //Vector3 newPosition = rb.position + transform.TransformDirection(moveDir) * speed * Time.deltaTime;
+            Vector3 newPosition = kcc.Position + transform.TransformDirection(moveDir) * speed * Runner.DeltaTime;
 
             // 현재 Y 위치 유지
             newPosition.y = transform.position.y;
