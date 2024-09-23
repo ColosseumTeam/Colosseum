@@ -3138,6 +3138,7 @@ GameObject:
   - component: {fileID: 5513945395785779221}
   - component: {fileID: 7108571392344828822}
   - component: {fileID: 8675407130086857828}
+  - component: {fileID: -3801540215900170025}
   m_Layer: 0
   m_Name: Fighter Player for Test
   m_TagString: Untagged
@@ -3424,6 +3425,7 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 7108571392344828822}
   - {fileID: 8675407130086857828}
+  - {fileID: -3801540215900170025}
 --- !u!114 &7108571392344828822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3476,7 +3478,7 @@ MonoBehaviour:
   hp: 100
   maxHp: 100
   hpImage: {fileID: 0}
-  moveSpeed: 5
+  moveSpeed: 200
   rotationSpeed: 60
   attackTimer: 0
   attackElapsedTime: 0.5
@@ -3487,6 +3489,24 @@ MonoBehaviour:
   rb: {fileID: 0}
   cameraRig: {fileID: 2471055506994107653}
   kcc: {fileID: 7108571392344828822}
+--- !u!114 &-3801540215900170025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5807765186431249564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 1989936177280666123}
+  TotalWords: 9
+  ApplyTiming: 2
+  SyncSettings: 79
+  StateHashes: 000000002b1a167c7940695546980c4f14c2736620e23b685928a8ce78529982fa1dd5076bd28ad9e99dc65ce7c4dea4fd55e44eb9f0b9eea3c40b27c01206a983f85c76ef8e6eceaef25cef925ab4d4d32686f5ad8445f6dabe883ff3f9410584c38ccc8b7ab85e2746b9e535e7c26b8048b961d0b26d01651d160bdb2cdcdd6e83a7d783e68b2149ce5228
+  TriggerHashes: 000000000d286c4073cbfc9f28a98107c2b7cbb4
 --- !u!1 &5827901597588553388
 GameObject:
   m_ObjectHideFlags: 0
