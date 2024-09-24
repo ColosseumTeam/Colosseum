@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Fusion.Addons.SimpleKCC;
+using UnityEngine.Windows;
 
 
 // 변수
@@ -42,6 +43,7 @@ public class PlayerController : NetworkBehaviour
     private float attackState;
     private Vector2 moveVec;
     private Vector2 rotationVec;
+    private float jumpInput;
     private bool isAttacking;
     private bool isBoosting; // Boost 상태를 나타내는 변수
     private bool isJumping; // jump 상태를 나타내는 변수
@@ -59,7 +61,7 @@ public class PlayerController : NetworkBehaviour
         //if(cameraObject != null)
         //{
         //    GameObject aimObject = FindAnyObjectByType<AimController>().gameObject;
-        //    cameraObject.GetComponent<CrossHairLookAt>().CameraReceive(aimObject);            
+        //    cameraObject.GetComponent<CrossHairLookAt>().CameraReceive(aimObject);
         //}
     }
 
@@ -68,6 +70,11 @@ public class PlayerController : NetworkBehaviour
         if (HasStateAuthority)
         {
             cameraRig.SetActive(true);
+            transform.tag = "Player";
+        }
+        else
+        {
+            transform.tag = "Enemy";
         }
     }
 
@@ -104,14 +111,59 @@ public class PlayerController : NetworkBehaviour
         UpdateJumpState();
 
         // 캐릭터 이동 처리 (현재 이동 벡터를 기반으로)
-        Move(moveVec);
+        //Move(moveVec);
         Look(rotationVec);
+        //Jump(jumpState);
+        InputAction(moveVec, jumpInput);
     }
 
     public void SetState(BehaviourBase.State newState)
     {
         // 외부에서 호출 가능한 함수: 캐릭터 상태 변경
         state = newState;
+    }
+
+    private void InputAction(Vector2 moveVec, float jumpInput)
+    {
+        // Boost 중일 때의 이동 처리
+        if (isBoosting)
+        {
+            // 입력이 없거나 뒤로 가는 입력일 경우 강제로 앞으로 이동
+            if (moveVec == Vector2.zero || moveVec.y < 0)
+            {
+                moveVec = new Vector2(0, 1); // 이동 벡터를 앞으로 고정
+            }
+        }
+
+        float jumpState = jumpInput * jumpForce;
+
+        Vector3 newPosition = Vector3.zero;
+
+        // 입력값이 존재할 때만 이동 처리
+        if (moveVec != Vector2.zero)
+        {
+            // Boost 상태일 때는 Boost 속도로 이동
+            float speed = isBoosting ? boostSpeed : moveSpeed;
+
+            Vector3 moveDir = new Vector3(moveVec.x, 0, moveVec.y);
+            newPosition = transform.TransformDirection(moveDir) * speed * Runner.DeltaTime;
+
+            // 현재 Y 위치 유지
+            newPosition.y = 0;
+
+            // 애니메이션 파라미터를 업데이트하여 캐릭터의 움직임을 반영
+            animator.SetFloat("Horizontal", moveVec.x);
+            animator.SetFloat("Vertical", moveVec.y);
+
+            animator.SetBool("Move", true);
+        }
+        else
+        {
+            // 이동 벡터가 0이 아니면 이동 중 애니메이션, 그렇지 않으면 정지 애니메이션 설정
+            animator.SetBool("Move", false);
+        }
+
+        kcc.Move(newPosition, jumpState);
     }
 
     private void OnMove(InputValue value)
@@ -127,52 +179,6 @@ public class PlayerController : NetworkBehaviour
         if (moveVec == Vector2.zero)
         {
             animator.SetBool("Run", false);
-        }
-    }
-
-    private void Move(Vector2 input)
-    {
-        // 공격 상태일 때는 이동하지 않음
-        if (state == BehaviourBase.State.Attack || isSkilling || !HasStateAuthority)
-        {
-            return;
-        }
-
-        // Boost 중일 때의 이동 처리
-        if (isBoosting)
-        {
-            // 입력이 없거나 뒤로 가는 입력일 경우 강제로 앞으로 이동
-            if (input == Vector2.zero || input.y < 0)
-            {
-                input = new Vector2(0, 1); // 이동 벡터를 앞으로 고정
-            }
-        }
-
-        // 입력값이 존재할 때만 이동 처리
-        if (input != Vector2.zero)
-        {
-            // Boost 상태일 때는 Boost 속도로 이동
-            float speed = isBoosting ? boostSpeed : moveSpeed;
-
-            Vector3 moveDir = new Vector3(input.x, 0, input.y);
-            Vector3 newPosition = transform.TransformDirection(moveDir) * speed * Runner.DeltaTime;
-
-            // 현재 Y 위치 유지
-            newPosition.y = transform.position.y;
-
-            kcc.Move(newPosition);
-            Debug.Log(moveDir);
-
-            // 애니메이션 파라미터를 업데이트하여 캐릭터의 움직임을 반영
-            animator.SetFloat("Horizontal", input.x);
-            animator.SetFloat("Vertical", input.y);
-
-            animator.SetBool("Move", true);
-        }
-        else
-        {
-            // 이동 벡터가 0이 아니면 이동 중 애니메이션, 그렇지 않으면 정지 애니메이션 설정
-            animator.SetBool("Move", false);
         }
     }
 
@@ -280,15 +286,19 @@ public class PlayerController : NetworkBehaviour
     private void OnJump(InputValue value)
     {
         // 대미지를 받은 상태라면 정지
-        if (state == BehaviourBase.State.Damaged || isDowning == true) { return; }
+        if (state == BehaviourBase.State.Damaged || isDowning == true || !HasStateAuthority) { return; }
 
         if (value.isPressed && !isJumping && isGrounding && !isAttacking)
         {
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+            jumpInput = value.Get<float>();
 
             animator.SetTrigger("Jump");
 
             isGrounding = false;
+        }
+        else
+        {
+            jumpInput = 0;
         }
     }
 

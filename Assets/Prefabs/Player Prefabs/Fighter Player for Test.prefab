@@ -3476,14 +3476,14 @@ MonoBehaviour:
   hp: 100
   maxHp: 100
   hpImage: {fileID: 0}
-  moveSpeed: 5
+  moveSpeed: 250
   rotationSpeed: 60
   attackTimer: 0
   attackElapsedTime: 0.5
-  jumpForce: 0.4
+  jumpForce: 5
   maxJumpHeight: 0.5
   startYPosition: 0
-  boostSpeed: 15
+  boostSpeed: 400
   rb: {fileID: 0}
   cameraRig: {fileID: 2471055506994107653}
   kcc: {fileID: 7108571392344828822}
