@@ -10734,6 +10734,97 @@ Transform:
   - {fileID: 373177729}
   m_Father: {fileID: 308671590}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1070134548
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1070134551}
+  - component: {fileID: 1070134550}
+  - component: {fileID: 1070134549}
+  - component: {fileID: 1070134552}
+  m_Layer: 0
+  m_Name: Lobby Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1070134549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070134548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97bfed8592e66404d9b92ef72ef9b8d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterModelGroup: {fileID: 645035691}
+  iconGroup: {fileID: 1438960363}
+  iconPrefab: {fileID: 595002417659338708, guid: 9e8d6bbc54b9076479e558bd1ae228d4, type: 3}
+  characterDatas:
+  - {fileID: 11400000, guid: b6ed2e6c4120fc642ac9729f67ad5bd1, type: 2}
+  - {fileID: 11400000, guid: e893f1c5302e24d438bdc420880fb3c9, type: 2}
+  characterDescription: {fileID: 1626796852}
+  characterName: {fileID: 1591525462}
+  characterConcept: {fileID: 1363082619}
+  characterStory: {fileID: 1722640319}
+--- !u!114 &1070134550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070134548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 442e52d6731b4ad49838d8263426afae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameSceneName: Game
+  myReadyCheckBox: {fileID: 1981206473}
+  enemyReadyCheckBox: {fileID: 802426926}
+  myCharacterModel: {fileID: 200817417}
+  enemyCharacterModel: {fileID: 1665513168}
+--- !u!4 &1070134551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070134548}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.1194248, y: 3.0699997, z: -2.9690647}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1070134552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070134548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 153935232
+  ObjectInterest: 1
+  Flags: 131073
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1070134550}
 --- !u!1 &1073305870
 GameObject:
   m_ObjectHideFlags: 0
@@ -11070,8 +11161,6 @@ GameObject:
   - component: {fileID: 1129076297}
   - component: {fileID: 1129076296}
   - component: {fileID: 1129076295}
-  - component: {fileID: 1129076300}
-  - component: {fileID: 1129076301}
   m_Layer: 5
   m_Name: Canvas - Room
   m_TagString: Untagged
@@ -11163,41 +11252,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1129076300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1129076294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 442e52d6731b4ad49838d8263426afae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameSceneName: Game
-  myReadyCheckBox: {fileID: 1981206473}
-  enemyReadyCheckBox: {fileID: 802426926}
-  myCharacterModel: {fileID: 200817417}
-  enemyCharacterModel: {fileID: 1665513168}
---- !u!114 &1129076301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1129076294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 1068973900
-  ObjectInterest: 1
-  Flags: 131073
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 1129076300}
 --- !u!1 &1130797587
 GameObject:
   m_ObjectHideFlags: 0
@@ -17462,7 +17516,6 @@ GameObject:
   - component: {fileID: 1637843310}
   - component: {fileID: 1637843309}
   - component: {fileID: 1637843308}
-  - component: {fileID: 1637843312}
   m_Layer: 5
   m_Name: Canvas - Character Select
   m_TagString: Untagged
@@ -17554,21 +17607,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1637843312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1637843307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97bfed8592e66404d9b92ef72ef9b8d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterModelGroup: {fileID: 645035691}
-  iconGroup: {fileID: 1438960363}
-  iconPrefab: {fileID: 595002417659338708, guid: 9e8d6bbc54b9076479e558bd1ae228d4, type: 3}
 --- !u!1 &1638164839
 GameObject:
   m_ObjectHideFlags: 0
@@ -20686,7 +20724,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1129076300}
+      - m_Target: {fileID: 1070134550}
         m_TargetAssemblyTypeName: RoomManager, Assembly-CSharp
         m_MethodName: ReadyButton
         m_Mode: 1
@@ -37686,3 +37724,4 @@ SceneRoots:
   - {fileID: 1901789351}
   - {fileID: 1298254558}
   - {fileID: 645035691}
+  - {fileID: 1070134551}

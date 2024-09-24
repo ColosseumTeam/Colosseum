@@ -15,6 +15,8 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
     private Dictionary<PlayerRef, PlayerStatus> _playerStatusDictionary = new Dictionary<PlayerRef, PlayerStatus>();
     public event Action<SceneRef> onAllPlayersLoadedScene;
     private RoomManager roomManager;
+    // for test
+    [SerializeField] private NetworkObject characterPrefab;
 
 
     private void Awake()
@@ -28,9 +30,13 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         roomManager = FindAnyObjectByType<RoomManager>();
     }
 
+    private void Start()
+    {
+        onAllPlayersLoadedScene += InstantiatePlayer;
+    }
+
     public void SceneLoadDone(in SceneLoadDoneArgs sceneInfo)
     {
-        Debug.Log("SceneLoadDone");
         PlayerStatus playerStatus = new PlayerStatus { scene = sceneInfo.SceneRef };
         if (_playerStatusDictionary.TryAdd(Runner.LocalPlayer, playerStatus) == false)
             _playerStatusDictionary[Runner.LocalPlayer] = playerStatus;
@@ -40,7 +46,6 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
 
     public void PlayerJoined(PlayerRef player)
     {
-        Debug.Log("PlayerJoined");
         PlayerStatus playerStatus = new PlayerStatus { scene = default };
 
         if (player == Runner.LocalPlayer)
@@ -64,7 +69,6 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
 
     public void PlayerLeft(PlayerRef player)
     {
-        Debug.Log("PlayerLeft");
         _playerStatusDictionary.Remove(player);
 
         if (player == Runner.LocalPlayer)
@@ -84,7 +88,6 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         var instance = runner.GetComponent<PlayerJoinedStatusManager>();
         if (instance._playerStatusDictionary.TryAdd(player, playerStatus) == false)
             instance._playerStatusDictionary[player] = playerStatus;
-        Debug.Log("Rpc_SendPlayerStatus");
 
         instance.CheckAllPlayerLoadedScene();
     }
@@ -106,10 +109,19 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
                 return;
         }
 
-        Debug.Log("onAllPlayersLoadedScene");
         if (onAllPlayersLoadedScene != null)
         {
             onAllPlayersLoadedScene(sceneRef);
+        }
+    }
+
+    private void InstantiatePlayer(SceneRef sceneRef)
+    {
+        if (sceneRef.AsIndex == 2)
+        {
+            Debug.Log("Spawn player");
+            NetworkObject player = Runner.Spawn(characterPrefab, Vector3.zero, Quaternion.identity, Runner.LocalPlayer);
+            Runner.SetPlayerObject(Runner.LocalPlayer, player);
         }
     }
 }
