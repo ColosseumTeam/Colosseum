@@ -1,8 +1,9 @@
+using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RangePlayerCoolTImeManager : MonoBehaviour
+public class RangePlayerCoolTImeManager : NetworkBehaviour
 {   
     [SerializeField] private List<bool> skillCheckList = new List<bool>() { true, true, true, true };
     public List<bool> SkillCheckLis {  get { return skillCheckList; } }
@@ -24,8 +25,8 @@ public class RangePlayerCoolTImeManager : MonoBehaviour
     public void SkillChecking(int index)
     {
         skillCheckList[index] = false;
-        skillUI[index].SetActive(true);
-        skillUIStartFill = skillUI[index].GetComponent<Image>().fillAmount;
+        //skillUI[index].SetActive(true);
+        //skillUIStartFill = skillUI[index].GetComponent<Image>().fillAmount;
     }
 
     private void SkillManagement(int index)
@@ -34,7 +35,7 @@ public class RangePlayerCoolTImeManager : MonoBehaviour
         { 
             skillCoolTimer[index] += Time.deltaTime;
 
-            skillUI[index].GetComponent<Image>().fillAmount = 
+            //skillUI[index].GetComponent<Image>().fillAmount = 
                 Mathf.Lerp(skillUIStartFill, 0f, skillCoolTimer[index] / skillCoolTimerEnd[index]);
 
             if (skillCoolTimer[index] >= skillCoolTimerEnd[index])
@@ -42,8 +43,8 @@ public class RangePlayerCoolTImeManager : MonoBehaviour
                 skillCoolTimer[index] = 0;
                 skillCheckList[index] = true;
 
-                skillUI[index].GetComponent<Image>().fillAmount = 1f;
-                skillUI[index].SetActive(false);               
+                //skillUI[index].GetComponent<Image>().fillAmount = 1f;
+                //skillUI[index].SetActive(false);               
             }
         }
     }

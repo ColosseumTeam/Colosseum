@@ -1,29 +1,28 @@
 using Fusion;
 using UnityEngine;
 
-public class FighterESkill : NetworkBehaviour, ISkill
+public class FighterLeftClickSKill : NetworkBehaviour, ISkill
 {
     [SerializeField] private float damage = 10f;        // 대미지
-    [SerializeField] private bool skillType = true;     // 다운 가능 여부
-    [SerializeField] private bool downAttack = true;    // 다운 상태 적 공격 가능 여부
+    [SerializeField] private bool skillType = false;     // 다운 가능 여부
+    [SerializeField] private bool downAttack = false;    // 다운 상태 적 공격 가능 여부
     [SerializeField] private float stiffnessTime = 1f;  // 경직 시간
 
-    private DamageManager damageManager;
+    [SerializeField] private DamageManager damageManager;
 
     private void Awake()
     {
-        // Todo: Destory 사용한 모든 오브젝트 풀링 필요.
-        Destroy(gameObject, 2f);
+        damageManager = GetComponentInParent<PlayerFighterAttackController>().DamageManager;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            // Todo: 데미지 및 컷씬 처리 필요.
+            // Todo: 데미지매니저의 DamageTransmission 사용
             damageManager.DamageTransmission(gameObject, other.gameObject);
 
-            Debug.Log("E Skill Hit");
+            Debug.Log("Right Click Hit");
         }
     }
 
@@ -37,6 +36,6 @@ public class FighterESkill : NetworkBehaviour, ISkill
 
     public void GetDamageManager(DamageManager newDamageManager)
     {
-        damageManager = newDamageManager;
+
     }
 }

@@ -16,12 +16,13 @@ public class PlayerFighterAttackController : MonoBehaviour
     [Header("Primary Setting")]
     [SerializeField] private AimController aimController;
     [SerializeField] private LayerMask groundLayerMask;
-    [SerializeField] private DamageManager damageManager;
+    [SerializeField] private DamageManager damageManager;    
     [SerializeField] private CrossHairLookAt crossHairLookAt;
     [SerializeField] private GameManager gameManager;
 
     [Header("Skill Collider")]
-    [SerializeField] private CapsuleCollider rightClickSkillCollider;
+    [SerializeField] private CapsuleCollider leftClickSkillCollider;
+    [SerializeField] private CapsuleCollider rightClickSkillCollider;    
 
     [Header("Skill Object")]
     [SerializeField] private Transform qSkillGroup;
@@ -32,14 +33,14 @@ public class PlayerFighterAttackController : MonoBehaviour
     private PlayerController playerController;
     private Animator animator;
     private float eState;
-    private bool isAttacking;
+    [SerializeField] private bool isAttacking;
     private bool isPressedShift;
     private Vector3 skillPos;
     private int qCount;
 
     private bool isReadyToShootQ;
 
-    public DamageManager DamageManager { get; private set; }
+    public DamageManager DamageManager { get { return damageManager; } }
     public bool IsQSkillOn { get; set; }
 
 
@@ -84,11 +85,17 @@ public class PlayerFighterAttackController : MonoBehaviour
             animator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 2);
         }
+
+        else if (value.isPressed)
+        {
+            isAttacking = true; 
+        }
     }
 
     public void OnInstantiateShiftClickSkillPrefab()
     {
-        Instantiate(shiftClickSkillPrefab, skillPos, transform.rotation);
+        GameObject shifhtClickObj = Instantiate(shiftClickSkillPrefab, skillPos, transform.rotation);
+        shifhtClickObj.GetComponent<ISkill>().GetDamageManager(damageManager);
     }
 
     // Right Click Skill
@@ -127,6 +134,7 @@ public class PlayerFighterAttackController : MonoBehaviour
 
                 GameObject stone = Instantiate(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
                 stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
+                stone.GetComponent<ISkill>().GetDamageManager(damageManager);
                 qCount--;
 
                 qSkillGroup.GetChild(qCount).gameObject.SetActive(false);
@@ -166,7 +174,8 @@ public class PlayerFighterAttackController : MonoBehaviour
 
     public void OnInstantiateESkillPrefab()
     {
-        Instantiate(eSkillPrefab, skillPos, transform.rotation);
+        GameObject eSkillObj = Instantiate(eSkillPrefab, skillPos, transform.rotation);
+        eSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
     }
 
     private void OnEmotion1(InputValue value)
@@ -187,6 +196,10 @@ public class PlayerFighterAttackController : MonoBehaviour
     {
         switch (skill)
         {
+            case Skill.LeftClick:
+                leftClickSkillCollider.enabled = true;
+                break;
+
             case Skill.RightClick:
                 rightClickSkillCollider.enabled = true;
                 break;
@@ -209,6 +222,11 @@ public class PlayerFighterAttackController : MonoBehaviour
     {
         switch (skill)
         {
+            case Skill.LeftClick:
+                leftClickSkillCollider.enabled = false;
+                isAttacking = false;
+                break;
+
             case Skill.RightClick:
                 rightClickSkillCollider.enabled = false;
                 break;

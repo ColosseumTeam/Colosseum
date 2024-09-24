@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public interface ISkill
-{
+{    
     public void GetSkillState(
         out float getDamage, // 대미지
         out bool getSkillType, // 다운 스킬 여부

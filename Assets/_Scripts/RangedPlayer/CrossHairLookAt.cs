@@ -1,6 +1,7 @@
+using Fusion;
 using UnityEngine;
 
-public class CrossHairLookAt : MonoBehaviour
+public class CrossHairLookAt : NetworkBehaviour
 {
     [SerializeField] private GameObject crosshair;  // 크로스헤어
     [SerializeField] private Transform objectToRotate;  // 공격 지점 오브젝트
@@ -8,9 +9,14 @@ public class CrossHairLookAt : MonoBehaviour
     [SerializeField] private Vector3 endPoint; // 끝 지점
     [SerializeField] private float rayDistance = 1000f;  // Ray가 발사될 거리
 
-    private Vector3 groundHitPosition;
+    [SerializeField] private Vector3 groundHitPosition;
     private Vector3 direction;  // 오브젝트가 바라보는 방향    
     private bool isGrounding = false;
+
+    private void Awake()
+    {
+        crosshair = FindObjectOfType<AimController>().gameObject;
+    }
 
     void Update()
     {
@@ -71,6 +77,7 @@ public class CrossHairLookAt : MonoBehaviour
             // Todo: 플레이어로 수정 필요
             if (hit.collider.CompareTag("Enemy"))
             {
+                Debug.Log("enemy success");
                 groundHitPosition = hit.collider.transform.position;
                 isGrounding = true;
             }

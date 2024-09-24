@@ -2699,6 +2699,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1976654196799597742}
   - {fileID: 7202000458940278953}
   m_Father: {fileID: 7821926551100046321}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2897,6 +2898,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656ad118c1ab2e04887a62773efb7c6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
+  skillType: 0
+  downAttack: 0
+  stiffnessTime: 1
+  damageManager: {fileID: 0}
 --- !u!1 &5557515106402665626
 GameObject:
   m_ObjectHideFlags: 0
@@ -3401,6 +3407,7 @@ MonoBehaviour:
   damageManager: {fileID: 0}
   crossHairLookAt: {fileID: 1264273697295819384}
   gameManager: {fileID: 0}
+  leftClickSkillCollider: {fileID: 6451417775510813676}
   rightClickSkillCollider: {fileID: 5229549627569907406}
   qSkillGroup: {fileID: 7234061850492326333}
   qSkillPrefab: {fileID: 8153478097008842475, guid: c4115bb2b4c388143b8162f347b6b504, type: 3}
@@ -3426,6 +3433,9 @@ MonoBehaviour:
   - {fileID: 7108571392344828822}
   - {fileID: 8675407130086857828}
   - {fileID: -3801540215900170025}
+  - {fileID: 1264273697295819384}
+  - {fileID: 2002480472450175789}
+  - {fileID: 4051782723226203621}
 --- !u!114 &7108571392344828822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4396,6 +4406,79 @@ Transform:
   - {fileID: 1067811272121985655}
   m_Father: {fileID: 5929400775380246792}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7420375447346480111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1976654196799597742}
+  - component: {fileID: 6451417775510813676}
+  - component: {fileID: 2002480472450175789}
+  m_Layer: 0
+  m_Name: Left Click Skill Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1976654196799597742
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7420375447346480111}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4341567775311986419}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &6451417775510813676
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7420375447346480111}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2002480472450175789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7420375447346480111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cacb7e14c042ba34ab61d8c32cd3dd6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  skillType: 0
+  downAttack: 0
+  stiffnessTime: 1
+  damageManager: {fileID: 0}
 --- !u!1 &7563260537780513356
 GameObject:
   m_ObjectHideFlags: 0

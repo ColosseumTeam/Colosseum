@@ -1,7 +1,8 @@
+using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class RangePlayerFourAttack : MonoBehaviour, ISkill
+public class RangePlayerFourAttack : NetworkBehaviour, ISkill
 {
     [SerializeField] private float damage = 10f;
     [SerializeField] private bool skillType = true;

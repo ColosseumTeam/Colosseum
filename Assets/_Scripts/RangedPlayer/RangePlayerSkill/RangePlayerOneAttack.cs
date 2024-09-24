@@ -1,8 +1,9 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangePlayerOneAttack : MonoBehaviour, ISkill
+public class RangePlayerOneAttack : NetworkBehaviour, ISkill
 {
     [SerializeField] private float damage = 10f;
     [SerializeField] private bool skillType = true; 

@@ -1,3 +1,4 @@
+using Fusion;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,12 +6,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 //using static UnityEditor.Timeline.TimelinePlaybackControls;
 
-public class PlayerRangeAttackController : MonoBehaviour
+public class PlayerRangeAttackController : NetworkBehaviour
 {
     [SerializeField] private PlayerRangeAttackBehaviour.State state = PlayerRangeAttackBehaviour.State.None;
 
     [SerializeField] private DamageManager damageManager;
     [SerializeField] private AimController aimObject;
+    [SerializeField] private CrossHairLookAt corssHairLookAt;
     [SerializeField] private Transform rangeTransform;
     [SerializeField] private Transform rangeThreeSkillTransform;
 
@@ -28,13 +30,16 @@ public class PlayerRangeAttackController : MonoBehaviour
     private PlayerController playerController;
     private RangePlayerCoolTImeManager rangePlayerCoolTImeManager;
     private Animator animator;
-    private Vector3 rangeHitPosition;
+    [SerializeField] private Vector3 rangeHitPosition;
     private int isCoolTimeSkill;
     private bool isSkillReady;
     private bool isOneSkillReady;
 
     private void Awake()
     {
+        aimObject = FindAnyObjectByType<AimController>();
+        damageManager = FindAnyObjectByType<DamageManager>();
+
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
         rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();
@@ -73,18 +78,26 @@ public class PlayerRangeAttackController : MonoBehaviour
 
         if(index == 0)
         {
-            rangeHitPosition = new Vector3(  
-            aimObject.GetGroundIndicatorCenter().x,
-            aimObject.GetGroundIndicatorCenter().y - 0.9f,
-            aimObject.GetGroundIndicatorCenter().z);
+            //rangeHitPosition = new Vector3(  
+            //aimObject.GetGroundIndicatorCenter().x,
+            //aimObject.GetGroundIndicatorCenter().y - 0.9f,
+            //aimObject.GetGroundIndicatorCenter().z);
+
+            rangeHitPosition = corssHairLookAt.GroundHitPositionTransmission();
         }
 
         if(index == 3)
         {
+            //rangeHitPosition = new Vector3(
+            //aimObject.GetGroundIndicatorCenter().x,
+            //aimObject.GetGroundIndicatorCenter().y + rangeFourSkillSpawnHeight,
+            //aimObject.GetGroundIndicatorCenter().z);
+
             rangeHitPosition = new Vector3(
-            aimObject.GetGroundIndicatorCenter().x,
-            aimObject.GetGroundIndicatorCenter().y + rangeFourSkillSpawnHeight,
-            aimObject.GetGroundIndicatorCenter().z);
+                corssHairLookAt.GroundHitPositionTransmission().x,
+                corssHairLookAt.GroundHitPositionTransmission().y + rangeFourSkillSpawnHeight,
+                corssHairLookAt.GroundHitPositionTransmission().z
+                );
         }
     }
 

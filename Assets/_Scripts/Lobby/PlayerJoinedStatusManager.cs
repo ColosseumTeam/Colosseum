@@ -45,8 +45,8 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
 
         if (player == Runner.LocalPlayer)
         {
-            roomManager?.MyCharacterModel?.SetActive(true);
-            roomManager?.RPCEnemyPlayerJoined();
+            //roomManager?.MyCharacterModel?.SetActive(true);
+            //roomManager?.RPCEnemyPlayerJoined();
             foreach (var activePlayer in Runner.ActivePlayers)
             {
                 if (_playerStatusDictionary.TryAdd(activePlayer, playerStatus) == false)

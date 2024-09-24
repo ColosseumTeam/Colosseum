@@ -1,4 +1,6 @@
+using Fusion;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,7 +19,8 @@ public class AimController : MonoBehaviour
 
     private float yPosition = 0f;
     private RectTransform rect;
-    private Camera mainCamera;
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private NetworkObject pg;
     private LineRenderer lineRenderer;
 
     private bool isSkillReady;
@@ -26,7 +29,8 @@ public class AimController : MonoBehaviour
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
-        mainCamera = Camera.main;
+                
+        //mainCamera = Camera.main;
 
         // LineRenderer를 현재 오브젝트에 추가
         lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -129,13 +133,35 @@ public class AimController : MonoBehaviour
         }
     }
 
-    public Vector3 GetGroundIndicatorCenter()
+    //public Vector3 GetGroundIndicatorCenter()
+    //{
+    //    if(isSkillState == 0 || isSkillState == 3)
+    //    {
+    //        Debug.Log(isSkillState);
+    //        return crossHairEvent.GroundHitPositionTransmission();
+    //    }
+
+    //    return hitPoint;
+    //}
+
+    // 플레이어가 보유한 카메라를 전달 받는 메서드
+    public void PlayerObjectTransmission(NetworkObject newPg)
     {
-        if(isSkillState == 0 || isSkillState == 3)
+        pg = newPg;
+        
+        if(pg != null)
         {
-            return crossHairEvent.GroundHitPositionTransmission();
+            Debug.Log("pg not have");
         }
 
-        return hitPoint;
+        foreach(Transform child in pg.transform)
+        {
+            Camera cam = child.GetComponentInChildren<Camera>();
+
+            if (cam != null)
+            {
+                mainCamera = cam;
+            }
+        }
     }
 }
