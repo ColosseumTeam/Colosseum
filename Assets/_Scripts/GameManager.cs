@@ -19,7 +19,7 @@ public class GameManager : NetworkBehaviour
 
     private void Start()
     {
-        playerJoinedStatusManager.onAllPlayersLoadedScene += InstantiatePlayer;
+        //playerJoinedStatusManager.onAllPlayersLoadedScene += InstantiatePlayer;
     }
 
     private void InstantiatePlayer(SceneRef sceneRef)

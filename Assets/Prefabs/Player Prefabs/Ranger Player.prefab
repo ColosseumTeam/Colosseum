@@ -5368,6 +5368,7 @@ GameObject:
   - component: {fileID: 6737523173327586857}
   - component: {fileID: 3788577348517497476}
   - component: {fileID: 5208695130796655025}
+  - component: {fileID: 829659037605264746}
   m_Layer: 0
   m_Name: Ranger Player
   m_TagString: Untagged
@@ -5533,8 +5534,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  hp: 100
+  maxHp: 100
+  hpImage: {fileID: 0}
   moveSpeed: 5
-  runSpeed: 10
   rotationSpeed: 60
   attackTimer: 0
   attackElapsedTime: 0.5
@@ -5542,10 +5545,9 @@ MonoBehaviour:
   maxJumpHeight: 0.5
   startYPosition: 0
   boostSpeed: 15
-  downTimer: 0
-  downEndTimer: 3
-  airBorneForce: 5
   rb: {fileID: 0}
+  cameraRig: {fileID: 0}
+  kcc: {fileID: 0}
 --- !u!114 &3788577348517497476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5595,6 +5597,25 @@ MonoBehaviour:
   - 4
   - 4
   - 4
+  skillUI: []
+--- !u!114 &829659037605264746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5319581205106527644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2767387545
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 6737523173327586857}
 --- !u!1 &5339053485418124171
 GameObject:
   m_ObjectHideFlags: 0
