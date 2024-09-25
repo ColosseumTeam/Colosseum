@@ -11,14 +11,21 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private Transform iconGroup;
     [SerializeField] private GameObject iconPrefab;
     [SerializeField] private List<CharacterData> characterDatas;
+    [SerializeField] private RoomManager roomManager;
 
-    [Header("# Text UI")]
+    [Header("# UI")]
+    [SerializeField] private RawImage myCharacterImage;
+    [SerializeField] private RawImage enemyCharacterImage;
+    [SerializeField] private RawImage selectedCharacterImage;
     [SerializeField] private TextMeshProUGUI characterDescription;
     [SerializeField] private TextMeshProUGUI characterName;
     [SerializeField] private TextMeshProUGUI characterConcept;
     [SerializeField] private TextMeshProUGUI characterStory;
 
-    private GameObject clickedModel;
+    private int clickedIndex;
+
+    public int ClickedIndex { get { return clickedIndex; } }
+    public List<CharacterData> CharacterDatas { get { return characterDatas; } }
 
 
     private void Awake()
@@ -31,33 +38,34 @@ public class CharacterSelection : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Start()
     {
         // Init first character
-        if (!clickedModel)
-        {
-            clickedModel = characterModelGroup.GetChild(0).gameObject;
-            clickedModel.SetActive(true);
-            characterDescription.text = characterDatas[0].CharacterDesciption;
-            characterName.text = characterDatas[0].CharacterName;
-            characterConcept.text = characterDatas[0].CharacterConcept;
-            characterStory.text = characterDatas[0].CharacterStory;
-        }
+        selectedCharacterImage.texture = characterDatas[clickedIndex].CharacterRenderTexture;
+        characterDescription.text = characterDatas[clickedIndex].CharacterDesciption;
+        characterName.text = characterDatas[clickedIndex].CharacterName;
+        characterConcept.text = characterDatas[clickedIndex].CharacterConcept;
+        characterStory.text = characterDatas[clickedIndex].CharacterStory;
     }
 
     public void ClickedIcon(int index)
     {
         GameObject clickedCharacter = characterModelGroup.GetChild(index).gameObject;
-        if (clickedModel != clickedCharacter)
+        if (clickedIndex != index)
         {
-            clickedModel.SetActive(false);
-            clickedModel = clickedCharacter;
-            clickedModel.SetActive(true);
+            clickedIndex = index;
+            selectedCharacterImage.texture = characterDatas[clickedIndex].CharacterRenderTexture;
 
             characterDescription.text = characterDatas[index].CharacterDesciption;
             characterName.text = characterDatas[index].CharacterName;
             characterConcept.text = characterDatas[index].CharacterConcept;
             characterStory.text = characterDatas[index].CharacterStory;
         }
+    }
+
+    public void SelectButton()
+    {
+        roomManager.Runner.GetComponent<PlayerJoinedStatusManager>().SetPlayerCharacter(characterDatas[clickedIndex].CharacterPrefab);
+        roomManager.CharacterSelected(clickedIndex);
     }
 }

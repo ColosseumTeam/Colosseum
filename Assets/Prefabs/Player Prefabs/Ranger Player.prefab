@@ -5563,6 +5563,7 @@ MonoBehaviour:
   state: 0
   damageManager: {fileID: 0}
   aimObject: {fileID: 0}
+  corssHairLookAt: {fileID: 0}
   rangeTransform: {fileID: 375595944680219053}
   rangeThreeSkillTransform: {fileID: 581098205518225566}
   rangeNormalSkillPrefab: {fileID: 8879378916739146850, guid: 34a4530616228f746bbe32c876cdf665, type: 3}
@@ -5574,6 +5575,7 @@ MonoBehaviour:
   rangeTwoSkillPrefabSpeed: 15
   rangeFourSkillPrefabSpeed: 15
   rangeFourSkillSpawnHeight: 10
+  rangeHitPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &5208695130796655025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5612,10 +5614,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 2767387545
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 6737523173327586857}
+  - {fileID: 3788577348517497476}
+  - {fileID: 5208695130796655025}
+  - {fileID: 2977825786148993041}
 --- !u!1 &5339053485418124171
 GameObject:
   m_ObjectHideFlags: 0
@@ -9693,6 +9698,7 @@ MonoBehaviour:
   distance: 8
   endPoint: {x: 0, y: 0, z: 0}
   rayDistance: 100
+  groundHitPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &9011827791986675572
 GameObject:
   m_ObjectHideFlags: 0

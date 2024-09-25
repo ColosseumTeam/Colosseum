@@ -1,21 +1,25 @@
 using Fusion;
+using System;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RoomManager : NetworkBehaviour
 {
-
     [Header("Room Setting")]
     [SerializeField] private string gameSceneName = "Game";
+
+    [Header("Reference")]
     [SerializeField] private Image myReadyCheckBox;
     [SerializeField] private Image enemyReadyCheckBox;
-    [SerializeField] private GameObject myCharacterModel;
-    [SerializeField] private GameObject enemyCharacterModel;
+    [SerializeField] private RawImage myCharacterRawImage;
+    [SerializeField] private RawImage enemyCharacterRawImage;
+    [SerializeField] private CharacterSelection characterSelection;
 
     public bool isReady { get; private set; }
     public bool isEnemyReady { get; private set; }
-    public GameObject MyCharacterModel { get { return myCharacterModel; } }
-    public GameObject EnemyCharacterModel { get { return enemyCharacterModel; } }
+    public RawImage MyCharacterRawImage { get { return myCharacterRawImage; } }
+    public RawImage EnemyCharacterRawImage { get { return enemyCharacterRawImage; } }
 
 
     public void ReadyButton()
@@ -34,32 +38,30 @@ public class RoomManager : NetworkBehaviour
         }
     }
 
-    public void RPCWhenPlayerJoined()
+    public void WhenPlayerJoined()
     {
+        if (!HasStateAuthority) return;
+
         if (isReady)
         {
             RPC_GetReady();
         }
-        enemyCharacterModel.SetActive(true);
+        enemyCharacterRawImage.enabled = true;
+        RPC_CharacterSelected(characterSelection.ClickedIndex);
+        enemyCharacterRawImage.texture = characterSelection.CharacterDatas[0].CharacterRenderTexture;
     }
 
-    [Rpc(InvokeLocal = false)]
-    public void RPCEnemyPlayerJoined()
-    {
-        enemyCharacterModel.SetActive(true);
-    }
-
-    public void RPCWhenPlayerLeft()
+    public void WhenPlayerLeft()
     {
         enemyReadyCheckBox.enabled = false;
         isEnemyReady = false;
-        enemyCharacterModel.SetActive(false);
+        enemyCharacterRawImage.enabled = false;
     }
 
-    [Rpc(InvokeLocal = false)]
+    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
     public void RPCEnemyPlayerLeft()
     {
-        enemyCharacterModel.SetActive(false);
+        enemyCharacterRawImage.enabled = false;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
@@ -85,5 +87,22 @@ public class RoomManager : NetworkBehaviour
         {
             Runner.LoadScene(SceneRef.FromIndex(2));
         }
+    }
+
+    public void CharacterSelected(int index)
+    {
+        myCharacterRawImage.texture = characterSelection.CharacterDatas[index].CharacterRenderTexture;
+        RPC_CharacterSelected(index);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
+    private void RPC_CharacterSelected(int index)
+    {
+        if (!enemyCharacterRawImage.enabled)
+        {
+            enemyCharacterRawImage.enabled = true;
+        }
+
+        enemyCharacterRawImage.texture = characterSelection.CharacterDatas[index].CharacterRenderTexture;
     }
 }
