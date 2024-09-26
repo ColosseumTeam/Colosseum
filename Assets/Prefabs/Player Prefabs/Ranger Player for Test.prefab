@@ -5370,6 +5370,7 @@ GameObject:
   - component: {fileID: 6723840173950459857}
   - component: {fileID: -3007750675426362701}
   - component: {fileID: 3859240491041883072}
+  - component: {fileID: -624718907657248084}
   m_Layer: 0
   m_Name: Ranger Player for Test
   m_TagString: Untagged
@@ -5514,6 +5515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  aimController: {fileID: 0}
   hp: 100
   maxHp: 100
   hpImage: {fileID: 0}
@@ -5521,7 +5523,7 @@ MonoBehaviour:
   rotationSpeed: 60
   attackTimer: 0
   attackElapsedTime: 0.5
-  jumpForce: 0.4
+  jumpForce: 7
   maxJumpHeight: 0.5
   startYPosition: 0
   boostSpeed: 400
@@ -5602,6 +5604,7 @@ MonoBehaviour:
   - {fileID: 5208695130796655025}
   - {fileID: -3007750675426362701}
   - {fileID: 3859240491041883072}
+  - {fileID: -624718907657248084}
   - {fileID: 2977825786148993041}
 --- !u!114 &-3007750675426362701
 MonoBehaviour:
@@ -5657,6 +5660,27 @@ MonoBehaviour:
   SyncSettings: 79
   StateHashes: 000000002b1a167c7940695546980c4f14c2736678529982fa1dd5076bd28ad9e99dc65ce7c4dea4fd55e44e8a18fce4c765c7ddadd67ef28b7ab85e2746b9e535e7c26b8048b961d0b26d01651d160bdb2cdcdd6e83a7d783e68b2149ce5228
   TriggerHashes: 000000000d286c4073cbfc9f28a98107
+--- !u!114 &-624718907657248084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5319581205106527644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7ca3047c13162b49b9eb4f26662124e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  rb: {fileID: 0}
+  kcc: {fileID: 0}
+  isDowning: 0
+  isUping: 0
+  isGrounding: 0
+  upForce: 10
+  downTimer: 0
+  downEndTimer: 3
 --- !u!1 &5339053485418124171
 GameObject:
   m_ObjectHideFlags: 0

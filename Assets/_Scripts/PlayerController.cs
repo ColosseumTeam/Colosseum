@@ -1,11 +1,11 @@
 using Fusion;
 using System;
-using Fusion;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Fusion.Addons.SimpleKCC;
 using UnityEngine.Windows;
+using Random = UnityEngine.Random;
 
 
 // 변수
@@ -17,6 +17,7 @@ public class PlayerController : NetworkBehaviour
 {
     // 캐릭터의 현재 상태를 관리하는 변수
     [SerializeField] private BehaviourBase.State state = BehaviourBase.State.None;
+    [SerializeField] private AimController aimController;
 
     // 캐릭터 이동 속도, 회전 속도, 공격 관련 타이머 설정
     [SerializeField] private float hp = 100f;
@@ -33,6 +34,7 @@ public class PlayerController : NetworkBehaviour
 
     // 캐릭터 물리적 제어를 위한 Rigidbody 참조
     [SerializeField] private Rigidbody rb;
+
     [SerializeField] private GameObject cameraRig;
     [SerializeField] private SimpleKCC kcc;
 
@@ -71,6 +73,17 @@ public class PlayerController : NetworkBehaviour
         {
             cameraRig.SetActive(true);
             transform.tag = "Player";
+
+            aimController = FindAnyObjectByType<AimController>();
+
+            if (aimController != null)
+            {
+                aimController.PlayerObjectTransmission(GetComponent<NetworkObject>());
+            }
+            else
+            {
+                Debug.Log("Do not have AimController");
+            }
         }
         else
         {
@@ -125,6 +138,8 @@ public class PlayerController : NetworkBehaviour
 
     private void InputAction(Vector2 moveVec, float jumpInput)
     {
+        if(state == BehaviourBase.State.Damaged || isDowning == true) { return; }
+
         // Boost 중일 때의 이동 처리
         if (isBoosting)
         {
@@ -353,16 +368,15 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
-    public void TakeDamage(float damage, bool skillType, bool downAttack, float stiffnessTime)
-    {
-        hp -= damage;
-        hpImage.fillAmount = hp / maxHp;
-    }
-
     // 애니메이션 피격 애니메이션 프레임에 설정되어 있는 메서드
     public void PlayerTakeHitStopAction()
     {
         isSkilling = false;
         isAttacking = false;
+    }
+
+    public void DowningManagement(bool check)
+    {
+        isDowning = check;
     }
 }

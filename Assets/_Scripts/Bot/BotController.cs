@@ -1,7 +1,8 @@
+using Fusion;
 using System.Collections;
 using UnityEngine;
 
-public class BotController : MonoBehaviour
+public class BotController : NetworkBehaviour
 {
     private Animator animator;
     private Rigidbody rb;
@@ -10,7 +11,7 @@ public class BotController : MonoBehaviour
     [SerializeField] private bool isGrounding;
     [SerializeField] private float downTime = 0f;
     [SerializeField] private float downEndTime = 3f;
-    [SerializeField] private float force = 10f;
+    [SerializeField] private float upForce = 10f;
     [SerializeField] private float attackReadyTime = 0f;
     [SerializeField] private float attackReadyEndTime = 5f;
     [SerializeField] private DamageManager damageManager;
@@ -84,8 +85,8 @@ public class BotController : MonoBehaviour
                 
                 isDowning = true;
 
-                Vector3 upForce = new Vector3(0, force, 0);
-                rb.AddForce(upForce, ForceMode.Impulse);                
+                Vector3 upDamageForce = new Vector3(0, upForce, 0);
+                rb.AddForce(upDamageForce, ForceMode.Impulse);  
             }
 
             animator.SetTrigger("TakeHit");

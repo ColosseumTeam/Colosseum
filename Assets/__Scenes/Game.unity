@@ -597,7 +597,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  targetObject: {fileID: 543450651686109711}
   mainCamera: {fileID: 0}
   pg: {fileID: 0}
 --- !u!114 &906152769
@@ -913,7 +912,7 @@ MonoBehaviour:
   isGrounding: 0
   downTime: 0
   downEndTime: 3
-  force: 10
+  upForce: 10
   attackReadyTime: 0
   attackReadyEndTime: 5
   damageManager: {fileID: 0}
@@ -1031,7 +1030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5ce152f6a29694690e95524086495c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterPrefab: {fileID: 5513945395785779221, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}
+  characterPrefab: {fileID: 6723840173950459857, guid: fc9f9de439127984eb70ee8cc066f43d, type: 3}
   aimController: {fileID: 906152768}
 --- !u!114 &1602521908
 MonoBehaviour:
@@ -1232,6 +1231,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4748305744709498200, guid: e0e9b41f89f2dce489d0a5e269746f97, type: 3}
+      propertyPath: force
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4748305744709498200, guid: e0e9b41f89f2dce489d0a5e269746f97, type: 3}
+      propertyPath: damageManager
+      value: 
+      objectReference: {fileID: 1602521906}
     - target: {fileID: 5187340188739333718, guid: e0e9b41f89f2dce489d0a5e269746f97, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.9170365
@@ -1281,11 +1288,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0e9b41f89f2dce489d0a5e269746f97, type: 3}
---- !u!4 &543450651686109711 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8737642647414816922, guid: 216466f3a4317e14780edcb1382f7f05, type: 3}
-  m_PrefabInstance: {fileID: 8516160769636831307}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5188414731875643911
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1367,6 +1369,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 829659037605264746, guid: 216466f3a4317e14780edcb1382f7f05, type: 3}
+      propertyPath: SortKey
+      value: 3249043898
+      objectReference: {fileID: 0}
     - target: {fileID: 2977825786148993041, guid: 216466f3a4317e14780edcb1382f7f05, type: 3}
       propertyPath: crosshair
       value: 

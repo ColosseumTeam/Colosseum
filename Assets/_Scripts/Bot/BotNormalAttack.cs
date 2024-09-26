@@ -1,9 +1,10 @@
+using Fusion;
 using UnityEngine;
 
-public class BotNormalAttack : MonoBehaviour, ISkill
+public class BotNormalAttack : NetworkBehaviour, ISkill
 {
     [SerializeField] private float damage = 10f;
-    [SerializeField] private bool skillType = false;
+    [SerializeField] private bool skillType = true;
     [SerializeField] private bool downAttack = false;
     [SerializeField] private float stiffnessTime = 1f;
 

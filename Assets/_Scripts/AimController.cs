@@ -13,7 +13,6 @@ public class AimController : MonoBehaviour
     [SerializeField] private float maxYPosition = 450f;
     [SerializeField] private float oneGroundRangeSize = 2f; // 지면에 표시할 사각형의 크기
     [SerializeField] private LayerMask groundLayer; // 지면 레이어
-    [SerializeField] private Transform targetObject; // 특정 오브젝트
 
     private Vector3 hitPoint;
 
@@ -29,7 +28,7 @@ public class AimController : MonoBehaviour
     private void Awake()
     {
         rect = GetComponent<RectTransform>();
-                
+             
         //mainCamera = Camera.main;
 
         // LineRenderer를 현재 오브젝트에 추가
@@ -149,13 +148,16 @@ public class AimController : MonoBehaviour
     {
         pg = newPg;
         
-        if(pg != null)
+        if(pg == null)
         {
             Debug.Log("pg not have");
+            return;
         }
 
         foreach(Transform child in pg.transform)
         {
+            Debug.Log("find mainCemera");
+
             Camera cam = child.GetComponentInChildren<Camera>();
 
             if (cam != null)
