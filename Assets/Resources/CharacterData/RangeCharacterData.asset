@@ -18,4 +18,5 @@ MonoBehaviour:
   characterStory: 'RangerRanger
 
     RangerRanger'
-  characterPrefab: {fileID: 829659037605264746, guid: 216466f3a4317e14780edcb1382f7f05, type: 3}
+  characterRenderTexture: {fileID: 8400000, guid: 598fabe4c2e5a0847b9f19f58260553b, type: 2}
+  characterPrefab: {fileID: 6723840173950459857, guid: fc9f9de439127984eb70ee8cc066f43d, type: 3}

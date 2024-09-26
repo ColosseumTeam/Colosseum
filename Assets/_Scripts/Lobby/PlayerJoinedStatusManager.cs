@@ -15,6 +15,7 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
     private Dictionary<PlayerRef, PlayerStatus> _playerStatusDictionary = new Dictionary<PlayerRef, PlayerStatus>();
     public event Action<SceneRef> onAllPlayersLoadedScene;
     private RoomManager roomManager;
+    private CharacterSelection characterSelection;
     // for test
     [SerializeField] private NetworkObject characterPrefab;
 
@@ -28,6 +29,7 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         //}
         DontDestroyOnLoad(this);
         roomManager = FindAnyObjectByType<RoomManager>();
+        characterSelection = FindAnyObjectByType<CharacterSelection>();
     }
 
     private void Start()
@@ -50,8 +52,6 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
 
         if (player == Runner.LocalPlayer)
         {
-            //roomManager?.MyCharacterModel?.SetActive(true);
-            //roomManager?.RPCEnemyPlayerJoined();
             foreach (var activePlayer in Runner.ActivePlayers)
             {
                 if (_playerStatusDictionary.TryAdd(activePlayer, playerStatus) == false)
@@ -60,7 +60,7 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         }
         else
         {
-            roomManager?.RPCWhenPlayerJoined();
+            roomManager.WhenPlayerJoined();
         }
 
         if (_playerStatusDictionary.TryAdd(player, playerStatus) == false)
@@ -78,7 +78,7 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         }
         else
         {
-            roomManager?.RPCWhenPlayerLeft();
+            roomManager?.WhenPlayerLeft();
         }
     }
 
@@ -113,6 +113,11 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         {
             onAllPlayersLoadedScene(sceneRef);
         }
+    }
+
+    public void SetPlayerCharacter(NetworkObject player)
+    {
+        characterPrefab = player;
     }
 
     private void InstantiatePlayer(SceneRef sceneRef)

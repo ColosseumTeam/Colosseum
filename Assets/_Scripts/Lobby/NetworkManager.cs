@@ -19,6 +19,8 @@ public class NetworkManager : MonoBehaviour
 
     private NetworkRunner runner;
 
+    public NetworkRunner Runner { get { return runner; } }
+
 
     public async void JoinRoom()
     {

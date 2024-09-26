@@ -18,4 +18,5 @@ MonoBehaviour:
   characterStory: 'FighterFighter
 
     FighterFighter'
+  characterRenderTexture: {fileID: 8400000, guid: 3359983380513a847b9c74379925c738, type: 2}
   characterPrefab: {fileID: 5513945395785779221, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}

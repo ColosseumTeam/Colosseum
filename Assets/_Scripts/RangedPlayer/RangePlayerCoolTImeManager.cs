@@ -1,22 +1,25 @@
-using Fusion;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
-public class RangePlayerCoolTImeManager : NetworkBehaviour
-{   
+public class RangePlayerCoolTImeManager : MonoBehaviour
+{
     [SerializeField] private List<bool> skillCheckList = new List<bool>() { true, true, true, true };
-    public List<bool> SkillCheckLis {  get { return skillCheckList; } }
+    public List<bool> SkillCheckLis { get { return skillCheckList; } }
 
     [SerializeField] private List<float> skillCoolTimer = new List<float>() { 0, 0, 0, 0 };
     [SerializeField] private List<float> skillCoolTimerEnd = new List<float>();
-    [SerializeField] private List<GameObject> skillUI;
-    
-    private float skillUIStartFill;
+    [SerializeField] private List<Image> skillUI;
+
+
+    private void Awake()
+    {
+        skillUI = FindAnyObjectByType<GameManager>().SkillUI;
+    }
 
     private void Update()
     {
-        for(int ix = 0; ix < skillCoolTimer.Count; ix++)
+        for (int ix = 0; ix < skillCoolTimer.Count; ix++)
         {
             SkillManagement(ix);
         }
@@ -25,26 +28,20 @@ public class RangePlayerCoolTImeManager : NetworkBehaviour
     public void SkillChecking(int index)
     {
         skillCheckList[index] = false;
-        //skillUI[index].SetActive(true);
-        //skillUIStartFill = skillUI[index].GetComponent<Image>().fillAmount;
     }
 
     private void SkillManagement(int index)
     {
         if (!skillCheckList[index])
-        { 
+        {
             skillCoolTimer[index] += Time.deltaTime;
 
-            //skillUI[index].GetComponent<Image>().fillAmount = 
-                Mathf.Lerp(skillUIStartFill, 0f, skillCoolTimer[index] / skillCoolTimerEnd[index]);
+            skillUI[index].fillAmount = 1 - skillCoolTimer[index] / skillCoolTimerEnd[index];
 
             if (skillCoolTimer[index] >= skillCoolTimerEnd[index])
             {
                 skillCoolTimer[index] = 0;
                 skillCheckList[index] = true;
-
-                //skillUI[index].GetComponent<Image>().fillAmount = 1f;
-                //skillUI[index].SetActive(false);               
             }
         }
     }
