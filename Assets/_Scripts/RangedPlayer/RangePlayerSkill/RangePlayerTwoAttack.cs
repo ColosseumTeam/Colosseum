@@ -1,16 +1,15 @@
 using Fusion;
 using UnityEngine;
 
-public class RangePlayerTwoAttack : NetworkBehaviour, ISkill
+public class RangePlayerTwoAttack : NetworkBehaviour
 {
     [SerializeField] private float damage = 10f;
-    [SerializeField] private bool skillType = true;
+    [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
+    [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = false;
     [SerializeField] private float knockBackFoce = 10f;
     [SerializeField] private float knockBackEndForce = 500f;
-    
-    private DamageManager damageManager;
-
+  
     private void Awake()
     {
         Destroy(gameObject, 3f);
@@ -23,33 +22,31 @@ public class RangePlayerTwoAttack : NetworkBehaviour, ISkill
             Destroy(gameObject);
         }
 
+        //Todo: Runner 및 Network 상태에 맞춰 수정할 수 있어야 함
         if (collision.gameObject.CompareTag("Enemy"))
         {            
             Collider[] colls = Physics.OverlapSphere(this.transform.position, 1f, 1 << LayerMask.NameToLayer("Enemy"));
 
             foreach (Collider coll in colls)
             {
-                coll.GetComponent<Rigidbody>().AddExplosionForce(knockBackEndForce, this.transform.position, knockBackFoce);
+                Rigidbody rb = coll.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.AddExplosionForce(knockBackEndForce, this.transform.position, knockBackFoce);
+                }
             }
 
-            damageManager.DamageTransmission(gameObject, collision.gameObject);
+            if (collision.gameObject.GetComponent<PlayerDamageController>() != null)
+            {
+                collision.gameObject.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f);
+            }
+            else
+            {
+                collision.gameObject.GetComponent<BotController>().TakeDamage(
+                    damage, botHitType, downAttack, 1f);
+            }
 
             Destroy(gameObject);
         }
-    }
-
-    public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack, out float getStiffnessTime)
-    {
-        getDamage = damage;
-        getSkillType = skillType;
-        getDownAttack = downAttack;
-
-        // 다운 스킬이기에 경직 시간이 필요로 하지 않음
-        getStiffnessTime = 0f;
-    }
-
-    public void GetDamageManager(DamageManager newDamageManager)
-    {
-        damageManager = newDamageManager;
     }
 }

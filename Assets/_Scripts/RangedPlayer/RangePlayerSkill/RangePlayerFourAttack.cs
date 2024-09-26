@@ -2,10 +2,11 @@ using Fusion;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class RangePlayerFourAttack : NetworkBehaviour, ISkill
+public class RangePlayerFourAttack : NetworkBehaviour
 {
     [SerializeField] private float damage = 10f;
-    [SerializeField] private bool skillType = true;
+    [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
+    [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = true;
     [SerializeField] private float attackTime = 0f;
     [SerializeField] private float attackTimeEnd = 0.1f;
@@ -13,7 +14,6 @@ public class RangePlayerFourAttack : NetworkBehaviour, ISkill
 
     private bool isAttacking;
     private GameObject enemyObj;
-    private DamageManager damageManager;
 
     private void Awake()
     {
@@ -31,7 +31,16 @@ public class RangePlayerFourAttack : NetworkBehaviour, ISkill
             {
                 Instantiate(afterAttackObject, enemyObj.transform.position, Quaternion.identity);
 
-                damageManager.DamageTransmission(gameObject, enemyObj);
+                if (enemyObj.GetComponent<PlayerDamageController>() != null)
+                {
+                    enemyObj.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f);
+                }
+                else
+                {
+                    enemyObj.GetComponent<BotController>().TakeDamage(
+                    damage, botHitType, downAttack, 1f);
+                }
+
                 Destroy(gameObject);
             }            
         }   
@@ -42,7 +51,15 @@ public class RangePlayerFourAttack : NetworkBehaviour, ISkill
         if (other.gameObject.CompareTag("Enemy"))
         {
             enemyObj = other.gameObject;
-            damageManager.DamageTransmission(gameObject, other.gameObject);
+
+            if (enemyObj.GetComponent<PlayerDamageController>() != null)
+            {
+                enemyObj.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f);
+            }
+            else
+            {
+                enemyObj.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, 1f);
+            }
         }
 
         if (other.gameObject.CompareTag("Ground"))
@@ -50,22 +67,5 @@ public class RangePlayerFourAttack : NetworkBehaviour, ISkill
             isAttacking = true;
             attackTime = 0f;
         }
-    }
-
-
-    public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack, out float getStiffnessTime)
-    {
-        getDamage = damage;
-        getSkillType = skillType;
-        getDownAttack = downAttack;
-        
-        // 다운 스킬이기에 경직 시간 0으로 고정
-        getStiffnessTime = 0f;
-
-    }
-
-    public void GetDamageManager(DamageManager newDamageManager)
-    {
-        damageManager = newDamageManager;
     }
 }

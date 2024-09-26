@@ -3,13 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangePlayerOneAttack : NetworkBehaviour, ISkill
+public class RangePlayerOneAttack : NetworkBehaviour
 {
     [SerializeField] private float damage = 10f;
-    [SerializeField] private bool skillType = true; 
+    [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
+    [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = true;
-
-    private DamageManager damageManager;
 
     private float maxHeight = 0f;
     private float upSpeed = 20f;
@@ -33,27 +32,17 @@ public class RangePlayerOneAttack : NetworkBehaviour, ISkill
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
-        {            
-            damageManager.DamageTransmission(gameObject, other.gameObject);
+        {
+            if (other.gameObject.GetComponent<PlayerDamageController>() != null)
+            {
+                other.gameObject.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f);
+            }
+            else
+            {
+                other.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, 1f);
+            }
 
             GetComponent<BoxCollider>().enabled = false;
         }
     }
-
-    public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack, out float getStiffnessTime)
-    {
-        getDamage = damage;
-        getSkillType = skillType;
-        getDownAttack = downAttack;
-
-        // 다운 스킬이기에 경직 시간 0으로 고정
-        getStiffnessTime = 0f;
-    }
-
-    public void GetDamageManager(DamageManager newDamageManager)
-    {
-        damageManager = newDamageManager;
-    }
-
-
 }

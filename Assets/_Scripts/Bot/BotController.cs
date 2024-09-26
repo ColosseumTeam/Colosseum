@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class BotController : NetworkBehaviour
 {
+    public enum BotHitType
+    {
+        None,
+        Down
+    }
+
+    private BotHitType botHitType;
     private Animator animator;
     private Rigidbody rb;
 
@@ -33,17 +40,17 @@ public class BotController : NetworkBehaviour
         if (!isAttacking)
         {
             attackReadyTime += Time.deltaTime;
-            if(attackReadyTime >= attackReadyEndTime)
+            if (attackReadyTime >= attackReadyEndTime)
             {
                 animator.SetTrigger("Attack");
                 attackReadyTime = 0f;
             }
-        }        
+        }
 
         if (isDowning && isGrounding)
         {
             downTime += Time.deltaTime;
-            if(downTime >= downEndTime )
+            if (downTime >= downEndTime)
             {
                 IdleAnimationChanged();
             }
@@ -58,45 +65,47 @@ public class BotController : NetworkBehaviour
     // TakeHitState : 0, 1 => 피격 모션
     // TakeHitState : 2 => 다운 모션
     // TakeHitState : 3 => 다운 상태 유지 모션
-    public void TakeDamage(float damage, bool skillType, bool downAttack, float stiffnessTime)
+
+    public void TakeDamage(float damage, BotHitType newBotHitType, bool downAttack, float stiffnessTime)
     {
+        Debug.Log($"{downAttack} && {newBotHitType}");
+
         if (!isDowning || (isDowning && downAttack))
         {
-            // 경직 스킬을 맞았을 때
-            if (!skillType)
+            switch (newBotHitType)
             {
-                int rnd = Random.Range(0, 2);
+                case BotHitType.None:
+                    int rnd = Random.Range(0, 2);
+                    animator.speed = stiffnessTime;
+                    animator.SetFloat("TakeHitState", rnd);
+                    animator.SetTrigger("TakeHit");
 
-                animator.speed = stiffnessTime;
+                    break;
 
-                animator.SetFloat("TakeHitState", rnd);
-            }
-            // 다운 스킬을 맞았을 때
-            else
-            {
-                if (!isDowning) 
-                {
+                case BotHitType.Down:
+
                     animator.SetFloat("TakeHitState", 2);
-                }
-                else if (isDowning)
-                {
-                    animator.SetFloat("TakeHitState", 3);
-                }
-                
-                isDowning = true;
 
-                Vector3 upDamageForce = new Vector3(0, upForce, 0);
-                rb.AddForce(upDamageForce, ForceMode.Impulse);  
+                    if (isDowning)
+                    {
+                        animator.SetFloat("TakeHitState", 3);
+                    }
+
+                    isDowning = true;
+                    Vector3 upDamageForce = new Vector3(0, upForce, 0);
+                    rb.AddForce(upDamageForce, ForceMode.Impulse);
+                    animator.SetTrigger("TakeHit");
+
+                    break;
             }
-
-            animator.SetTrigger("TakeHit");
-        }
+        }        
     }
+
 
     public void IdleAnimationChanged()
     {
         animator.speed = 1f;
-        animator.SetTrigger("Idle");        
+        animator.SetTrigger("Idle");
 
         isDowning = false;
         downTime = 0f;
@@ -110,14 +119,13 @@ public class BotController : NetworkBehaviour
 
         if (normalObjRb != null)
         {
-            normalObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             normalObjRb.velocity = botAttackPosition.forward * botSkillSpeed;
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Ground")
         {
             isGrounding = true;
         }

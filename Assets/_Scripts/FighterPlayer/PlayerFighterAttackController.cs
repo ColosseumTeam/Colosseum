@@ -1,8 +1,9 @@
+using Fusion;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerFighterAttackController : MonoBehaviour
+public class PlayerFighterAttackController : NetworkBehaviour
 {
     public enum Skill
     {
@@ -15,8 +16,7 @@ public class PlayerFighterAttackController : MonoBehaviour
 
     [Header("Primary Setting")]
     [SerializeField] private AimController aimController;
-    [SerializeField] private LayerMask groundLayerMask;
-    [SerializeField] private DamageManager damageManager;    
+    [SerializeField] private LayerMask groundLayerMask;    
     [SerializeField] private CrossHairLookAt crossHairLookAt;
     [SerializeField] private GameManager gameManager;
 
@@ -40,7 +40,6 @@ public class PlayerFighterAttackController : MonoBehaviour
 
     private bool isReadyToShootQ;
 
-    public DamageManager DamageManager { get { return damageManager; } }
     public bool IsQSkillOn { get; set; }
 
 
@@ -49,8 +48,7 @@ public class PlayerFighterAttackController : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         //crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
-        gameManager = FindObjectOfType<GameManager>();
-        damageManager = gameManager.GetComponent<DamageManager>();
+        gameManager = FindObjectOfType<GameManager>();        
         aimController = gameManager.AimController;
     }
 
@@ -95,7 +93,6 @@ public class PlayerFighterAttackController : MonoBehaviour
     public void OnInstantiateShiftClickSkillPrefab()
     {
         GameObject shifhtClickObj = Instantiate(shiftClickSkillPrefab, skillPos, transform.rotation);
-        shifhtClickObj.GetComponent<ISkill>().GetDamageManager(damageManager);
     }
 
     // Right Click Skill
@@ -133,8 +130,7 @@ public class PlayerFighterAttackController : MonoBehaviour
                 }
 
                 GameObject stone = Instantiate(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
-                stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
-                stone.GetComponent<ISkill>().GetDamageManager(damageManager);
+                stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);                
                 qCount--;
 
                 qSkillGroup.GetChild(qCount).gameObject.SetActive(false);
@@ -174,8 +170,7 @@ public class PlayerFighterAttackController : MonoBehaviour
 
     public void OnInstantiateESkillPrefab()
     {
-        GameObject eSkillObj = Instantiate(eSkillPrefab, skillPos, transform.rotation);
-        eSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
+        GameObject eSkillObj = Instantiate(eSkillPrefab, skillPos, transform.rotation);        
     }
 
     private void OnEmotion1(InputValue value)

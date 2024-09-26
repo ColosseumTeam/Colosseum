@@ -1,14 +1,13 @@
 using Fusion;
 using UnityEngine;
 
-public class RangePlayerNormalAttack : NetworkBehaviour, ISkill
+public class RangePlayerNormalAttack : NetworkBehaviour
 {
     [SerializeField] private float damage = 10f;
-    [SerializeField] private bool skillType = false;
+    [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
+    [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = false;
-    [SerializeField] private float stiffnessTime = 1f;
-
-    private DamageManager damageManager;
+    [SerializeField] private float stiffnessTime = 1f;    
 
     private void Awake()
     {
@@ -24,22 +23,16 @@ public class RangePlayerNormalAttack : NetworkBehaviour, ISkill
 
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            damageManager.DamageTransmission(gameObject, collision.gameObject);
+            if (collision.gameObject.GetComponent<PlayerDamageController>() != null)
+            {               
+                collision.gameObject.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
+            }
+            else
+            {             
+                collision.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+            }
 
             Destroy(gameObject); 
         }
-    }
-
-    public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack, out float getStiffnessTime)
-    {
-        getDamage = damage;
-        getSkillType = skillType;
-        getDownAttack = downAttack;
-        getStiffnessTime = stiffnessTime;
-    }
-
-    public void GetDamageManager(DamageManager newDamageManager)
-    {
-        damageManager = newDamageManager;
     }
 }

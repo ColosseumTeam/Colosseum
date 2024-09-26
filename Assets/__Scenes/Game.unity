@@ -1030,7 +1030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5ce152f6a29694690e95524086495c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterPrefab: {fileID: 6723840173950459857, guid: fc9f9de439127984eb70ee8cc066f43d, type: 3}
+  characterPrefab: {fileID: 5513945395785779221, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}
   aimController: {fileID: 906152768}
 --- !u!114 &1602521908
 MonoBehaviour:
@@ -1049,6 +1049,7 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 1602521906}
   - {fileID: 1602521907}
 --- !u!1 &1688795781
 GameObject:

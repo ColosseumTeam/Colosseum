@@ -1,16 +1,16 @@
 using Fusion;
 using UnityEngine;
 
-public class RangePlayerThreeAttack : NetworkBehaviour, ISkill
+public class RangePlayerThreeAttack : NetworkBehaviour
 {
     [SerializeField] private float damage = 10f;
-    [SerializeField] private bool skillType = false;
+    [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
+    [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = false;
     [SerializeField] private float stiffnessTime = 1f;
     [SerializeField] private float dealingPeriodTime = 0f;
     [SerializeField] private float dealingPeriodEndTIme = 0.5f;
 
-    private DamageManager damageManager;
     private Transform player;
     private GameObject otherGameObject;
     private float timer = 0f;
@@ -46,9 +46,18 @@ public class RangePlayerThreeAttack : NetworkBehaviour, ISkill
     private void DealingPeriodEvent()
     {
         dealingPeriodTime += Time.deltaTime;
+
         if (dealingPeriodTime >= dealingPeriodEndTIme)
         {
-            damageManager.DamageTransmission(gameObject, otherGameObject);
+            if (otherGameObject.GetComponent<PlayerDamageController>() != null)
+            {
+                otherGameObject.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
+            }
+            else
+            {
+                otherGameObject.GetComponent<BotController>().TakeDamage(
+                    damage, botHitType, downAttack, stiffnessTime);
+            }
             dealingPeriodTime = 0f;
         }
     }
@@ -64,18 +73,5 @@ public class RangePlayerThreeAttack : NetworkBehaviour, ISkill
     private void OnTriggerExit(Collider other)
     {
         otherGameObject = null;
-    }
-
-    public void GetSkillState(out float getDamage, out bool getSkillType, out bool getDownAttack, out float getStiffnessTime)
-    {
-        getDamage = damage;
-        getSkillType = skillType;
-        getDownAttack = downAttack;
-        getStiffnessTime = stiffnessTime;
-    }
-
-    public void GetDamageManager(DamageManager newDamageManager)
-    {
-        damageManager = newDamageManager;
     }
 }

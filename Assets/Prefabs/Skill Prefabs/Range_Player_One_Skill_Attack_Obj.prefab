@@ -119,5 +119,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  downSkill: 2
+  playerHitType: 1
+  botHitType: 1
   downAttack: 1

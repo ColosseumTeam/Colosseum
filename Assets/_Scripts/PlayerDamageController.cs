@@ -2,11 +2,18 @@ using Fusion;
 using Fusion.Addons.SimpleKCC;
 using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
+using static BotController;
+
 
 public class PlayerDamageController : NetworkBehaviour
 {
+    public enum PlayerHitType
+    {
+        None,
+        Down
+    }
+
     [SerializeField] private Animator animator;
-    [SerializeField] private Rigidbody rb;
     [SerializeField] private SimpleKCC kcc;
 
     [SerializeField] private bool isDowning;
@@ -21,7 +28,6 @@ public class PlayerDamageController : NetworkBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
         kcc = GetComponent<SimpleKCC>();
     }
 
@@ -29,13 +35,14 @@ public class PlayerDamageController : NetworkBehaviour
     {
         DownTimeCheck();
 
-        if(isUping && gameObject.transform.position.y <= playerVector.y + upForce)
+        if (isUping && gameObject.transform.position.y <= playerVector.y + upForce)
         {
             kcc.Move(jumpImpulse: upForce);
-            if(gameObject.transform.position.y > playerVector.y + upForce)
-            {
-                isUping = false;
-            }
+            isUping = false;
+        }
+        else
+        {
+            kcc.Move();
         }
     }
 
@@ -47,39 +54,35 @@ public class PlayerDamageController : NetworkBehaviour
     // TakeHitState : 0, 1 => 피격 모션
     // TakeHitState : 2 => 다운 모션
     // TakeHitState : 3 => 다운 상태 유지 모션
-    public void TakeDamage(float damage, bool skillType, bool downAttack, float stiffnessTime)
+
+    public void TakeDamage(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime)
     {
-        Debug.Log(skillType);
-
-        if (!isDowning || (isDowning && downAttack))
+        if (!isDowning || (isDowning || downAttack))
         {
-            if (!skillType)
+            switch (playerHitType)
             {
-                int rnd = Random.Range(0, 2);
+                case PlayerHitType.None:
+                    int rnd = Random.Range(0, 2);
+                    animator.speed = stiffnessTime;
+                    animator.SetFloat("TakeHitState", rnd);
+                    animator.SetTrigger("TakeHit");
 
-                animator.speed = stiffnessTime;
+                    break;
 
-                animator.SetFloat("TakeHitState", rnd);
-            }
-            else
-            {
-                if (!isDowning)
-                {
+                case PlayerHitType.Down:
                     animator.SetFloat("TakeHitState", 2);
-                }
-                else if (isDowning)
-                {
-                    animator.SetFloat("TakeHitState", 3);
-                }
+                    if (isDowning)
+                    {
+                        animator.SetFloat("TakeHitState", 3);
+                    }
 
-                isDowning = true;
-                isUping = true;
+                    isDowning = true;
+                    isUping = true;
+                    playerVector = gameObject.transform.position;
+                    animator.SetTrigger("TakeHit");
 
-                playerVector = gameObject.transform.position;
-
+                    break;
             }
-
-            animator.SetTrigger("TakeHit");
         }
     }
 

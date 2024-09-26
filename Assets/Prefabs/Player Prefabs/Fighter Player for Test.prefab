@@ -2903,7 +2903,6 @@ MonoBehaviour:
   skillType: 0
   downAttack: 0
   stiffnessTime: 1
-  damageManager: {fileID: 0}
 --- !u!1 &5557515106402665626
 GameObject:
   m_ObjectHideFlags: 0
@@ -3432,6 +3431,7 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 7039735646730250647}
   - {fileID: 7108571392344828822}
   - {fileID: 8675407130086857828}
   - {fileID: -3801540215900170025}
@@ -4481,7 +4481,6 @@ MonoBehaviour:
   skillType: 0
   downAttack: 0
   stiffnessTime: 1
-  damageManager: {fileID: 0}
 --- !u!1 &7563260537780513356
 GameObject:
   m_ObjectHideFlags: 0

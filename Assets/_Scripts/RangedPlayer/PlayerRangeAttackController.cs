@@ -186,7 +186,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         if (normalObjRb != null)
         {
-            normalObj.GetComponent<ISkill>().GetDamageManager(damageManager);
+            //normalObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             normalObjRb.velocity = rangeTransform.forward * rangeNormalPrefabSpeed;
         }
     }
@@ -200,10 +200,10 @@ public class PlayerRangeAttackController : NetworkBehaviour
         // 오브젝트 생성
         GameObject oneSkillObj = Instantiate(rangeOneSkillPrefab, oneSkillObjPosition, Quaternion.identity);
 
-        if (oneSkillObj != null)
-        {
-            oneSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
-        }
+        //if (oneSkillObj != null)
+        //{
+        //    oneSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
+        //}
     }
 
     // 두 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
@@ -218,7 +218,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         // 생성된 프리팹의 RigidBody를 정면으로 날아가도록
         if (twoSkillObjRb != null)
         {
-            twoSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
+            //twoSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             twoSkillObjRb.velocity = transform.forward * rangeTwoSkillPrefabSpeed;
         }
     }
@@ -243,7 +243,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         foreach (var obj in prefabs)
         {
-            obj.GetComponent<ISkill>().GetDamageManager(damageManager);
+            //obj.GetComponent<ISkill>().GetDamageManager(damageManager);
             obj.GetComponent<RangePlayerThreeAttack>().GetPlayer(rangeThreeSkillTransform);
         }
     }
@@ -259,7 +259,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         if (fourSkillObjRb != null)
         {
-            fourSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
+            //fourSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             fourSkillObjRb.velocity = Vector3.down * rangeFourSkillPrefabSpeed;
         }
     }

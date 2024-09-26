@@ -118,3 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad1c5b181606424e9de2039503f2894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
+  playerHitType: 1
+  botHitType: 1
+  downAttack: 1
+  stiffnessTime: 1

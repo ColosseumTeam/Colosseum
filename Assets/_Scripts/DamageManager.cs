@@ -18,13 +18,13 @@ public class DamageManager : NetworkBehaviour
             // 상대방이 봇일 때
             if (targetObj.GetComponent<BotController>() != null)
             {
-                targetObj.GetComponent<BotController>().TakeDamage(damage, skillType, downAttack, stiffnessTime);
+                //targetObj.GetComponent<BotController>().TakeDamage(damage, skillType, downAttack, stiffnessTime);
             }
 
             // 상대방이 플레이어일 때
             else if(targetObj.GetComponent<PlayerDamageController>() != null)
             {
-                targetObj.GetComponent<PlayerDamageController>().TakeDamage(damage, skillType, downAttack, stiffnessTime);
+                //targetObj.GetComponent<PlayerDamageController>().TakeDamage(damage, skillType, downAttack, stiffnessTime);
             }
         }
     }

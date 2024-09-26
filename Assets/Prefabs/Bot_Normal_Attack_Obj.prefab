@@ -147,6 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
-  skillType: 1
+  playerHitType: 1
   downAttack: 0
   stiffnessTime: 1
