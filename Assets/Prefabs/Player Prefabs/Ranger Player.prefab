@@ -5534,6 +5534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  aimController: {fileID: 0}
   hp: 100
   maxHp: 100
   hpImage: {fileID: 0}
@@ -5619,7 +5620,6 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 6737523173327586857}
   - {fileID: 3788577348517497476}
-  - {fileID: 5208695130796655025}
   - {fileID: 2977825786148993041}
 --- !u!1 &5339053485418124171
 GameObject:
