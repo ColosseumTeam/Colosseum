@@ -306,8 +306,9 @@ MonoBehaviour:
   gameSceneName: Game
   myReadyCheckBox: {fileID: 0}
   enemyReadyCheckBox: {fileID: 0}
-  myCharacterModel: {fileID: 0}
-  enemyCharacterModel: {fileID: 0}
+  myCharacterRawImage: {fileID: 0}
+  enemyCharacterRawImage: {fileID: 0}
+  characterSelection: {fileID: 0}
 --- !u!4 &95391477
 Transform:
   m_ObjectHideFlags: 0
