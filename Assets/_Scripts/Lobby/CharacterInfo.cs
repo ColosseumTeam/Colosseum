@@ -1,10 +1,10 @@
 using Fusion;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CharacterData", menuName = "ScriptableObject/Character Data")]
-public class CharacterData : ScriptableObject
+[CreateAssetMenu(fileName = "CharacterInfo", menuName = "ScriptableObject/Character Info")]
+public class CharacterInfo : ScriptableObject
 {
-    [Header("# Character Explanation")]
+    [Header("# Character Informations")]
     [TextArea]
     [SerializeField] private string characterDesciption;
     [SerializeField] private string characterName;

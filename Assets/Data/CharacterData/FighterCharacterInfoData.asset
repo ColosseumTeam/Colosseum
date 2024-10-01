@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2fc5ae0c79388f342926938f2bc1b7b1, type: 3}
-  m_Name: FighterCharacterData
+  m_Name: FighterCharacterInfoData
   m_EditorClassIdentifier: 
   characterDesciption: FighterFighter
   characterName: Fighter
