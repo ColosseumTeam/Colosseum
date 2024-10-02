@@ -2,6 +2,8 @@ using Fusion;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -11,6 +13,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
 {
     [SerializeField] private PlayerRangeAttackBehaviour.State state = PlayerRangeAttackBehaviour.State.None;
 
+    [SerializeField] private PlayerData rangePlayerData;
     [SerializeField] private DamageManager damageManager;
     [SerializeField] private AimController aimObject;
     [SerializeField] private CrossHairLookAt corssHairLookAt;
@@ -26,12 +29,12 @@ public class PlayerRangeAttackController : NetworkBehaviour
     [SerializeField] private float rangeNormalPrefabSpeed = 15f;
     [SerializeField] private float rangeTwoSkillPrefabSpeed = 10f;
     [SerializeField] private float rangeFourSkillPrefabSpeed = 15f;
-    [SerializeField] private float rangeFourSkillSpawnHeight = 20f;
+    [SerializeField] private float rangeFourSkillSpawnHeight = 20f;    
 
     private PlayerController playerController;
     private RangePlayerCoolTImeManager rangePlayerCoolTImeManager;
     private Animator animator;
-    [SerializeField] private Vector3 rangeHitPosition;
+    private Vector3 rangeHitPosition;
     private int isCoolTimeSkill;
     private bool isSkillReady;
     private bool isOneSkillReady;
@@ -44,6 +47,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
         rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();
+        GetComponent<PlayerDamageController>().PlayerDataReceive(rangePlayerData);
     }
 
 
@@ -79,21 +83,12 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         if (index == 0)
         {
-            //rangeHitPosition = new Vector3(  
-            //aimObject.GetGroundIndicatorCenter().x,
-            //aimObject.GetGroundIndicatorCenter().y - 0.9f,
-            //aimObject.GetGroundIndicatorCenter().z);
 
             rangeHitPosition = corssHairLookAt.GroundHitPositionTransmission();
         }
 
         if (index == 3)
         {
-            //rangeHitPosition = new Vector3(
-            //aimObject.GetGroundIndicatorCenter().x,
-            //aimObject.GetGroundIndicatorCenter().y + rangeFourSkillSpawnHeight,
-            //aimObject.GetGroundIndicatorCenter().z);
-
             rangeHitPosition = new Vector3(
                 corssHairLookAt.GroundHitPositionTransmission().x,
                 corssHairLookAt.GroundHitPositionTransmission().y + rangeFourSkillSpawnHeight,
@@ -184,12 +179,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         GameObject normalObj = Instantiate(rangeNormalSkillPrefab, rangeTransform.position, rangeTransform.rotation);
 
         Rigidbody normalObjRb = normalObj.GetComponent<Rigidbody>();
-
-        if (normalObjRb != null)
-        {
-            //normalObj.GetComponent<ISkill>().GetDamageManager(damageManager);
-            normalObjRb.velocity = rangeTransform.forward * rangeNormalPrefabSpeed;
-        }
+        normalObj.GetComponent<RangePlayerNormalAttack>().Look(aimObject.transform.position);
     }
 
     // 첫 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
@@ -200,11 +190,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         // 오브젝트 생성
         GameObject oneSkillObj = Instantiate(rangeOneSkillPrefab, oneSkillObjPosition, Quaternion.identity);
-        
-        //if (oneSkillObj != null)
-        //{
-        //    oneSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
-        //}
+        corssHairLookAt.EndPointDistanceChanged(3f);
     }
 
     // 두 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트

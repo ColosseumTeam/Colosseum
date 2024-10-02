@@ -4,13 +4,12 @@ using System.Collections.Generic;
 
 public class RangePlayerCoolTImeManager : MonoBehaviour
 {
-    [SerializeField] private List<bool> skillCheckList = new List<bool>() { true, true, true, true };
-    public List<bool> SkillCheckLis { get { return skillCheckList; } }
-
+    [SerializeField] private List<bool> skillCheckList = new List<bool>() { true, true, true, true };    
     [SerializeField] private List<float> skillCoolTimer = new List<float>() { 0, 0, 0, 0 };
     [SerializeField] private List<float> skillCoolTimerEnd = new List<float>();
     [SerializeField] private List<Image> skillUI;
 
+    public List<bool> SkillCheckLis { get { return skillCheckList; } }
 
     private void Awake()
     {

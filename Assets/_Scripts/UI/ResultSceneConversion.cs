@@ -10,4 +10,9 @@ public class ResultSceneConversion : MonoBehaviour
             SceneManager.LoadScene("ResultScene");
         }
     }
+
+    public void ResultSceneBringIn()
+    {
+        SceneManager.LoadScene("ResultScene");
+    }
 }

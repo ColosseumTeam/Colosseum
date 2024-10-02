@@ -7,11 +7,19 @@ public class RangePlayerNormalAttack : NetworkBehaviour
     [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
     [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = false;
-    [SerializeField] private float stiffnessTime = 1f;    
+    [SerializeField] private float stiffnessTime = 1f;
+
+    private float speed = 10f;
+    private Vector3 dir;
 
     private void Awake()
     {
         Destroy(gameObject, 3f);
+    }
+
+    private void Update()
+    {
+        transform.position += dir * Time.deltaTime * speed;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -32,7 +40,22 @@ public class RangePlayerNormalAttack : NetworkBehaviour
                 collision.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
             }
 
+
             Destroy(gameObject); 
+        }
+    
+    }
+
+    public void Look(Vector3 aimPos)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(aimPos);
+        if (Physics.Raycast(ray, out RaycastHit hit) && hit.transform.CompareTag("Enemy"))
+        {
+            dir = (hit.transform.position - transform.position + new Vector3(0, 0.9f)).normalized;
+        }
+        else
+        {
+            dir = (Camera.main.ScreenToWorldPoint(new Vector3(aimPos.x, aimPos.y, 10f)) - transform.position).normalized;
         }
     }
 }

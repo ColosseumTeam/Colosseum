@@ -5642,6 +5642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  rangePlayerData: {fileID: 11400000, guid: cd8c8b246bdc23e4f8a44969c98a138b, type: 2}
   damageManager: {fileID: 0}
   aimObject: {fileID: 0}
   corssHairLookAt: {fileID: 2977825786148993041}
@@ -5656,7 +5657,6 @@ MonoBehaviour:
   rangeTwoSkillPrefabSpeed: 15
   rangeFourSkillPrefabSpeed: 15
   rangeFourSkillSpawnHeight: 10
-  rangeHitPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &5208695130796655025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5695,6 +5695,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   kcc: {fileID: 0}
+  playerData: {fileID: 0}
   isDowning: 0
   isUping: 0
   isGrounding: 0
@@ -9895,6 +9896,7 @@ MonoBehaviour:
   distance: 8
   endPoint: {x: 0, y: 0, z: 0}
   rayDistance: 100
+  dir: {x: 0, y: 0, z: 0}
   groundHitPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &4165545970224872011
 MonoBehaviour:

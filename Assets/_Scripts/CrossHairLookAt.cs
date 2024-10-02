@@ -8,8 +8,9 @@ public class CrossHairLookAt : NetworkBehaviour
     [SerializeField] private float distance = 10f;  // 오브젝트가 크로스헤어를 기준으로 볼 거리
     [SerializeField] private Vector3 endPoint; // 끝 지점
     [SerializeField] private float rayDistance = 1000f;  // Ray가 발사될 거리
-
+    [SerializeField] private Vector3 dir;
     [SerializeField] private Vector3 groundHitPosition;
+
     private Vector3 direction;  // 오브젝트가 바라보는 방향    
     private bool isGrounding = false;
     private float endPointDistance;
@@ -20,7 +21,7 @@ public class CrossHairLookAt : NetworkBehaviour
     }
 
     void Update()
-    {
+    {        
         if (crosshair != null)
         {
             // 크로스헤어의 RectTransform을 참조
@@ -39,7 +40,7 @@ public class CrossHairLookAt : NetworkBehaviour
             objectToRotate.rotation = Quaternion.LookRotation(direction);
 
             // 끝 지점 참조
-            endPoint = objectToRotate.position + direction.normalized * distance;            
+            endPoint = objectToRotate.position + direction.normalized * distance; 
 
             EndPointUntilRay();
 

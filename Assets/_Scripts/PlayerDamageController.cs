@@ -1,6 +1,7 @@
 using Fusion;
 using Fusion.Addons.SimpleKCC;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerDamageController : NetworkBehaviour
 {
@@ -12,6 +13,7 @@ public class PlayerDamageController : NetworkBehaviour
 
     [SerializeField] private Animator animator;
     [SerializeField] private SimpleKCC kcc;
+    [SerializeField] private PlayerData playerData;    
 
     [SerializeField] private bool isDowning;
     [SerializeField] private bool isUping;
@@ -20,12 +22,20 @@ public class PlayerDamageController : NetworkBehaviour
     [SerializeField] private float downTimer = 0f;
     [SerializeField] private float downEndTimer = 3f;
 
+
+    private GameObject gameManager;
+    private float hp;
+    private float MaxHp;
+    private Image hpBar;
     private Vector3 playerVector;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         kcc = GetComponent<SimpleKCC>();
+
+        gameManager = FindAnyObjectByType<GameManager>().gameObject;
+        hpBar = gameManager.GetComponent<GameManager>().HpBar;        
     }
 
     public override void FixedUpdateNetwork()
@@ -48,6 +58,8 @@ public class PlayerDamageController : NetworkBehaviour
     {
         if (!isDowning || (isDowning || downAttack))
         {
+            PlayerHPDecrease(damage);
+
             switch (playerHitType)
             {
                 case PlayerHitType.None:
@@ -87,6 +99,27 @@ public class PlayerDamageController : NetworkBehaviour
         }
     }
 
+    // HP 감소 메서드
+    private void PlayerHPDecrease(float newDamage)
+    {
+        hp -= newDamage;
+
+        hpBar.fillAmount = hp / MaxHp;
+
+        if(hp <= 0)
+        {
+            gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn();
+            Debug.Log("Player Dead");
+        }
+    }
+
+    public void PlayerDataReceive(PlayerData newPlayerData)
+    {
+        playerData = newPlayerData;
+        MaxHp = playerData.MaxHp;
+        hp = MaxHp;
+    }
+
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_TakeHitNonAcitve()
     {
@@ -109,4 +142,6 @@ public class PlayerDamageController : NetworkBehaviour
             isGrounding = false;
         }
     }
+
+    
 }
