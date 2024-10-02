@@ -100282,7 +100282,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.65
-    functionName: TakeHitNonAcitve
+    functionName: RPC_TakeHitNonAcitve
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -12,6 +12,7 @@ public class CrossHairLookAt : NetworkBehaviour
     [SerializeField] private Vector3 groundHitPosition;
     private Vector3 direction;  // 오브젝트가 바라보는 방향    
     private bool isGrounding = false;
+    private float endPointDistance;
 
     private void Awake()
     {
@@ -38,7 +39,7 @@ public class CrossHairLookAt : NetworkBehaviour
             objectToRotate.rotation = Quaternion.LookRotation(direction);
 
             // 끝 지점 참조
-            endPoint = objectToRotate.position + direction.normalized * distance;
+            endPoint = objectToRotate.position + direction.normalized * distance;            
 
             EndPointUntilRay();
 
@@ -111,6 +112,11 @@ public class CrossHairLookAt : NetworkBehaviour
     public Vector3 GroundHitPositionTransmission()
     {
         return groundHitPosition;
+    }
+
+    public void EndPointDistanceChanged(float newDistance)
+    {
+        endPointDistance = newDistance;
     }
 
     private void OnDrawGizmos()

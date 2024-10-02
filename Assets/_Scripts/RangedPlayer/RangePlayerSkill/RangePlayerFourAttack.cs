@@ -23,9 +23,7 @@ public class RangePlayerFourAttack : NetworkBehaviour
     private void Update()
     {
         if (isAttacking)
-        {
-            downAttack = false;
-
+        {                       
             attackTime += Time.deltaTime;
             if(attackTime >= attackTimeEnd && enemyObj != null)
             {
@@ -33,12 +31,13 @@ public class RangePlayerFourAttack : NetworkBehaviour
 
                 if (enemyObj.GetComponent<PlayerDamageController>() != null)
                 {
-                    enemyObj.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f);
+                    downAttack = true;
+                    enemyObj.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
                 }
                 else
                 {
-                    enemyObj.GetComponent<BotController>().TakeDamage(
-                    damage, botHitType, downAttack, 1f);
+                    downAttack = true;
+                    enemyObj.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, 1f);
                 }
 
                 Destroy(gameObject);
@@ -54,18 +53,25 @@ public class RangePlayerFourAttack : NetworkBehaviour
 
             if (enemyObj.GetComponent<PlayerDamageController>() != null)
             {
-                enemyObj.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f);
+                enemyObj.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
             }
             else
             {
                 enemyObj.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, 1f);
             }
-        }
 
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            isAttacking = true;
+            GetComponent<Collider>().enabled = false;
+            downAttack = false;
             attackTime = 0f;
+            isAttacking = true;
         }
+    }
+
+    public void OnGroundCheck()
+    {
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+
+        //attackTime = 0f;
+        //isAttacking = true;        
     }
 }

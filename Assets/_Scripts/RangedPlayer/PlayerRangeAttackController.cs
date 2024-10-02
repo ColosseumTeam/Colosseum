@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 //using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerRangeAttackController : NetworkBehaviour
@@ -44,7 +45,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         playerController = GetComponent<PlayerController>();
         rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();
     }
-    
+
 
     public void GetState(PlayerRangeAttackBehaviour.State newState)
     {
@@ -76,7 +77,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     {
         aimObject.SkillReadyAcitve(index);
 
-        if(index == 0)
+        if (index == 0)
         {
             //rangeHitPosition = new Vector3(  
             //aimObject.GetGroundIndicatorCenter().x,
@@ -86,7 +87,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
             rangeHitPosition = corssHairLookAt.GroundHitPositionTransmission();
         }
 
-        if(index == 3)
+        if (index == 3)
         {
             //rangeHitPosition = new Vector3(
             //aimObject.GetGroundIndicatorCenter().x,
@@ -150,7 +151,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     private void OnRangeTwoSkill(InputValue value)
     {
         if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[1])
-        {            
+        {
             isCoolTimeSkill = 1;
             SkillStateChagned(1f);
         }
@@ -160,7 +161,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     private void OnRangeThreeSkill(InputValue value)
     {
         if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[2])
-        {            
+        {
             isCoolTimeSkill = 2;
             SkillStateChagned(2f);
         }
@@ -170,7 +171,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     private void OnRangeFourSkill(InputValue value)
     {
         if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[3])
-        {            
+        {
             isCoolTimeSkill = 3;
             SkillStateChagned(3f);
         }
@@ -199,7 +200,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         // 오브젝트 생성
         GameObject oneSkillObj = Instantiate(rangeOneSkillPrefab, oneSkillObjPosition, Quaternion.identity);
-
+        
         //if (oneSkillObj != null)
         //{
         //    oneSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
@@ -226,34 +227,54 @@ public class PlayerRangeAttackController : NetworkBehaviour
     // 세 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
     public void ThreeRangeSkillAttackEvent()
     {
-        float offsetRotation = 15f;
-        GameObject[] prefabs = new GameObject[2];
+        Transform centerObject = rangeThreeSkillTransform;
+        float orbitRadius = 1.5f;
+        float orbitSpeed = 300f;
+        float angleBetweenOrbits = 180f;
+        int numberOfOrbits = 2;
 
-        for (int ix = 0; ix < 2; ix++)
+        if (rangeThreeSkillPrefab == null || centerObject == null)
         {
-            GameObject threeSkillObj = Instantiate(rangeThreeSkillPrefab, rangeThreeSkillTransform.position, rangeThreeSkillTransform.rotation);
-            prefabs[ix] = threeSkillObj;
-
-            Vector3 rotation = threeSkillObj.transform.eulerAngles;
-            rotation.z = offsetRotation;
-            threeSkillObj.transform.eulerAngles = rotation;
-
-            offsetRotation = -15f;
+            return;
         }
 
-        foreach (var obj in prefabs)
+        Vector3 centerPosition = centerObject.position;
+
+        for (int i = 0; i < numberOfOrbits; i++)
         {
-            //obj.GetComponent<ISkill>().GetDamageManager(damageManager);
-            obj.GetComponent<RangePlayerThreeAttack>().GetPlayer(rangeThreeSkillTransform);
+            // 부모를 명시적으로 null로 설정하여 씬의 루트에 생성되도록 함
+            GameObject orbitInstance = Instantiate(rangeThreeSkillPrefab, centerPosition, Quaternion.identity, null);
+
+            RangePlayerThreeAttack orbitScript = orbitInstance.GetComponent<RangePlayerThreeAttack>();
+            if (orbitScript != null)
+            {
+                float initialAngle = i * angleBetweenOrbits;
+
+                orbitScript.ThreeSkillOptionChanged(centerObject, orbitRadius, orbitSpeed, initialAngle);
+
+                // 위치 설정 전에 orbitScript의 변수가 올바르게 초기화되었는지 확인
+                // orbitScript의 Start 메서드가 위치를 다시 설정할 수 있으므로, 필요시 Start에서 위치 설정을 제거하거나 수정
+                orbitInstance.transform.position = centerObject.position + new Vector3(
+                    Mathf.Cos(initialAngle * Mathf.Deg2Rad),
+                    0,
+                    Mathf.Sin(initialAngle * Mathf.Deg2Rad)
+                ) * orbitRadius;
+
+                // 디버그 로그 추가
+                Debug.Log($"OrbitInstance {i} Position: {orbitInstance.transform.position}");
+            }
         }
+
+        gameObject.GetComponentInChildren<RangePlayerThreeAttackDamage>().GetPlayer(gameObject.transform);
     }
+
 
     // 네 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
     public void FourRangeSkillAttackEvent()
     {
         Vector3 fourSkillObjPosition = rangeHitPosition;
 
-        GameObject fourSkillObj = Instantiate(rangeFourSkillPrefab, fourSkillObjPosition, Quaternion.identity);
+        GameObject fourSkillObj = Instantiate(rangeFourSkillPrefab, fourSkillObjPosition, Quaternion.identity);        
 
         Rigidbody fourSkillObjRb = fourSkillObj.GetComponent<Rigidbody>();
 

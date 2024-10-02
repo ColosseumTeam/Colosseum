@@ -25,7 +25,7 @@ public class RangePlayerNormalAttack : NetworkBehaviour
         {
             if (collision.gameObject.GetComponent<PlayerDamageController>() != null)
             {               
-                collision.gameObject.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
+                collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
             }
             else
             {             

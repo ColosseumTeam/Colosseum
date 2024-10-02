@@ -53,15 +53,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400016, guid: d917c7129a9e4c74e84188b278d96de7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 5.9170365
       objectReference: {fileID: 0}
     - target: {fileID: 400016, guid: d917c7129a9e4c74e84188b278d96de7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.4000001
       objectReference: {fileID: 0}
     - target: {fileID: 400016, guid: d917c7129a9e4c74e84188b278d96de7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.11
+      value: 9.371
       objectReference: {fileID: 0}
     - target: {fileID: 400016, guid: d917c7129a9e4c74e84188b278d96de7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -230,10 +230,10 @@ MonoBehaviour:
   isGrounding: 0
   downTime: 0
   downEndTime: 3
-  force: 6
+  upForce: 10
   attackReadyTime: 0
   attackReadyEndTime: 4
   damageManager: {fileID: 0}
   botAttackPosition: {fileID: 5201959591423456167}
-  botSkillObj: {fileID: 8879378916739146850, guid: 5905d95c267ca3b42b34ef89ec75b6de, type: 3}
+  botSkillObj: {fileID: 8829451551789304542, guid: 9c9748e2f328c564aaded0f96ec2a3e5, type: 3}
   botSkillSpeed: 15

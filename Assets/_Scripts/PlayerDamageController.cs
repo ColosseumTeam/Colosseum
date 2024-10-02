@@ -1,9 +1,6 @@
 using Fusion;
 using Fusion.Addons.SimpleKCC;
-using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
-using static BotController;
-
 
 public class PlayerDamageController : NetworkBehaviour
 {
@@ -46,16 +43,8 @@ public class PlayerDamageController : NetworkBehaviour
         }
     }
 
-    // skillType : false => 경직 피격
-    // skillType : true => 다운 판정
-    // downAttack : false => 다운 판정 시 피격X
-    // downAttack : true => 다운 판정 시 피격O 
-    // stiffnessTime : 경직 시간
-    // TakeHitState : 0, 1 => 피격 모션
-    // TakeHitState : 2 => 다운 모션
-    // TakeHitState : 3 => 다운 상태 유지 모션
-
-    public void TakeDamage(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime)
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_TakeDamage(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime)
     {
         if (!isDowning || (isDowning || downAttack))
         {
@@ -66,7 +55,6 @@ public class PlayerDamageController : NetworkBehaviour
                     animator.speed = stiffnessTime;
                     animator.SetFloat("TakeHitState", rnd);
                     animator.SetTrigger("TakeHit");
-
                     break;
 
                 case PlayerHitType.Down:
@@ -80,7 +68,6 @@ public class PlayerDamageController : NetworkBehaviour
                     isUping = true;
                     playerVector = gameObject.transform.position;
                     animator.SetTrigger("TakeHit");
-
                     break;
             }
         }
@@ -100,8 +87,8 @@ public class PlayerDamageController : NetworkBehaviour
         }
     }
 
-    // 애니메이션 피격 애니메이션 프레임에 설정되어 있는 메서드
-    public void TakeHitNonAcitve()
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_TakeHitNonAcitve()
     {
         animator.SetTrigger("Idle");
         GetComponent<PlayerController>().PlayerTakeHitStopAction();

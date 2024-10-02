@@ -20,7 +20,7 @@ public class FighterPlayerShiftClick : NetworkBehaviour
         {
             if (other.gameObject.GetComponent<PlayerDamageController>() != null)
             {
-                other.gameObject.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
+                other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
             }
             else
             {
