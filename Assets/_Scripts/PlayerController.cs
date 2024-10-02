@@ -180,13 +180,17 @@ public class PlayerController : NetworkBehaviour
             animator.SetBool("Move", false);
         }
 
-        kcc.Move(newPosition, jumpState);
+        if (state != BehaviourBase.State.Damaged && !isDowning && !isSkilling && !isAttacking)
+        {
+            kcc.Move(newPosition, jumpState);
+        }
+        //kcc.Move(newPosition, jumpState);
     }
 
     private void OnMove(InputValue value)
     {
         // 대미지를 받은 상태라면 정지
-        if (state == BehaviourBase.State.Damaged || isDowning) { return; }
+        //if (state == BehaviourBase.State.Damaged || isDowning || isSkilling) { return; }
         if (isSkilling) { animator.SetBool("Move", false); }
 
         // 입력 시스템을 통해 이동 입력을 받아서 이동 벡터를 설정

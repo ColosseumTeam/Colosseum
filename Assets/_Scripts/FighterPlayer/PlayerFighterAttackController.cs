@@ -16,13 +16,13 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
     [Header("Primary Setting")]
     [SerializeField] private AimController aimController;
-    [SerializeField] private LayerMask groundLayerMask;    
+    [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private CrossHairLookAt crossHairLookAt;
     [SerializeField] private GameManager gameManager;
 
     [Header("Skill Collider")]
     [SerializeField] private CapsuleCollider leftClickSkillCollider;
-    [SerializeField] private CapsuleCollider rightClickSkillCollider;    
+    [SerializeField] private CapsuleCollider rightClickSkillCollider;
 
     [Header("Skill Object")]
     [SerializeField] private Transform qSkillGroup;
@@ -48,7 +48,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
         playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         //crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
-        gameManager = FindObjectOfType<GameManager>();        
+        gameManager = FindObjectOfType<GameManager>();
         aimController = gameManager.AimController;
     }
 
