@@ -10,7 +10,7 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private Transform characterModelGroup;
     [SerializeField] private Transform iconGroup;
     [SerializeField] private GameObject iconPrefab;
-    [SerializeField] private List<CharacterData> characterDatas;
+    [SerializeField] private List<CharacterInfo> characterDatas;
     [SerializeField] private RoomManager roomManager;
 
     [Header("# UI")]
@@ -25,7 +25,7 @@ public class CharacterSelection : MonoBehaviour
     private int clickedIndex;
 
     public int ClickedIndex { get { return clickedIndex; } }
-    public List<CharacterData> CharacterDatas { get { return characterDatas; } }
+    public List<CharacterInfo> CharacterDatas { get { return characterDatas; } }
 
 
     private void Awake()

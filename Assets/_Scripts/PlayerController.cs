@@ -1,11 +1,8 @@
 using Fusion;
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Fusion.Addons.SimpleKCC;
-using UnityEngine.Windows;
-using Random = UnityEngine.Random;
 
 
 // 변수
@@ -128,6 +125,11 @@ public class PlayerController : NetworkBehaviour
         Look(rotationVec);
         //Jump(jumpState);
         InputAction(moveVec, jumpInput);
+
+        if (kcc.IsGrounded)
+        {
+            animator.SetFloat("JumpHeight", 1f);
+        }
     }
 
     public void SetState(BehaviourBase.State newState)
@@ -358,13 +360,6 @@ public class PlayerController : NetworkBehaviour
 
             // y좌표 상승
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        }
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Ground" && isGrounding == false)
-        {
-            animator.SetFloat("JumpHeight", 1f);
         }
     }
 
