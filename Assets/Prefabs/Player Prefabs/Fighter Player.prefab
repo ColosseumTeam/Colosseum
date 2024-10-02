@@ -665,6 +665,7 @@ MonoBehaviour:
   distance: 5
   endPoint: {x: 0, y: 0, z: 0}
   rayDistance: 100
+  groundHitPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1439586546901257003
 GameObject:
   m_ObjectHideFlags: 0
@@ -1524,6 +1525,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  aimController: {fileID: 0}
+  hp: 100
+  maxHp: 100
+  hpImage: {fileID: 0}
   moveSpeed: 5
   rotationSpeed: 60
   attackTimer: 0
@@ -1533,6 +1538,8 @@ MonoBehaviour:
   startYPosition: 0
   boostSpeed: 15
   rb: {fileID: 0}
+  cameraRig: {fileID: 0}
+  kcc: {fileID: 0}
 --- !u!114 &6312660040278632750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1549,14 +1556,15 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 64
-  damageManager: {fileID: 0}
   crossHairLookAt: {fileID: 0}
   gameManager: {fileID: 0}
+  leftClickSkillCollider: {fileID: 0}
   rightClickSkillCollider: {fileID: 1398172267353170186}
   qSkillGroup: {fileID: 4312934275212748976}
   qSkillPrefab: {fileID: 8153478097008842475, guid: c4115bb2b4c388143b8162f347b6b504, type: 3}
   shiftClickSkillPrefab: {fileID: 393467414723081818, guid: 9e1b5ad99ad75534cb94d3e22bcc3649, type: 3}
   eSkillPrefab: {fileID: 4652144433381085407, guid: da271c044d4eb90408073a5e6a8b1ebf, type: 3}
+  isAttacking: 0
 --- !u!1 &2602648661879051643
 GameObject:
   m_ObjectHideFlags: 0
@@ -1745,7 +1753,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2907,7 +2915,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4084,6 +4092,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656ad118c1ab2e04887a62773efb7c6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 10
+  playerHitType: 0
+  botHitType: 0
+  downAttack: 0
+  stiffnessTime: 1
 --- !u!1 &7065287075941748649
 GameObject:
   m_ObjectHideFlags: 0
@@ -4177,7 +4190,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

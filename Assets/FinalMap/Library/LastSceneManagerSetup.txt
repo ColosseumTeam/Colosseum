@@ -1,5 +1,0 @@
-sceneSetups:
-- path: Assets/Assets/_AncientRuines/FinalMap.unity
-  isLoaded: 1
-  isActive: 1
-  isSubScene: 0
