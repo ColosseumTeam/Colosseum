@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e93a3264640d1c347a9afd3a35f8f5c4, type: 3}
   m_Name: RangerData
   m_EditorClassIdentifier: 
+  playerNumber: 1
   MaxHp: 100

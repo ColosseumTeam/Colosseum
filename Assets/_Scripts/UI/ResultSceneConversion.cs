@@ -1,8 +1,11 @@
+using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ResultSceneConversion : MonoBehaviour
+public class ResultSceneConversion : NetworkBehaviour
 {
+    [SerializeField] private SceneData sceneData;
+
     private void Update()
     {
         if (Input.GetKey(KeyCode.K))
@@ -11,8 +14,14 @@ public class ResultSceneConversion : MonoBehaviour
         }
     }
 
-    public void ResultSceneBringIn()
+    public void ResultSceneBringIn(int winner)
     {
-        SceneManager.LoadScene("ResultScene");
+        if (!HasStateAuthority)
+        {
+            sceneData.winPlayer = winner;
+
+            SceneManager.LoadScene("ResultScene");
+        }
+
     }
 }

@@ -57,20 +57,11 @@ public class BotController : NetworkBehaviour
         }
     }
 
-    // skillType : false => 경직 피격
-    // skillType : true => 다운 판정
-    // downAttack : false => 다운 판정 시 피격X
-    // downAttack : true => 다운 판정 시 피격O 
-    // stiffnessTime : 경직 시간
-    // TakeHitState : 0, 1 => 피격 모션
-    // TakeHitState : 2 => 다운 모션
-    // TakeHitState : 3 => 다운 상태 유지 모션
-
     public void TakeDamage(float damage, BotHitType newBotHitType, bool downAttack, float stiffnessTime)
     {
         Debug.Log($"{downAttack} && {newBotHitType}");
 
-        if (!isDowning || (isDowning && downAttack))
+        if (!isDowning || !isGrounding || (isDowning && downAttack))
         {
             switch (newBotHitType)
             {
@@ -79,6 +70,11 @@ public class BotController : NetworkBehaviour
                     animator.speed = stiffnessTime;
                     animator.SetFloat("TakeHitState", rnd);
                     animator.SetTrigger("TakeHit");
+
+                    if (!isGrounding)
+                    {
+                        rb.velocity = Vector3.zero;
+                    }
 
                     break;
 
