@@ -3704,7 +3704,7 @@ MonoBehaviour:
   leftClickSkillCollider: {fileID: 6451417775510813676}
   rightClickSkillCollider: {fileID: 5229549627569907406}
   qSkillGroup: {fileID: 7234061850492326333}
-  qSkillPrefab: {fileID: 8153478097008842475, guid: c4115bb2b4c388143b8162f347b6b504, type: 3}
+  qSkillPrefab: {fileID: 3546954146840587865, guid: c4115bb2b4c388143b8162f347b6b504, type: 3}
   shiftClickSkillPrefab: {fileID: 393467414723081818, guid: 9e1b5ad99ad75534cb94d3e22bcc3649, type: 3}
   eSkillPrefab: {fileID: 4652144433381085407, guid: da271c044d4eb90408073a5e6a8b1ebf, type: 3}
   isAttacking: 0

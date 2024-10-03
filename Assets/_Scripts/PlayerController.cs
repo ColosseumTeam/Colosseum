@@ -238,7 +238,7 @@ public class PlayerController : NetworkBehaviour
         if (state == BehaviourBase.State.Damaged || isDowning) { return; }
 
         // 공격 입력이 감지되고 캐릭터가 공격 중이 아닐 때
-        if (value.isPressed && !isAttacking && isGrounding && !isSkilling)
+        if (value.isPressed && !isAttacking && isGrounding && !isSkilling && HasStateAuthority)
         {
             // 이동 중이라면 이동을 멈춤
             if (rb.velocity != Vector3.zero)

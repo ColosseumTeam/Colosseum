@@ -13,10 +13,10 @@ public class FighterQSkill : NetworkBehaviour
     private Vector3 dir;
 
 
-    private void Awake()
+    private void Start()
     {
         int ran = Random.Range(0, 3);
-        transform.GetChild(ran).gameObject.SetActive(true);
+        transform.GetChild(0).gameObject.SetActive(true);
     }
 
     private void OnEnable()
@@ -25,10 +25,17 @@ public class FighterQSkill : NetworkBehaviour
         //Destroy(gameObject, 2f);
     }
 
-    private void Update()
+    public override void FixedUpdateNetwork()
     {
-        transform.position += dir * Time.deltaTime * speed;
+        base.FixedUpdateNetwork();
+
+        transform.position += dir * Runner.DeltaTime * speed;
     }
+
+    //private void Update()
+    //{
+    //    transform.position += dir * Time.deltaTime * speed;
+    //}
 
     public void Look(Vector3 aimPos)
     {
