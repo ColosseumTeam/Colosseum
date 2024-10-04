@@ -2455,6 +2455,7 @@ MonoBehaviour:
   distance: 5
   endPoint: {x: 0, y: 0, z: 0}
   rayDistance: 100
+  dir: {x: 0, y: 0, z: 0}
   groundHitPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &3927682190761482900
 GameObject:
@@ -3722,7 +3723,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 3442206272
   ObjectInterest: 0
-  Flags: 262145
+  Flags: 327681
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 7039735646730250647}

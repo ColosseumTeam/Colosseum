@@ -130,7 +130,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     {
         float input = value.Get<float>();
 
-        if (input == 1f && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[0])
+        if (input == 1f && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[0] && HasStateAuthority)
         {
             isCoolTimeSkill = 0;
 
@@ -145,7 +145,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     // 두번째 스킬 발동 메서드
     private void OnRangeTwoSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[1])
+        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[1] && HasStateAuthority)
         {
             isCoolTimeSkill = 1;
             SkillStateChagned(1f);
@@ -155,7 +155,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     // 세번째 스킬 발동 메서드
     private void OnRangeThreeSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[2])
+        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[2] && HasStateAuthority)
         {
             isCoolTimeSkill = 2;
             SkillStateChagned(2f);
@@ -165,7 +165,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     // 네번째 스킬 발동 메서드
     private void OnRangeFourSkill(InputValue value)
     {
-        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[3])
+        if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[3] && HasStateAuthority)
         {
             isCoolTimeSkill = 3;
             SkillStateChagned(3f);
@@ -176,10 +176,11 @@ public class PlayerRangeAttackController : NetworkBehaviour
     public void NormalRangeAttackEvent()
     {
         // rangeTransform의 위치와 회전을 사용하여 오브젝트 생성
-        GameObject normalObj = Instantiate(rangeNormalSkillPrefab, rangeTransform.position, rangeTransform.rotation);
+        NetworkObject normalObj = Runner.Spawn(rangeNormalSkillPrefab, rangeTransform.position, rangeTransform.rotation);
 
         Rigidbody normalObjRb = normalObj.GetComponent<Rigidbody>();
         normalObj.GetComponent<RangePlayerNormalAttack>().Look(aimObject.transform.position);
+        normalObj.GetComponent<RangePlayerNormalAttack>().GetRangePlayer(gameObject);
     }
 
     // 첫 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
@@ -189,7 +190,8 @@ public class PlayerRangeAttackController : NetworkBehaviour
         Vector3 oneSkillObjPosition = rangeHitPosition;
 
         // 오브젝트 생성
-        GameObject oneSkillObj = Instantiate(rangeOneSkillPrefab, oneSkillObjPosition, Quaternion.identity);
+        NetworkObject oneSkillObj = Runner.Spawn(rangeOneSkillPrefab, oneSkillObjPosition, Quaternion.identity);
+        oneSkillObj.GetComponent<RangePlayerOneAttack>().GetRangePlayer(gameObject);
         corssHairLookAt.EndPointDistanceChanged(3f);
     }
 
@@ -197,7 +199,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     public void TwoRangeSkillAttackEvent()
     {
         // 프리팹 생성
-        GameObject twoSkillObj = Instantiate(rangeTwoSkillPrefab, rangeTransform.position, rangeTransform.rotation);
+        NetworkObject twoSkillObj = Runner.Spawn(rangeTwoSkillPrefab, rangeTransform.position, rangeTransform.rotation);
 
         // 생성된 프리팹 RigidBody 참조
         Rigidbody twoSkillObjRb = twoSkillObj.GetComponent<Rigidbody>();
@@ -229,7 +231,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         for (int i = 0; i < numberOfOrbits; i++)
         {
             // 부모를 명시적으로 null로 설정하여 씬의 루트에 생성되도록 함
-            GameObject orbitInstance = Instantiate(rangeThreeSkillPrefab, centerPosition, Quaternion.identity, null);
+            NetworkObject orbitInstance = Runner.Spawn(rangeThreeSkillPrefab, centerPosition, Quaternion.identity, null);
 
             RangePlayerThreeAttack orbitScript = orbitInstance.GetComponent<RangePlayerThreeAttack>();
             if (orbitScript != null)
@@ -260,7 +262,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     {
         Vector3 fourSkillObjPosition = rangeHitPosition;
 
-        GameObject fourSkillObj = Instantiate(rangeFourSkillPrefab, fourSkillObjPosition, Quaternion.identity);        
+        NetworkObject fourSkillObj = Runner.Spawn(rangeFourSkillPrefab, fourSkillObjPosition, Quaternion.identity);        
 
         Rigidbody fourSkillObjRb = fourSkillObj.GetComponent<Rigidbody>();
 

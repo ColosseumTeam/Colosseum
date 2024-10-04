@@ -4854,6 +4854,8 @@ GameObject:
   - component: {fileID: 6138650109950754456}
   - component: {fileID: 2779499756348427507}
   - component: {fileID: -1742860342357770973}
+  - component: {fileID: 5167220378891103666}
+  - component: {fileID: 1525742939566520116}
   m_Layer: 0
   m_Name: RangerESkill
   m_TagString: Untagged
@@ -4945,6 +4947,42 @@ MonoBehaviour:
   attackTime: 0
   attackTimeEnd: 1
   afterAttackObject: {fileID: 1102374203008830, guid: 0011bd88cb09fb3458e92717bcf5aa72, type: 3}
+--- !u!114 &5167220378891103666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118796651434776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2435326665
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects:
+  - {fileID: 4758722456922155677}
+  NetworkedBehaviours:
+  - {fileID: -1742860342357770973}
+  - {fileID: 1525742939566520116}
+--- !u!114 &1525742939566520116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118796651434776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1 &1521307914265900
 GameObject:
   m_ObjectHideFlags: 0
@@ -14841,8 +14879,9 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 0
+  SortKey: 2780095428
   ObjectInterest: 1
-  Flags: 262144
+  Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 2098911432234236125}

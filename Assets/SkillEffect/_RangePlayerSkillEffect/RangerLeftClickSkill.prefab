@@ -19380,6 +19380,8 @@ GameObject:
   - component: {fileID: 8516560385024408204}
   - component: {fileID: 8239983392533575016}
   - component: {fileID: -8531132950075034511}
+  - component: {fileID: 8454233232274726666}
+  - component: {fileID: 5989714810968633390}
   m_Layer: 0
   m_Name: RangerLeftClickSkill
   m_TagString: Untagged
@@ -24373,3 +24375,38 @@ MonoBehaviour:
   botHitType: 0
   downAttack: 0
   stiffnessTime: 1
+--- !u!114 &8454233232274726666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8829451551789304542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3154978041
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: -8531132950075034511}
+  - {fileID: 5989714810968633390}
+--- !u!114 &5989714810968633390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8829451551789304542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0

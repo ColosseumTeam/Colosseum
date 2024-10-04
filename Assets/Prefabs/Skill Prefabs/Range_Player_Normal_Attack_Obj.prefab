@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2596105938012267122}
   - component: {fileID: 8678420802314633458}
   - component: {fileID: -5680510384909437672}
+  - component: {fileID: 7403343936828732545}
   m_Layer: 0
   m_Name: Range_Player_Normal_Attack_Obj
   m_TagString: Untagged
@@ -151,3 +152,21 @@ MonoBehaviour:
   botHitType: 0
   downAttack: 0
   stiffnessTime: 1
+--- !u!114 &7403343936828732545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8879378916739146850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1260585055
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: -5680510384909437672}

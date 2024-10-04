@@ -11,6 +11,7 @@ public class RangePlayerOneAttack : NetworkBehaviour
     [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = true;
 
+    private GameObject player;
     private float maxHeight = 0f;
     private float upSpeed = 20f;
 
@@ -19,8 +20,11 @@ public class RangePlayerOneAttack : NetworkBehaviour
         Destroy(gameObject, 1.5f);
     }
 
-    private void Update()
+
+    public override void FixedUpdateNetwork()
     {
+        base.FixedUpdateNetwork();
+
         if (transform.position.y < maxHeight)
         {
             // 기존 position을 받아와서 y 값을 수정한 후 다시 할당
@@ -34,16 +38,27 @@ public class RangePlayerOneAttack : NetworkBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            if (other.gameObject.GetComponent<PlayerDamageController>() != null)
+            if (other.gameObject.GetComponent<PlayerDamageController>() != null
+                && other.gameObject != player && HasStateAuthority)
             {
                 other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
             }
+
             else
             {
-                other.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, 1f);
+                if (other.gameObject.TryGetComponent(out BotController component))
+                {
+                    Debug.Log("Bot Hit");
+                    component.TakeDamage(damage, botHitType, downAttack, 1f);
+                }
             }
 
             GetComponent<BoxCollider>().enabled = false;
         }
+    }
+
+    public void GetRangePlayer(GameObject newPlayer)
+    {
+        player = newPlayer;
     }
 }

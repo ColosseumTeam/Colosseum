@@ -37,6 +37,7 @@ public class PlayerController : NetworkBehaviour
 
     // 캐릭터 애니메이션 제어를 위한 Animator 참조
     private Animator animator;
+    private NetworkMecanimAnimator mecanimAnimator;
 
     // 공격 상태 및 이동 방향을 저장하는 변수
     private float attackState;
@@ -55,6 +56,7 @@ public class PlayerController : NetworkBehaviour
         // Rigidbody와 Animator 컴포넌트를 가져옴
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
 
         //GameObject cameraObject = GetComponentInChildren<Camera>().gameObject;
         //if(cameraObject != null)
@@ -70,7 +72,8 @@ public class PlayerController : NetworkBehaviour
         {
             cameraRig.SetActive(true);
             transform.tag = "Player";
-
+            kcc.Collider.tag = "Player";
+            
             aimController = FindAnyObjectByType<AimController>();
 
             if (aimController != null)
@@ -85,8 +88,9 @@ public class PlayerController : NetworkBehaviour
         else
         {
             transform.tag = "Enemy";
+            kcc.Collider.tag = "Enemy";
         }
-    }
+    }    
 
     public override void FixedUpdateNetwork()
     {
@@ -257,7 +261,7 @@ public class PlayerController : NetworkBehaviour
 
             // 애니메이션 파라미터 업데이트 및 공격 트리거 설정
             animator.SetFloat("AttackState", attackState);
-            animator.SetTrigger("Attack");
+            mecanimAnimator.SetTrigger("Attack");
 
             // 상태를 공격 상태로 변경
             state = BehaviourBase.State.Attack;
@@ -378,4 +382,5 @@ public class PlayerController : NetworkBehaviour
     {
         isDowning = check;
     }
+
 }

@@ -1,8 +1,9 @@
+using Fusion;
 using UnityEngine;
 using static BotController;
 using static PlayerDamageController;
 
-public class RangePlayerTwoAfterAttack : MonoBehaviour
+public class RangePlayerTwoAfterAttack : NetworkBehaviour
 {
     [SerializeField] private float damage;
     [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
@@ -24,9 +25,13 @@ public class RangePlayerTwoAfterAttack : MonoBehaviour
             {
                 other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
             }
+
             else
             {
-                other.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, 1f);
+                if (other.gameObject.TryGetComponent(out BotController component))
+                {
+                    component.TakeDamage(damage, botHitType, downAttack, 1f);
+                }
             }
         }
     }

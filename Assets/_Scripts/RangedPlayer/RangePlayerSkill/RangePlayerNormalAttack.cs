@@ -9,6 +9,7 @@ public class RangePlayerNormalAttack : NetworkBehaviour
     [SerializeField] private bool downAttack = false;
     [SerializeField] private float stiffnessTime = 1f;
 
+    private GameObject player;
     private float speed = 10f;
     private Vector3 dir;
 
@@ -17,9 +18,16 @@ public class RangePlayerNormalAttack : NetworkBehaviour
         Destroy(gameObject, 3f);
     }
 
-    private void Update()
+    //private void Update()
+    //{
+    //    transform.position += dir * Time.deltaTime * speed;
+    //}
+
+    public override void FixedUpdateNetwork()
     {
-        transform.position += dir * Time.deltaTime * speed;
+        base.FixedUpdateNetwork();
+
+        transform.position += dir * Runner.DeltaTime * speed;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -30,16 +38,23 @@ public class RangePlayerNormalAttack : NetworkBehaviour
         }
 
         if (collision.gameObject.CompareTag("Enemy"))
+        //if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            if (collision.gameObject.GetComponent<PlayerDamageController>() != null)
-            {               
+            if (collision.gameObject.GetComponent<PlayerDamageController>() != null 
+                && collision.gameObject != player && HasStateAuthority) 
+            {
+                Debug.Log("Player Hit");
                 collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
             }
             else
             {             
-                collision.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                if (collision.gameObject.TryGetComponent(out BotController component))
+                {
+                    Debug.Log("Bot Hit");
+                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                }
+                //collision.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
             }
-
 
             Destroy(gameObject); 
         }
@@ -57,5 +72,10 @@ public class RangePlayerNormalAttack : NetworkBehaviour
         {
             dir = (Camera.main.ScreenToWorldPoint(new Vector3(aimPos.x, aimPos.y, 10f)) - transform.position).normalized;
         }
+    }
+
+    public void GetRangePlayer(GameObject newPlayer)
+    {
+        player = newPlayer;
     }
 }

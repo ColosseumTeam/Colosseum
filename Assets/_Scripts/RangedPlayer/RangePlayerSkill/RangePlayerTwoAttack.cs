@@ -14,6 +14,7 @@ public class RangePlayerTwoAttack : NetworkBehaviour
     [SerializeField] private float fieldTimer = 0f;
     [SerializeField] private float fieldEndTimer = 1f;
 
+    private GameObject player;
     private GameObject targetObj;
 
     private void Awake()
@@ -23,8 +24,15 @@ public class RangePlayerTwoAttack : NetworkBehaviour
         Destroy(gameObject, 3f);
     }
 
-    private void Update()
+    //private void Update()
+    //{
+    //    GroundPositionGrasp();
+    //}
+
+    public override void FixedUpdateNetwork()
     {
+        base.FixedUpdateNetwork();
+
         GroundPositionGrasp();
     }
 
@@ -34,7 +42,7 @@ public class RangePlayerTwoAttack : NetworkBehaviour
 
         if (fieldTimer >= fieldEndTimer)
         {
-            GameObject instaceFireField = Instantiate(fireFieldMaker, gameObject.transform.position, Quaternion.identity);
+            NetworkObject instaceFireField = Runner.Spawn(fireFieldMaker, gameObject.transform.position, Quaternion.identity);
             instaceFireField.GetComponent<RangePlayerTwoAfterAttack>().GetTargetObject(targetObj);
             fieldTimer = 0f;
         }
@@ -61,18 +69,27 @@ public class RangePlayerTwoAttack : NetworkBehaviour
                 }
             }
 
-            if (collision.gameObject.GetComponent<PlayerDamageController>() != null)
+            if (collision.gameObject.GetComponent<PlayerDamageController>() != null
+                && collision.gameObject != player && HasStateAuthority)
             {
                 collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
                 targetObj = collision.gameObject;
             }
             else
             {
-                collision.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, 1f);
-                targetObj = collision.gameObject;
+                if (collision.gameObject.TryGetComponent(out BotController component))
+                {
+                    component.TakeDamage(damage, botHitType, downAttack, 1f);
+                    targetObj = collision.gameObject;
+                }
             }
-
+            
             Destroy(gameObject);
         }
+    }
+
+    public void GetRangePlayer(GameObject newPlayer)
+    {
+        player = newPlayer;
     }
 }

@@ -6,13 +6,7 @@ public class RangePlayerThreeAttack : NetworkBehaviour
     private Transform centerObject;
     private float orbitRadius;
     private float orbitSpeed;
-    private float currentAngle;
-    private float damage;
-
-    public void Init(float newDamage)
-    {
-       damage = newDamage;
-    }
+    private float currentAngle;    
 
     private void Start()
     {
@@ -28,9 +22,11 @@ public class RangePlayerThreeAttack : NetworkBehaviour
         Destroy(gameObject, 10f);
     }
 
-    private void Update()
+    public override void FixedUpdateNetwork()
     {
-        if (centerObject == null) 
+        base.FixedUpdateNetwork();
+
+        if (centerObject == null)
             return;
 
         currentAngle += orbitSpeed * Time.deltaTime;
@@ -43,6 +39,7 @@ public class RangePlayerThreeAttack : NetworkBehaviour
         Vector3 offset = new Vector3(Mathf.Cos(rad), 0, Mathf.Sin(rad)) * orbitRadius;
         transform.position = centerObject.position + offset;
     }
+    
 
     public void ThreeSkillOptionChanged(Transform newCenterObject, float newOrbitRadius, float newOrbitSpeed, float newCurrentAngle)
     {        

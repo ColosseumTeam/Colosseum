@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4339355549454830}
   - component: {fileID: 7781229964778116793}
   - component: {fileID: 3910671383970448075}
+  - component: {fileID: 5994054351189662806}
+  - component: {fileID: -6809457417737794110}
   m_Layer: 0
   m_Name: RangerRightClickAfterSkill
   m_TagString: Untagged
@@ -72,6 +74,41 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 7.8
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5994054351189662806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347424460518680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3480959982
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 7781229964778116793}
+  - {fileID: -6809457417737794110}
+--- !u!114 &-6809457417737794110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347424460518680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0
 --- !u!1 &1781747267170136
 GameObject:
   m_ObjectHideFlags: 0

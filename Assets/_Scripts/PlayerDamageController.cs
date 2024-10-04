@@ -55,9 +55,9 @@ public class PlayerDamageController : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
+    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = true)]
     public void RPC_TakeDamage(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime)
-    {
+    {        
         Debug.Log($"{damage}, {playerHitType}, {downAttack}, {stiffnessTime}");
 
         if (!isDowning || !isGrounding || (isDowning && downAttack))
@@ -74,7 +74,7 @@ public class PlayerDamageController : NetworkBehaviour
 
                     if (!isGrounding)
                     {
-                        kcc.Rigidbody.velocity = Vector3.zero;
+                        //kcc.Rigidbody.velocity = Vector3.zero;
                     }
 
                     break;

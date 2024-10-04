@@ -1,6 +1,7 @@
+using Fusion;
 using UnityEngine;
 
-public class RangePlayerThreeAttackDamage : MonoBehaviour
+public class RangePlayerThreeAttackDamage : NetworkBehaviour
 {
     [SerializeField] private float damage = 10f;
     [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
@@ -21,8 +22,10 @@ public class RangePlayerThreeAttackDamage : MonoBehaviour
         gameObject.GetComponent<Collider>().enabled = false;
     }
 
-    private void Update()
+    public override void FixedUpdateNetwork()
     {
+        base.FixedUpdateNetwork();
+
         if (timerCheck)
         {
             transform.position = player.transform.position;
@@ -54,14 +57,17 @@ public class RangePlayerThreeAttackDamage : MonoBehaviour
 
         if (dealingPeriodTime >= dealingPeriodEndTIme)
         {
-            if (otherGameObject.GetComponent<PlayerDamageController>() != null)
+            if (otherGameObject.GetComponent<PlayerDamageController>() != null
+                && otherGameObject != player && HasStateAuthority)
             {
                 otherGameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
             }
             else
-            {
-                otherGameObject.GetComponent<BotController>().TakeDamage(
-                    damage, botHitType, downAttack, stiffnessTime);
+            {                
+                if (otherGameObject.TryGetComponent(out BotController component))
+                {
+                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                }
             }
             dealingPeriodTime = 0f;
         }
@@ -79,4 +85,5 @@ public class RangePlayerThreeAttackDamage : MonoBehaviour
     {
         otherGameObject = null;
     }
+
 }

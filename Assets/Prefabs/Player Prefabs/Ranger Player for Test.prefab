@@ -5699,6 +5699,7 @@ MonoBehaviour:
   isDowning: 0
   isUping: 0
   isGrounding: 0
+  upDamageCheck: 0
   upForce: 10
   downTimer: 0
   downEndTimer: 3
@@ -5725,6 +5726,7 @@ MonoBehaviour:
   - {fileID: -3007750675426362701}
   - {fileID: 3859240491041883072}
   - {fileID: 2977825786148993041}
+  - {fileID: 7778994691814462311}
 --- !u!114 &-3007750675426362701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5923,7 +5925,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1152089762074811222
 Transform:
   m_ObjectHideFlags: 0

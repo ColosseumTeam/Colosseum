@@ -1,5 +1,7 @@
 using Fusion;
+using Fusion.Addons.SimpleKCC;
 using UnityEngine;
+using UnityEngineInternal;
 
 public class CrossHairLookAt : NetworkBehaviour
 {
@@ -20,8 +22,9 @@ public class CrossHairLookAt : NetworkBehaviour
         crosshair = FindObjectOfType<AimController>().gameObject;
     }
 
+
     void Update()
-    {        
+    {
         if (crosshair != null)
         {
             // 크로스헤어의 RectTransform을 참조
@@ -40,7 +43,7 @@ public class CrossHairLookAt : NetworkBehaviour
             objectToRotate.rotation = Quaternion.LookRotation(direction);
 
             // 끝 지점 참조
-            endPoint = objectToRotate.position + direction.normalized * distance; 
+            endPoint = objectToRotate.position + direction.normalized * distance;
 
             EndPointUntilRay();
 
@@ -83,6 +86,11 @@ public class CrossHairLookAt : NetworkBehaviour
                 groundHitPosition = hit.collider.transform.position;
                 isGrounding = true;
             }
+
+            //if (hit.collider.gameObject.GetComponentInParent<NetworkObject>().CompareTag("Enemy"))
+            //{
+                
+            //}
         }
         else
         {
@@ -105,7 +113,7 @@ public class CrossHairLookAt : NetworkBehaviour
             if (hit.collider.CompareTag("Ground"))
             {
                 // 충돌 위치를 가져와서 원하는 작업을 수행
-                groundHitPosition = hit.point;                
+                groundHitPosition = hit.point;
             }
         }
     }

@@ -602,7 +602,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runnerPrefab: {fileID: 3880697578239190824, guid: 9b0af6e428c97834eb2f60ce27618abb, type: 3}
   roomText: {fileID: 1643273077}
-  maxPlayerCount: 2
+  maxPlayerCount: 1
   joinButton: {fileID: 5671487}
 --- !u!1 &1103375570
 GameObject:

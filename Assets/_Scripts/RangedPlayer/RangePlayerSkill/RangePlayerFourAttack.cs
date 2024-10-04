@@ -12,6 +12,7 @@ public class RangePlayerFourAttack : NetworkBehaviour
     [SerializeField] private float attackTimeEnd = 0.1f;
     [SerializeField] private GameObject afterAttackObject;
 
+    private GameObject player;
     private bool isAttacking;
     private GameObject enemyObj;
 
@@ -20,14 +21,16 @@ public class RangePlayerFourAttack : NetworkBehaviour
         Destroy(gameObject, 3f);
     }
 
-    private void Update()
+    public override void FixedUpdateNetwork()
     {
+        base.FixedUpdateNetwork();
+
         if (isAttacking)
-        {                       
+        {
             attackTime += Time.deltaTime;
-            if(attackTime >= attackTimeEnd && enemyObj != null)
+            if (attackTime >= attackTimeEnd && enemyObj != null)
             {
-                Instantiate(afterAttackObject, enemyObj.transform.position, Quaternion.identity);
+                Runner.Spawn(afterAttackObject, gameObject.transform.position, Quaternion.identity);
 
                 if (enemyObj.GetComponent<PlayerDamageController>() != null)
                 {
@@ -36,13 +39,16 @@ public class RangePlayerFourAttack : NetworkBehaviour
                 }
                 else
                 {
-                    downAttack = true;
-                    enemyObj.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, 1f);
+                    if (enemyObj.gameObject.TryGetComponent(out BotController component))
+                    {
+                        downAttack = true;
+                        component.TakeDamage(damage, botHitType, downAttack, 1f);
+                    }
                 }
 
                 Destroy(gameObject);
-            }            
-        }   
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -51,14 +57,18 @@ public class RangePlayerFourAttack : NetworkBehaviour
         {
             enemyObj = other.gameObject;
 
-            if (enemyObj.GetComponent<PlayerDamageController>() != null)
+            if (enemyObj.GetComponent<PlayerDamageController>() != null
+                && enemyObj != player && HasStateAuthority)
             {
                 enemyObj.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
             }
             else
             {
-                enemyObj.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, 1f);
-            }
+                if (enemyObj.gameObject.TryGetComponent(out BotController component))
+                {
+                    component.TakeDamage(damage, botHitType, downAttack, 1f);
+                }
+            }            
 
             GetComponent<Collider>().enabled = false;
             downAttack = false;
@@ -73,5 +83,10 @@ public class RangePlayerFourAttack : NetworkBehaviour
 
         //attackTime = 0f;
         //isAttacking = true;        
+    }
+
+    public void GetRangePlayer(GameObject newPlayer)
+    {
+        player = newPlayer;
     }
 }
