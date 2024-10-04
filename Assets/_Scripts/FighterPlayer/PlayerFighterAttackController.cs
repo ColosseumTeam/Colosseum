@@ -28,11 +28,12 @@ public class PlayerFighterAttackController : NetworkBehaviour
     [Header("Skill Object")]
     [SerializeField] private Transform qSkillGroup;
     [SerializeField] private NetworkObject qSkillPrefab;
-    [SerializeField] private GameObject shiftClickSkillPrefab;
-    [SerializeField] private GameObject eSkillPrefab;
+    [SerializeField] private NetworkObject shiftClickSkillPrefab;
+    [SerializeField] private NetworkObject eSkillPrefab;
 
     private PlayerController playerController;
     private Animator animator;
+    private NetworkMecanimAnimator mecanimAnimator;
     private float eState;
     [SerializeField] private bool isAttacking;
     private bool isPressedShift;
@@ -48,6 +49,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
     {
         playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
+        mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
         //crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
         gameManager = FindObjectOfType<GameManager>();
         aimController = gameManager.AimController;
@@ -85,7 +87,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
             skillPos = crossHairLookAt.GroundHitPositionTransmission();
 
-            animator.SetTrigger("Skill");
+            mecanimAnimator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 2);
         }
 
@@ -97,7 +99,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
     public void OnInstantiateShiftClickSkillPrefab()
     {
-        GameObject shifhtClickObj = Instantiate(shiftClickSkillPrefab, skillPos, transform.rotation);
+        NetworkObject shifhtClickObj = Runner.Spawn(shiftClickSkillPrefab, skillPos, transform.rotation);
     }
 
     // Right Click Skill
@@ -112,7 +114,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
             {
                 eState = 0f;
             }
-            animator.SetTrigger("Skill");
+            mecanimAnimator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 0);
         }
     }
@@ -127,7 +129,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
             if (!IsQSkillOn)
             {
                 IsQSkillOn = true;
-                animator.SetTrigger("Skill");
+                mecanimAnimator.SetTrigger("Skill");
                 animator.SetInteger("SkillState", 1);
                 // Todo: 공중에 떠있는 돌 애니메이션 이벤트에 적용
             }
@@ -138,9 +140,9 @@ public class PlayerFighterAttackController : NetworkBehaviour
                     return;
                 }
 
-                //NetworkObject stone = Runner.Spawn(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
-                //stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
-                StartCoroutine(SpawnStone());
+                NetworkObject stone = Runner.Spawn(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
+                stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
+
                 qCount--;
 
                 qSkillGroup.GetChild(qCount).gameObject.SetActive(false);
@@ -152,13 +154,6 @@ public class PlayerFighterAttackController : NetworkBehaviour
                 }
             }
         }
-    }
-
-    private IEnumerator SpawnStone()
-    {
-        NetworkObject stone = new NetworkObject();
-        yield return new WaitUntil(() => stone = Runner.Spawn(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation));
-        stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
     }
 
     public void QSkillInit(int count)
@@ -182,21 +177,21 @@ public class PlayerFighterAttackController : NetworkBehaviour
         {
             skillPos = crossHairLookAt.GroundHitPositionTransmission();
 
-            animator.SetTrigger("Skill");
+            mecanimAnimator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 3);
         }
     }
 
     public void OnInstantiateESkillPrefab()
     {
-        GameObject eSkillObj = Instantiate(eSkillPrefab, skillPos, transform.rotation);        
+        NetworkObject eSkillObj = Runner.Spawn(eSkillPrefab, skillPos, transform.rotation);
     }
 
-    private void OnEmotion1(InputValue value)
+    private void OnDance(InputValue value)
     {
         if (value.isPressed)
         {
-            animator.SetTrigger("Emotion1");
+            mecanimAnimator.SetTrigger("Emotion1");
         }
     }
 

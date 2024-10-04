@@ -695,7 +695,7 @@ GameObject:
   - component: {fileID: 4389704429611544505}
   - component: {fileID: 1562482344412292568}
   - component: {fileID: 3546954146840587865}
-  - component: {fileID: 6467678603224271258}
+  - component: {fileID: 5733368086827886401}
   m_Layer: 0
   m_Name: Fighter_Player_Q_Skill_Obj
   m_TagString: Untagged
@@ -712,8 +712,8 @@ Transform:
   m_GameObject: {fileID: 8153478097008842475}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.342, z: 0.87}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4941659188547905596}
@@ -738,7 +738,7 @@ MonoBehaviour:
   botHitType: 0
   downAttack: 0
   stiffnessTime: 1
-  speed: 10
+  speed: 20
 --- !u!114 &3546954146840587865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -757,11 +757,11 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 1562482344412292568}
-  - {fileID: 6467678603224271258}
+  - {fileID: 5733368086827886401}
   - {fileID: 7482665201955330867}
   - {fileID: 4482804074083318039}
   - {fileID: 2937488788418050197}
---- !u!114 &6467678603224271258
+--- !u!114 &5733368086827886401
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 557610302724410476}
   - component: {fileID: 8116046074925912359}
   - component: {fileID: 2197746318882794053}
+  - component: {fileID: -4851119361603152715}
+  - component: {fileID: 1066430442992323278}
   m_Layer: 0
   m_Name: Fighter_Player_ShiftClick_Skill_Obj
   m_TagString: Untagged
@@ -123,3 +125,38 @@ MonoBehaviour:
   botHitType: 1
   downAttack: 1
   stiffnessTime: 1
+--- !u!114 &-4851119361603152715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393467414723081818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2597756744
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 2197746318882794053}
+  - {fileID: 1066430442992323278}
+--- !u!114 &1066430442992323278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393467414723081818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0

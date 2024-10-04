@@ -13,16 +13,13 @@ public class FighterQSkill : NetworkBehaviour
     private Vector3 dir;
 
 
-    private void Start()
-    {
-        int ran = Random.Range(0, 3);
-        transform.GetChild(0).gameObject.SetActive(true);
-    }
-
     private void OnEnable()
     {
         // Todo: Destory 사용한 모든 오브젝트 풀링 필요.
-        //Destroy(gameObject, 2f);
+        int ran = Random.Range(0, 3);
+        transform.GetChild(ran).gameObject.SetActive(true);
+
+        Destroy(gameObject, 3f);
     }
 
     public override void FixedUpdateNetwork()
@@ -32,21 +29,18 @@ public class FighterQSkill : NetworkBehaviour
         transform.position += dir * Runner.DeltaTime * speed;
     }
 
-    //private void Update()
-    //{
-    //    transform.position += dir * Time.deltaTime * speed;
-    //}
-
     public void Look(Vector3 aimPos)
     {
         Ray ray = Camera.main.ScreenPointToRay(aimPos);
         if (Physics.Raycast(ray, out RaycastHit hit) && hit.transform.CompareTag("Enemy"))
         {
             dir = (hit.transform.position - transform.position + new Vector3(0, 0.9f)).normalized;
+            Debug.Log($"Enemy hit: {dir}");
         }
         else
         {
             dir = (Camera.main.ScreenToWorldPoint(new Vector3(aimPos.x, aimPos.y, 10f)) - transform.position).normalized;
+            Debug.Log($"Enemy no hit");
         }
     }
 }

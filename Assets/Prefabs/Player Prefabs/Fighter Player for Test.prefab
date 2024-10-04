@@ -2455,6 +2455,7 @@ MonoBehaviour:
   distance: 5
   endPoint: {x: 0, y: 0, z: 0}
   rayDistance: 100
+  dir: {x: 0, y: 0, z: 0}
   groundHitPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &3927682190761482900
 GameObject:
@@ -3136,6 +3137,7 @@ GameObject:
   - component: {fileID: 7202000458940278953}
   - component: {fileID: 5229549627569907406}
   - component: {fileID: 4051782723226203621}
+  - component: {fileID: 1217727136853830475}
   m_Layer: 0
   m_Name: Right Click Skill Collider
   m_TagString: Untagged
@@ -3198,6 +3200,18 @@ MonoBehaviour:
   botHitType: 0
   downAttack: 0
   stiffnessTime: 1
+--- !u!114 &1217727136853830475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5412795013090998600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2038946961, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5557515106402665626
 GameObject:
   m_ObjectHideFlags: 0
@@ -3440,6 +3454,7 @@ GameObject:
   - component: {fileID: 7108571392344828822}
   - component: {fileID: 8675407130086857828}
   - component: {fileID: -3801540215900170025}
+  - component: {fileID: -1645627515890361106}
   m_Layer: 0
   m_Name: Fighter Player for Test
   m_TagString: Untagged
@@ -3705,8 +3720,8 @@ MonoBehaviour:
   rightClickSkillCollider: {fileID: 5229549627569907406}
   qSkillGroup: {fileID: 7234061850492326333}
   qSkillPrefab: {fileID: 3546954146840587865, guid: c4115bb2b4c388143b8162f347b6b504, type: 3}
-  shiftClickSkillPrefab: {fileID: 393467414723081818, guid: 9e1b5ad99ad75534cb94d3e22bcc3649, type: 3}
-  eSkillPrefab: {fileID: 4652144433381085407, guid: da271c044d4eb90408073a5e6a8b1ebf, type: 3}
+  shiftClickSkillPrefab: {fileID: -4851119361603152715, guid: 9e1b5ad99ad75534cb94d3e22bcc3649, type: 3}
+  eSkillPrefab: {fileID: -6700401339330101129, guid: da271c044d4eb90408073a5e6a8b1ebf, type: 3}
   isAttacking: 0
 --- !u!114 &5513945395785779221
 MonoBehaviour:
@@ -3731,7 +3746,9 @@ MonoBehaviour:
   - {fileID: -3801540215900170025}
   - {fileID: 1264273697295819384}
   - {fileID: 2002480472450175789}
+  - {fileID: 976197598809978949}
   - {fileID: 4051782723226203621}
+  - {fileID: 1217727136853830475}
 --- !u!114 &7108571392344828822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3814,6 +3831,30 @@ MonoBehaviour:
   SyncSettings: 79
   StateHashes: 000000002b1a167c7940695546980c4f14c2736620e23b685928a8ce78529982fa1dd5076bd28ad9e99dc65ce7c4dea4fd55e44eb9f0b9eea3c40b27c01206a983f85c76ef8e6eceaef25cef925ab4d4d32686f5ad8445f6dabe883ff3f9410584c38ccc8b7ab85e2746b9e535e7c26b8048b961d0b26d01651d160bdb2cdcdd6e83a7d783e68b2149ce5228
   TriggerHashes: 000000000d286c4073cbfc9f28a98107c2b7cbb4
+--- !u!114 &-1645627515890361106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5807765186431249564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22721a96b91ea034ba543547976de72b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillCheckList: 01010101
+  skillCoolTimer:
+  - 0
+  - 0
+  - 0
+  - 0
+  skillCoolTimerEnd:
+  - 4
+  - 4
+  - 4
+  - 4
+  skillUI: []
 --- !u!1 &5827901597588553388
 GameObject:
   m_ObjectHideFlags: 0
@@ -4612,6 +4653,7 @@ GameObject:
   - component: {fileID: 1976654196799597742}
   - component: {fileID: 6451417775510813676}
   - component: {fileID: 2002480472450175789}
+  - component: {fileID: 976197598809978949}
   m_Layer: 0
   m_Name: Left Click Skill Collider
   m_TagString: Untagged
@@ -4674,6 +4716,18 @@ MonoBehaviour:
   botHitType: 0
   downAttack: 0
   stiffnessTime: 1
+--- !u!114 &976197598809978949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7420375447346480111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2038946961, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7563260537780513356
 GameObject:
   m_ObjectHideFlags: 0

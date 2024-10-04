@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class FighterQSkillProjectile : FighterQSkill
 {
+    private void OnEnable()
+    {
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.CompareTag("Ground"))
@@ -18,10 +22,13 @@ public class FighterQSkillProjectile : FighterQSkill
             }
             else
             {
-                collision.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                if (collision.gameObject.TryGetComponent(out BotController component))
+                {
+                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                }
             }
 
-            //Destroy(gameObject);
+            Destroy(gameObject, 1f);
         }
     }
 }

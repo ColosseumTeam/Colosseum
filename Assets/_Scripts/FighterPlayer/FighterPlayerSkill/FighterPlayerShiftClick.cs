@@ -24,7 +24,11 @@ public class FighterPlayerShiftClick : NetworkBehaviour
             }
             else
             {
-                other.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                //other.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                if (other.gameObject.TryGetComponent(out BotController component))
+                {
+                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                }
             }
 
             Destroy(gameObject);
