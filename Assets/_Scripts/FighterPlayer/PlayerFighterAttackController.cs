@@ -1,5 +1,6 @@
 using Fusion;
 using System.Collections;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,17 +17,17 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
     [Header("Primary Setting")]
     [SerializeField] private AimController aimController;
-    [SerializeField] private LayerMask groundLayerMask;    
+    [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private CrossHairLookAt crossHairLookAt;
     [SerializeField] private GameManager gameManager;
 
     [Header("Skill Collider")]
     [SerializeField] private CapsuleCollider leftClickSkillCollider;
-    [SerializeField] private CapsuleCollider rightClickSkillCollider;    
+    [SerializeField] private CapsuleCollider rightClickSkillCollider;
 
     [Header("Skill Object")]
     [SerializeField] private Transform qSkillGroup;
-    [SerializeField] private GameObject qSkillPrefab;
+    [SerializeField] private NetworkObject qSkillPrefab;
     [SerializeField] private GameObject shiftClickSkillPrefab;
     [SerializeField] private GameObject eSkillPrefab;
 
@@ -48,13 +49,15 @@ public class PlayerFighterAttackController : NetworkBehaviour
         playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         //crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
-        gameManager = FindObjectOfType<GameManager>();        
+        gameManager = FindObjectOfType<GameManager>();
         aimController = gameManager.AimController;
     }
 
     // Shift + Click
     private void OnRangeOneSkill(InputValue value)
     {
+        if (!HasStateAuthority) return;
+
         // Action type을 Value로 변경.
         float input = value.Get<float>();
 
@@ -73,6 +76,8 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
     private void OnAttack(InputValue value)
     {
+        if (!HasStateAuthority) return;
+
         if (value.isPressed && isPressedShift)
         {
             isPressedShift = false;
@@ -98,6 +103,8 @@ public class PlayerFighterAttackController : NetworkBehaviour
     // Right Click Skill
     private void OnRangeTwoSkill(InputValue value)
     {
+        if (!HasStateAuthority) return;
+
         if (value.isPressed && !isAttacking)
         {
             isAttacking = true;
@@ -113,6 +120,8 @@ public class PlayerFighterAttackController : NetworkBehaviour
     // Q Skill
     private void OnRangeThreeSkill(InputValue value)
     {
+        if (!HasStateAuthority) return;
+
         if (value.isPressed)
         {
             if (!IsQSkillOn)
@@ -129,8 +138,9 @@ public class PlayerFighterAttackController : NetworkBehaviour
                     return;
                 }
 
-                GameObject stone = Instantiate(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
-                stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);                
+                //NetworkObject stone = Runner.Spawn(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
+                //stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
+                StartCoroutine(SpawnStone());
                 qCount--;
 
                 qSkillGroup.GetChild(qCount).gameObject.SetActive(false);
@@ -142,6 +152,13 @@ public class PlayerFighterAttackController : NetworkBehaviour
                 }
             }
         }
+    }
+
+    private IEnumerator SpawnStone()
+    {
+        NetworkObject stone = new NetworkObject();
+        yield return new WaitUntil(() => stone = Runner.Spawn(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation));
+        stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
     }
 
     public void QSkillInit(int count)
@@ -159,6 +176,8 @@ public class PlayerFighterAttackController : NetworkBehaviour
     // E Skill
     private void OnRangeFourSkill(InputValue value)
     {
+        if (!HasStateAuthority) return;
+
         if (value.isPressed)
         {
             skillPos = crossHairLookAt.GroundHitPositionTransmission();

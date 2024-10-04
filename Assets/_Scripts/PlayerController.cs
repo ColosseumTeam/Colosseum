@@ -180,13 +180,17 @@ public class PlayerController : NetworkBehaviour
             animator.SetBool("Move", false);
         }
 
-        kcc.Move(newPosition, jumpState);
+        if (state != BehaviourBase.State.Damaged && !isDowning && !isSkilling && !isAttacking)
+        {
+            kcc.Move(newPosition, jumpState);
+        }
+        //kcc.Move(newPosition, jumpState);
     }
 
     private void OnMove(InputValue value)
     {
         // 대미지를 받은 상태라면 정지
-        if (state == BehaviourBase.State.Damaged || isDowning) { return; }
+        //if (state == BehaviourBase.State.Damaged || isDowning || isSkilling) { return; }
         if (isSkilling) { animator.SetBool("Move", false); }
 
         // 입력 시스템을 통해 이동 입력을 받아서 이동 벡터를 설정
@@ -234,7 +238,7 @@ public class PlayerController : NetworkBehaviour
         if (state == BehaviourBase.State.Damaged || isDowning) { return; }
 
         // 공격 입력이 감지되고 캐릭터가 공격 중이 아닐 때
-        if (value.isPressed && !isAttacking && isGrounding && !isSkilling)
+        if (value.isPressed && !isAttacking && isGrounding && !isSkilling && HasStateAuthority)
         {
             // 이동 중이라면 이동을 멈춤
             if (rb.velocity != Vector3.zero)
