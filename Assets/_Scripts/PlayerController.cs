@@ -15,6 +15,7 @@ public class PlayerController : NetworkBehaviour
     // 캐릭터의 현재 상태를 관리하는 변수
     [SerializeField] private BehaviourBase.State state = BehaviourBase.State.None;
     [SerializeField] private AimController aimController;
+    [SerializeField] private PlayerData playerData;
 
     // 캐릭터 이동 속도, 회전 속도, 공격 관련 타이머 설정
     [SerializeField] private float hp = 100f;
@@ -50,6 +51,8 @@ public class PlayerController : NetworkBehaviour
     private bool isGrounding = true;
     private bool isSkilling;
     private bool isDowning;
+
+    public PlayerData PlayerData => playerData;
 
     private void Awake()
     {

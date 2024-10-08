@@ -2,7 +2,7 @@ using Fusion;
 using UnityEngine;
 
 public class RangePlayerThreeAttack : NetworkBehaviour
-{
+{    
     private Transform centerObject;
     private float orbitRadius;
     private float orbitSpeed;

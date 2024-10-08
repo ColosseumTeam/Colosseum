@@ -10,6 +10,7 @@ public class RangePlayerOneAttack : NetworkBehaviour
     [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
     [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = true;
+    [SerializeField] private GameObject attecktEffect;
 
     private GameObject player;
     private float maxHeight = 0f;
@@ -38,24 +39,25 @@ public class RangePlayerOneAttack : NetworkBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            if (other.gameObject.GetComponent<PlayerDamageController>() != null
+            if (other.gameObject.GetComponentInParent<PlayerDamageController>() != null
                 && other.gameObject != player && HasStateAuthority)
             {
-                other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
+                other.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
+                Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
-
             else
             {
                 if (other.gameObject.TryGetComponent(out BotController component))
                 {
-                    Debug.Log("Bot Hit");
                     component.TakeDamage(damage, botHitType, downAttack, 1f);
+                    Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
                 }
             }
 
             GetComponent<BoxCollider>().enabled = false;
         }
     }
+
 
     public void GetRangePlayer(GameObject newPlayer)
     {

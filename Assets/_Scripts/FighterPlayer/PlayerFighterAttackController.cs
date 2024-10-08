@@ -31,6 +31,11 @@ public class PlayerFighterAttackController : NetworkBehaviour
     [SerializeField] private GameObject shiftClickSkillPrefab;
     [SerializeField] private GameObject eSkillPrefab;
 
+    [Header("Skill Sound")]
+    [SerializeField] private AudioClip leftClickSkillClip;
+    [SerializeField] private AudioClip rightClickSkillClip;
+    [SerializeField] private AudioClip qSkillClip;
+
     private PlayerController playerController;
     private Animator animator;
     private float eState;
@@ -97,7 +102,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
     public void OnInstantiateShiftClickSkillPrefab()
     {
-        GameObject shifhtClickObj = Instantiate(shiftClickSkillPrefab, skillPos, transform.rotation);
+        NetworkObject shifhtClickObj = Runner.Spawn(shiftClickSkillPrefab, skillPos, transform.rotation);
     }
 
     // Right Click Skill
@@ -112,8 +117,13 @@ public class PlayerFighterAttackController : NetworkBehaviour
             {
                 eState = 0f;
             }
+
             animator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 0);
+
+            GetComponent<AudioSource>().clip = rightClickSkillClip;
+            GetComponent<AudioSource>().volume = 0.3f;
+            GetComponent<AudioSource>().Play();
         }
     }
 
@@ -129,6 +139,10 @@ public class PlayerFighterAttackController : NetworkBehaviour
                 IsQSkillOn = true;
                 animator.SetTrigger("Skill");
                 animator.SetInteger("SkillState", 1);
+
+                GetComponent<AudioSource>().clip = qSkillClip;
+                GetComponent<AudioSource>().volume = 0.3f;
+                GetComponent<AudioSource>().Play();
                 // Todo: 공중에 떠있는 돌 애니메이션 이벤트에 적용
             }
             else

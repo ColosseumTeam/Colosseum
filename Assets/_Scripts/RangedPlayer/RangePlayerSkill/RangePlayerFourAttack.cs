@@ -11,6 +11,7 @@ public class RangePlayerFourAttack : NetworkBehaviour
     [SerializeField] private float attackTime = 0f;
     [SerializeField] private float attackTimeEnd = 0.1f;
     [SerializeField] private GameObject afterAttackObject;
+    [SerializeField] private GameObject attecktEffect;
 
     private GameObject player;
     private bool isAttacking;
@@ -36,6 +37,7 @@ public class RangePlayerFourAttack : NetworkBehaviour
                 {
                     downAttack = true;
                     enemyObj.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
+                    Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
                 }
                 else
                 {
@@ -43,9 +45,10 @@ public class RangePlayerFourAttack : NetworkBehaviour
                     {
                         downAttack = true;
                         component.TakeDamage(damage, botHitType, downAttack, 1f);
+                        Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
                     }
                 }
-
+                
                 Destroy(gameObject);
             }
         }
@@ -61,15 +64,18 @@ public class RangePlayerFourAttack : NetworkBehaviour
                 && enemyObj != player && HasStateAuthority)
             {
                 enemyObj.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
+                Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
             else
             {
                 if (enemyObj.gameObject.TryGetComponent(out BotController component))
                 {
                     component.TakeDamage(damage, botHitType, downAttack, 1f);
+                    Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
                 }
-            }            
+            }
 
+            
             GetComponent<Collider>().enabled = false;
             downAttack = false;
             attackTime = 0f;

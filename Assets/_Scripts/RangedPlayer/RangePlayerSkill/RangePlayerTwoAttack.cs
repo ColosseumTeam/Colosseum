@@ -13,6 +13,7 @@ public class RangePlayerTwoAttack : NetworkBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float fieldTimer = 0f;
     [SerializeField] private float fieldEndTimer = 1f;
+    [SerializeField] private GameObject attecktEffect;
 
     private GameObject player;
     private GameObject targetObj;
@@ -57,7 +58,7 @@ public class RangePlayerTwoAttack : NetworkBehaviour
 
         //Todo: Runner 및 Network 상태에 맞춰 수정할 수 있어야 함
         if (collision.gameObject.CompareTag("Enemy"))
-        {            
+        {
             Collider[] colls = Physics.OverlapSphere(this.transform.position, 1f, 1 << LayerMask.NameToLayer("Enemy"));
 
             foreach (Collider coll in colls)
@@ -73,6 +74,7 @@ public class RangePlayerTwoAttack : NetworkBehaviour
                 && collision.gameObject != player && HasStateAuthority)
             {
                 collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
+                Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
                 targetObj = collision.gameObject;
             }
             else
@@ -80,10 +82,11 @@ public class RangePlayerTwoAttack : NetworkBehaviour
                 if (collision.gameObject.TryGetComponent(out BotController component))
                 {
                     component.TakeDamage(damage, botHitType, downAttack, 1f);
+                    Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
                     targetObj = collision.gameObject;
                 }
             }
-            
+
             Destroy(gameObject);
         }
     }

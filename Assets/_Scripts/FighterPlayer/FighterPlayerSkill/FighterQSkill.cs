@@ -9,6 +9,7 @@ public class FighterQSkill : NetworkBehaviour
     [SerializeField] protected bool downAttack = false;    // 다운 상태 적 공격 가능 여부
     [SerializeField] protected float stiffnessTime = 1f;  // 경직 시간
     [SerializeField] private float speed = 5f;
+    [SerializeField] protected GameObject hitEffect;
 
     private Vector3 dir;
 
@@ -16,7 +17,7 @@ public class FighterQSkill : NetworkBehaviour
     private void Start()
     {
         int ran = Random.Range(0, 3);
-        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(ran).gameObject.SetActive(true);
     }
 
     private void OnEnable()

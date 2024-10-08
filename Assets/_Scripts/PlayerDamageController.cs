@@ -3,6 +3,7 @@ using Fusion.Addons.SimpleKCC;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements.Experimental;
 
 public class PlayerDamageController : NetworkBehaviour
 {
@@ -23,6 +24,7 @@ public class PlayerDamageController : NetworkBehaviour
     [SerializeField] private float upForce = 12f;
     [SerializeField] private float downTimer = 0f;
     [SerializeField] private float downEndTimer = 3f;
+    [SerializeField] private GameObject attecktEffect;
 
 
     private GameObject gameManager;
@@ -33,6 +35,10 @@ public class PlayerDamageController : NetworkBehaviour
 
     private void Awake()
     {
+        playerData = GetComponent<PlayerController>().PlayerData;
+        MaxHp = playerData.MaxHp;
+        hp = MaxHp;
+
         animator = GetComponent<Animator>();
         kcc = GetComponent<SimpleKCC>();
 
@@ -71,12 +77,6 @@ public class PlayerDamageController : NetworkBehaviour
                     animator.speed = stiffnessTime;
                     animator.SetFloat("TakeHitState", rnd);
                     animator.SetTrigger("TakeHit");
-
-                    if (!isGrounding)
-                    {
-                        //kcc.Rigidbody.velocity = Vector3.zero;
-                    }
-
                     break;
 
                 case PlayerHitType.Down:
@@ -129,13 +129,6 @@ public class PlayerDamageController : NetworkBehaviour
                 gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(0);
             }
         }
-    }
-
-    public void PlayerDataReceive(PlayerData newPlayerData)
-    {
-        playerData = newPlayerData;
-        MaxHp = playerData.MaxHp;
-        hp = MaxHp;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNumber: 1
   MaxHp: 100
+  leftClip: {fileID: 8300000, guid: f8c9aa2047f3c78488eb99757de7fcfb, type: 3}
+  rightClip: {fileID: 8300000, guid: 18ce7fa51362ee24093a758e9e302609, type: 3}
+  shiftClickClip: {fileID: 8300000, guid: 23aed88b110b2474ebacbf0aa3832776, type: 3}
+  qClip: {fileID: 8300000, guid: a2452474ca53cb64f89ab8368f5cda16, type: 3}
+  eClip: {fileID: 8300000, guid: 73720bbd359de3442b7ea08e7b4bfcd3, type: 3}

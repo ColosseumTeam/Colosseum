@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Bson;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Data", menuName = "PlayerData")]

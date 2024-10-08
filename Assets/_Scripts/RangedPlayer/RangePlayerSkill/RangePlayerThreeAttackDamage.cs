@@ -10,6 +10,7 @@ public class RangePlayerThreeAttackDamage : NetworkBehaviour
     [SerializeField] private float stiffnessTime = 1f;
     [SerializeField] private float dealingPeriodTime = 0f;
     [SerializeField] private float dealingPeriodEndTIme = 0.5f;
+    [SerializeField] private GameObject attecktEffect;
 
     private Transform player;
     private GameObject otherGameObject;
@@ -61,14 +62,18 @@ public class RangePlayerThreeAttackDamage : NetworkBehaviour
                 && otherGameObject != player && HasStateAuthority)
             {
                 otherGameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
+                Runner.Spawn(attecktEffect, otherGameObject.transform.position, otherGameObject.transform.rotation);
             }
             else
             {                
                 if (otherGameObject.TryGetComponent(out BotController component))
                 {
                     component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                    Runner.Spawn(attecktEffect, otherGameObject.transform.position, otherGameObject.transform.rotation);
                 }
             }
+
+            
             dealingPeriodTime = 0f;
         }
     }

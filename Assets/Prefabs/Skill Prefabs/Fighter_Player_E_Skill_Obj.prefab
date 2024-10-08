@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7153417329402412764}
   - component: {fileID: 7299089674007585467}
   - component: {fileID: 3584269985141668858}
+  - component: {fileID: 286734194788462082}
   m_Layer: 0
   m_Name: Fighter_Player_E_Skill_Obj
   m_TagString: Untagged
@@ -123,3 +124,21 @@ MonoBehaviour:
   botHitType: 1
   downAttack: 1
   stiffnessTime: 1
+--- !u!114 &286734194788462082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4652144433381085407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1029341453
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 3584269985141668858}

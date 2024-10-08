@@ -15,10 +15,14 @@ public class FighterQSkillProjectile : FighterQSkill
             if (collision.gameObject.GetComponent<PlayerDamageController>() != null)
             {
                 collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
+                Runner.Spawn(hitEffect, gameObject.transform.position, gameObject.transform.rotation);
+                GetComponent<AudioSource>().Play(); 
             }
             else
             {
                 collision.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                Runner.Spawn(hitEffect, gameObject.transform.position, gameObject.transform.rotation);
+                GetComponent<AudioSource>().Play();
             }
 
             //Destroy(gameObject);

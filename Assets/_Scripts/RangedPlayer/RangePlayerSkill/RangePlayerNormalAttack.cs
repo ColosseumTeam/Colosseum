@@ -8,7 +8,8 @@ public class RangePlayerNormalAttack : NetworkBehaviour
     [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = false;
     [SerializeField] private float stiffnessTime = 1f;
-
+    [SerializeField] private GameObject attecktEffect;
+    
     private GameObject player;
     private float speed = 10f;
     private Vector3 dir;
@@ -45,6 +46,7 @@ public class RangePlayerNormalAttack : NetworkBehaviour
             {
                 Debug.Log("Player Hit");
                 collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
+                Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
             else
             {             
@@ -52,10 +54,11 @@ public class RangePlayerNormalAttack : NetworkBehaviour
                 {
                     Debug.Log("Bot Hit");
                     component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                    Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
                 }
                 //collision.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
             }
-
+            
             Destroy(gameObject); 
         }
     

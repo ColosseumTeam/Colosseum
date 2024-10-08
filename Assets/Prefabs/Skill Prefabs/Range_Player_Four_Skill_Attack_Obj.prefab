@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2378308342372378545}
   - component: {fileID: 2141923899544015140}
   - component: {fileID: -93324349711965367}
+  - component: {fileID: 4007001221070865491}
   m_Layer: 0
   m_Name: Range_Player_Four_Skill_Attack_Obj
   m_TagString: Untagged
@@ -153,3 +154,22 @@ MonoBehaviour:
   attackTime: 0
   attackTimeEnd: 1
   afterAttackObject: {fileID: 5292468484537704289, guid: 113d48e60a3d5624bae0bf7ad162bc04, type: 3}
+  attecktEffect: {fileID: 0}
+--- !u!114 &4007001221070865491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7462183019261646283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2102695530
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: -93324349711965367}

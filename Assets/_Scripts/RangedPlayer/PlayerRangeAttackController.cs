@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Addons.SimpleKCC;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,6 @@ public class PlayerRangeAttackController : NetworkBehaviour
 {
     [SerializeField] private PlayerRangeAttackBehaviour.State state = PlayerRangeAttackBehaviour.State.None;
 
-    [SerializeField] private PlayerData rangePlayerData;
     [SerializeField] private DamageManager damageManager;
     [SerializeField] private AimController aimObject;
     [SerializeField] private CrossHairLookAt corssHairLookAt;
@@ -29,14 +29,15 @@ public class PlayerRangeAttackController : NetworkBehaviour
     [SerializeField] private float rangeNormalPrefabSpeed = 15f;
     [SerializeField] private float rangeTwoSkillPrefabSpeed = 10f;
     [SerializeField] private float rangeFourSkillPrefabSpeed = 15f;
-    [SerializeField] private float rangeFourSkillSpawnHeight = 20f;    
+    [SerializeField] private float rangeFourSkillSpawnHeight = 20f;
 
     private PlayerController playerController;
     private RangePlayerCoolTImeManager rangePlayerCoolTImeManager;
     private Animator animator;
+    private NetworkMecanimAnimator mecanimAnimator;
     private Vector3 rangeHitPosition;
     private int isCoolTimeSkill;
-    private bool isSkillReady;
+    [SerializeField] private bool isSkillReady;
     private bool isOneSkillReady;
 
     private void Awake()
@@ -45,9 +46,9 @@ public class PlayerRangeAttackController : NetworkBehaviour
         damageManager = FindAnyObjectByType<DamageManager>();
 
         animator = GetComponent<Animator>();
+        mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
         playerController = GetComponent<PlayerController>();
-        rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();
-        GetComponent<PlayerDamageController>().PlayerDataReceive(rangePlayerData);
+        rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();        
     }
 
 
@@ -83,7 +84,6 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         if (index == 0)
         {
-
             rangeHitPosition = corssHairLookAt.GroundHitPositionTransmission();
         }
 
@@ -101,7 +101,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     {
         HitPositionGrasp(isCoolTimeSkill);
 
-        animator.SetTrigger("Skill");
+        mecanimAnimator.SetTrigger("Skill");
 
         // 스킬 쿨타임 시작
         rangePlayerCoolTImeManager.SkillChecking(isCoolTimeSkill);
@@ -181,6 +181,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         Rigidbody normalObjRb = normalObj.GetComponent<Rigidbody>();
         normalObj.GetComponent<RangePlayerNormalAttack>().Look(aimObject.transform.position);
         normalObj.GetComponent<RangePlayerNormalAttack>().GetRangePlayer(gameObject);
+        
     }
 
     // 첫 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
@@ -193,6 +194,8 @@ public class PlayerRangeAttackController : NetworkBehaviour
         NetworkObject oneSkillObj = Runner.Spawn(rangeOneSkillPrefab, oneSkillObjPosition, Quaternion.identity);
         oneSkillObj.GetComponent<RangePlayerOneAttack>().GetRangePlayer(gameObject);
         corssHairLookAt.EndPointDistanceChanged(3f);
+
+
     }
 
     // 두 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
@@ -210,6 +213,8 @@ public class PlayerRangeAttackController : NetworkBehaviour
             //twoSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             twoSkillObjRb.velocity = transform.forward * rangeTwoSkillPrefabSpeed;
         }
+
+        twoSkillObj.GetComponent<RangePlayerTwoAttack>().GetRangePlayer(gameObject);
     }
 
     // 세 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
@@ -254,6 +259,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         }
 
         gameObject.GetComponentInChildren<RangePlayerThreeAttackDamage>().GetPlayer(gameObject.transform);
+
     }
 
 
@@ -262,7 +268,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     {
         Vector3 fourSkillObjPosition = rangeHitPosition;
 
-        NetworkObject fourSkillObj = Runner.Spawn(rangeFourSkillPrefab, fourSkillObjPosition, Quaternion.identity);        
+        NetworkObject fourSkillObj = Runner.Spawn(rangeFourSkillPrefab, fourSkillObjPosition, Quaternion.identity);
 
         Rigidbody fourSkillObjRb = fourSkillObj.GetComponent<Rigidbody>();
 
@@ -271,6 +277,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
             //fourSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             fourSkillObjRb.velocity = Vector3.down * rangeFourSkillPrefabSpeed;
         }
+
     }
 
     // 1번 키를 누를 경우 춤 추도록 하는 메서드

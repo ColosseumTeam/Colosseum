@@ -86,11 +86,6 @@ public class CrossHairLookAt : NetworkBehaviour
                 groundHitPosition = hit.collider.transform.position;
                 isGrounding = true;
             }
-
-            //if (hit.collider.gameObject.GetComponentInParent<NetworkObject>().CompareTag("Enemy"))
-            //{
-                
-            //}
         }
         else
         {
