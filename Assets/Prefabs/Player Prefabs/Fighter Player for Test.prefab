@@ -1012,6 +1012,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4411047666005623753}
+  - component: {fileID: 8879708086667739960}
   m_Layer: 0
   m_Name: Camera Rig
   m_TagString: Untagged
@@ -1035,6 +1036,27 @@ Transform:
   - {fileID: 4681107437331786549}
   m_Father: {fileID: 7821926551100046321}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &8879708086667739960
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2471055506994107653}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2527468841721109071
 GameObject:
   m_ObjectHideFlags: 0
@@ -2372,6 +2394,7 @@ GameObject:
   - component: {fileID: 7265538436273230882}
   - component: {fileID: 1264273697295819384}
   - component: {fileID: 6764413338964691284}
+  - component: {fileID: 1862157613734485599}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2533,6 +2556,27 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!95 &1862157613734485599
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3905972779161679474}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3927682190761482900
 GameObject:
   m_ObjectHideFlags: 0
@@ -3565,7 +3609,12 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Bip001-R-Finger01'\n\tTransform 'Bip001-Pelvis'\n\tTransform
+    'Bip001-Spine'\n\tTransform 'Bip001-L-Finger01'\n\tTransform 'Bip001-L-Finger0'\n\tTransform
+    'Bip001-R-Forearm'\n\tTransform 'Bip001-R-Calf'\n\tTransform 'Bip001-L-Forearm'\n\tTransform
+    'Bip001-R-Finger2'\n\tTransform 'Bip001-R-Finger21'\n\tand more ..."
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -3914,10 +3963,14 @@ PlayableDirector:
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
-  - key: {fileID: 1810885441472190099, guid: 0c527cb7857df3a4788b87159dbaa40b, type: 2}
+  - key: {fileID: 0}
     value: {fileID: 5807765186431249564}
   - key: {fileID: 7002508031089653378, guid: 0c527cb7857df3a4788b87159dbaa40b, type: 2}
     value: {fileID: 1989936177280666123}
+  - key: {fileID: 2858783053269037784, guid: 0c527cb7857df3a4788b87159dbaa40b, type: 2}
+    value: {fileID: 2471055506994107653}
+  - key: {fileID: 2268628828864950669, guid: 0c527cb7857df3a4788b87159dbaa40b, type: 2}
+    value: {fileID: 8879708086667739960}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &5827901597588553388
