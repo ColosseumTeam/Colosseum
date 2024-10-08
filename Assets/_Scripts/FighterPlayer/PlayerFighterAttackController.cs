@@ -54,6 +54,10 @@ public class PlayerFighterAttackController : NetworkBehaviour
         playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         //crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
+    }
+
+    private void Start()
+    {
         gameManager = FindObjectOfType<GameManager>();
         aimController = gameManager.AimController;
     }

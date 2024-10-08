@@ -25,7 +25,10 @@ public class FighterESkill : NetworkBehaviour
             }
             else
             {
-                other.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                if (other.TryGetComponent(out BotController component))
+                {
+                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                }
             }
 
             Destroy(gameObject);

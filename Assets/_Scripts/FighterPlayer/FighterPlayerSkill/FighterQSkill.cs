@@ -14,16 +14,13 @@ public class FighterQSkill : NetworkBehaviour
     private Vector3 dir;
 
 
-    private void Start()
+    private void OnEnable()
     {
         int ran = Random.Range(0, 3);
         transform.GetChild(ran).gameObject.SetActive(true);
-    }
 
-    private void OnEnable()
-    {
         // Todo: Destory 사용한 모든 오브젝트 풀링 필요.
-        //Destroy(gameObject, 2f);
+        Destroy(gameObject, 5f);
     }
 
     public override void FixedUpdateNetwork()
