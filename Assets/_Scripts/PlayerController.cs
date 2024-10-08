@@ -39,6 +39,7 @@ public class PlayerController : NetworkBehaviour
     // 캐릭터 애니메이션 제어를 위한 Animator 참조
     private Animator animator;
     private NetworkMecanimAnimator mecanimAnimator;
+    private AudioSource audioSource;
 
     // 공격 상태 및 이동 방향을 저장하는 변수
     private float attackState;
@@ -60,6 +61,7 @@ public class PlayerController : NetworkBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
+        audioSource = GetComponent<AudioSource>();
 
         //GameObject cameraObject = GetComponentInChildren<Camera>().gameObject;
         //if(cameraObject != null)
@@ -208,6 +210,16 @@ public class PlayerController : NetworkBehaviour
         {
             animator.SetBool("Run", false);
         }
+    }
+
+    private void OnLeftStep()
+    {
+        audioSource.PlayOneShot(playerData.LeftStep);
+    }
+
+    private void OnRightStep()
+    {
+        audioSource.PlayOneShot(playerData.RightStep);
     }
 
 

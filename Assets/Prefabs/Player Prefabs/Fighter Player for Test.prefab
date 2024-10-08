@@ -3520,6 +3520,7 @@ GameObject:
   - component: {fileID: 7108571392344828822}
   - component: {fileID: 8675407130086857828}
   - component: {fileID: -3801540215900170025}
+  - component: {fileID: 8664140191650146626}
   m_Layer: 0
   m_Name: Fighter Player for Test
   m_TagString: Untagged
@@ -3865,7 +3866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   aimController: {fileID: 0}
-  playerData: {fileID: 0}
+  playerData: {fileID: 11400000, guid: cb1a03e0fc41e8744a1d1637bf243618, type: 2}
   hp: 100
   maxHp: 100
   hpImage: {fileID: 0}
@@ -3898,6 +3899,27 @@ MonoBehaviour:
   SyncSettings: 79
   StateHashes: 000000002b1a167c7940695546980c4f14c2736620e23b685928a8ce78529982fa1dd5076bd28ad9e99dc65ce7c4dea4fd55e44eb9f0b9eea3c40b27c01206a983f85c76ef8e6eceaef25cef925ab4d4d32686f5ad8445f6dabe883ff3f9410584c38ccc8b7ab85e2746b9e535e7c26b8048b961d0b26d01651d160bdb2cdcdd6e83a7d783e68b2149ce5228
   TriggerHashes: 000000000d286c4073cbfc9f28a98107c2b7cbb4
+--- !u!320 &8664140191650146626
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5807765186431249564}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 0c527cb7857df3a4788b87159dbaa40b, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 1810885441472190099, guid: 0c527cb7857df3a4788b87159dbaa40b, type: 2}
+    value: {fileID: 5807765186431249564}
+  - key: {fileID: 7002508031089653378, guid: 0c527cb7857df3a4788b87159dbaa40b, type: 2}
+    value: {fileID: 1989936177280666123}
+  m_ExposedReferences:
+    m_References: []
 --- !u!1 &5827901597588553388
 GameObject:
   m_ObjectHideFlags: 0

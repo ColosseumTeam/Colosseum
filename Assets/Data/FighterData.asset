@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e93a3264640d1c347a9afd3a35f8f5c4, type: 3}
-  m_Name: RangerData
+  m_Name: FighterData
   m_EditorClassIdentifier: 
-  leftStep: {fileID: 8300000, guid: af92aba83f7cda547a3e1c7507dacda4, type: 3}
-  rightStep: {fileID: 8300000, guid: edde1199480bb5145ba892ff2abb6846, type: 3}
-  playerNumber: 1
+  leftStep: {fileID: 8300000, guid: 66086503ac6d1f941aad6b4c40ef6d48, type: 3}
+  rightStep: {fileID: 8300000, guid: 9c63c73ee1d813947a028178a939b392, type: 3}
+  playerNumber: 0
   MaxHp: 100
