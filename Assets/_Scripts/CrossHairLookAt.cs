@@ -82,7 +82,7 @@ public class CrossHairLookAt : NetworkBehaviour
             // Todo: 플레이어로 수정 필요
             if (hit.collider.CompareTag("Enemy"))
             {
-                Debug.Log("enemy success");
+                //Debug.Log("enemy success");
                 groundHitPosition = hit.collider.transform.position;
                 isGrounding = true;
             }

@@ -12,6 +12,7 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private GameObject iconPrefab;
     [SerializeField] private List<CharacterInfo> characterDatas;
     [SerializeField] private RoomManager roomManager;
+    [SerializeField] private AudioClip characterSelectSound;
 
     [Header("# UI")]
     [SerializeField] private RawImage myCharacterImage;
@@ -23,6 +24,7 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private TextMeshProUGUI characterStory;
 
     private int clickedIndex;
+    private AudioSource audioSource;
 
     public int ClickedIndex { get { return clickedIndex; } }
     public List<CharacterInfo> CharacterDatas { get { return characterDatas; } }
@@ -30,11 +32,14 @@ public class CharacterSelection : MonoBehaviour
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         for (int i = 0; i < characterDatas.Count; i++)
         {
             int temp = i;
             Button icon = Instantiate(iconPrefab, iconGroup).GetComponent<Button>();
             icon.onClick.AddListener(() => ClickedIcon(temp));
+            icon.onClick.AddListener(() => CharacterSelectSound());
         }
     }
 
@@ -61,6 +66,11 @@ public class CharacterSelection : MonoBehaviour
             characterConcept.text = characterDatas[index].CharacterConcept;
             characterStory.text = characterDatas[index].CharacterStory;
         }
+    }
+
+    public void CharacterSelectSound()
+    {
+        audioSource.PlayOneShot(characterSelectSound);
     }
 
     public void SelectButton()
