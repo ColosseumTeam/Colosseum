@@ -34,7 +34,7 @@ public class VolumeSettingManager : MonoBehaviour
         InitVolumeOnLobbyScene();
     }
 
-    // Will be used on first line of Awake
+    // Will be used on first line of SceneLoadDone
     public void InitVolumeSettings()
     {
         bgBar.value = bgVolume;
@@ -65,8 +65,8 @@ public class VolumeSettingManager : MonoBehaviour
         // Todo: voiceAudioSource를 PlayerData에서 받아와야 함
 
         bgAudioSource.volume = bgVolume;
-        skillAudioSource.volume = skillVolume;
-        voiceAudioSource.volume = voiceVolume;
+        //skillAudioSource.volume = skillVolume;
+        //voiceAudioSource.volume = voiceVolume;
     }
 
     public void SetBackgroundVolume()
