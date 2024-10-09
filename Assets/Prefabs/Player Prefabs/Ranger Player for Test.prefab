@@ -5793,6 +5793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  mecanimAnimator: {fileID: 0}
   kcc: {fileID: 0}
   playerData: {fileID: 0}
   isDowning: 0
@@ -5882,7 +5883,7 @@ MonoBehaviour:
   ApplyTiming: 2
   SyncSettings: 79
   StateHashes: 000000002b1a167c7940695546980c4f14c2736678529982fa1dd5076bd28ad9e99dc65ce7c4dea4fd55e44e8a18fce4c765c7ddadd67ef28b7ab85e2746b9e535e7c26b8048b961d0b26d01651d160bdb2cdcdd6e83a7d783e68b2149ce5228
-  TriggerHashes: 000000000d286c4073cbfc9f28a98107fb369af62b1a167c
+  TriggerHashes: 000000000d286c4073cbfc9f28a981072b1a167cfb369af6
 --- !u!1 &5339053485418124171
 GameObject:
   m_ObjectHideFlags: 0

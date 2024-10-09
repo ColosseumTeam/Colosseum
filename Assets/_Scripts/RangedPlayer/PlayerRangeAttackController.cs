@@ -52,7 +52,6 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
     }
 
-
     public void GetState(PlayerRangeAttackBehaviour.State newState)
     {
         state = newState;
@@ -274,7 +273,6 @@ public class PlayerRangeAttackController : NetworkBehaviour
             //fourSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             //fourSkillObjRb.velocity = Vector3.down * rangeFourSkillPrefabSpeed;
         }
-         
     }
 
     // 1번 키를 누를 경우 춤 추도록 하는 메서드

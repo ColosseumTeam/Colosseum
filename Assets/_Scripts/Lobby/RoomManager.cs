@@ -38,6 +38,15 @@ public class RoomManager : NetworkBehaviour
         }
     }
 
+    public override void Spawned()
+    {
+        base.Spawned();
+
+        // 플레이어가 합류할 때 수행할 작업
+        WhenPlayerJoined();
+    }
+
+
     public void WhenPlayerJoined()
     {
         if (!HasStateAuthority) return;

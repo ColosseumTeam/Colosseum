@@ -3900,7 +3900,7 @@ MonoBehaviour:
   ApplyTiming: 2
   SyncSettings: 79
   StateHashes: 000000002b1a167c7940695546980c4f14c2736620e23b685928a8ce78529982fa1dd5076bd28ad9e99dc65ce7c4dea4fd55e44eb9f0b9eea3c40b27c01206a983f85c76ef8e6eceaef25cef925ab4d4d32686f5ad8445f6dabe883ff3f9410584c38ccc8b7ab85e2746b9e535e7c26b8048b961d0b26d01651d160bdb2cdcdd6e83a7d783e68b2149ce5228
-  TriggerHashes: 000000000d286c4073cbfc9f28a98107c2b7cbb4
+  TriggerHashes: 000000000d286c4073cbfc9f28a98107c2b7cbb4fb369af62b1a167c
 --- !u!320 &8664140191650146626
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -3935,6 +3935,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  mecanimAnimator: {fileID: 0}
   kcc: {fileID: 0}
   playerData: {fileID: 0}
   isDowning: 0
@@ -3944,8 +3945,9 @@ MonoBehaviour:
   upForce: 12
   downTimer: 0
   downEndTimer: 3
-  attecktEffect: {fileID: 0}
   hitEffect: {fileID: 7728366230342544413, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
+  airTimer: 0
+  airEndTimer: 0.5
 --- !u!1 &5827901597588553388
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class PlayerDamageController : NetworkBehaviour
     }
 
     [SerializeField] private Animator animator;
+    [SerializeField] private NetworkMecanimAnimator mecanimAnimator;
     [SerializeField] private SimpleKCC kcc;
     [SerializeField] private PlayerData playerData;
 
@@ -23,7 +24,7 @@ public class PlayerDamageController : NetworkBehaviour
     [SerializeField] private bool upDamageCheck;
     [SerializeField] private float upForce = 12f;
     [SerializeField] private float downTimer = 0f;
-    [SerializeField] private float downEndTimer = 3f;   
+    [SerializeField] private float downEndTimer = 3f;
     [SerializeField] private GameObject hitEffect;
 
     [SerializeField] private float airTimer = 0f;
@@ -43,6 +44,7 @@ public class PlayerDamageController : NetworkBehaviour
         MaxHp = playerData.MaxHp;
         hp = MaxHp;
 
+        mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
         animator = GetComponent<Animator>();
         kcc = GetComponent<SimpleKCC>();
 
@@ -76,7 +78,7 @@ public class PlayerDamageController : NetworkBehaviour
             {
                 airCheck = false;
                 airTimer = 0f;
-            }            
+            }
         }
 
         if (isUping && gameObject.transform.position.y <= playerVector.y + upForce)
@@ -92,7 +94,7 @@ public class PlayerDamageController : NetworkBehaviour
 
     [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = true)]
     public void RPC_TakeDamage(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime, Vector3 skillPosition)
-    {        
+    {
         Debug.Log($"{damage}, {playerHitType}, {downAttack}, {stiffnessTime}");
 
         if (!isDowning || !isGrounding || (isDowning && downAttack))
@@ -109,7 +111,7 @@ public class PlayerDamageController : NetworkBehaviour
                 case PlayerHitType.None:
                     int rnd = Random.Range(0, 2);
                     animator.speed = stiffnessTime;
-     
+
                     if (isDowning && !isGrounding)
                     {
                         airPosition = gameObject.transform.position;
@@ -118,7 +120,7 @@ public class PlayerDamageController : NetworkBehaviour
                     }
 
                     animator.SetFloat("TakeHitState", rnd);
-                    animator.SetTrigger("TakeHit");
+                    mecanimAnimator.SetTrigger("TakeHit");
                     break;
 
                 case PlayerHitType.Down:
@@ -131,7 +133,7 @@ public class PlayerDamageController : NetworkBehaviour
                     isDowning = true;
                     isUping = true;
                     playerVector = gameObject.transform.position;
-                    animator.SetTrigger("TakeHit");
+                    mecanimAnimator.SetTrigger("TakeHit");
                     break;
             }
         }
@@ -146,7 +148,7 @@ public class PlayerDamageController : NetworkBehaviour
             {
                 isDowning = false;
                 downTimer = 0;
-                animator.SetTrigger("Idle");
+                mecanimAnimator.SetTrigger("Idle");
             }
         }
     }
@@ -179,7 +181,7 @@ public class PlayerDamageController : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_TakeHitNonAcitve()
     {
-        animator.SetTrigger("Idle");
+        mecanimAnimator.SetTrigger("Idle");
         GetComponent<PlayerController>().PlayerTakeHitStopAction();
     }
 
