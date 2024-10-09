@@ -18,16 +18,16 @@ public class FighterQSkillProjectile : FighterQSkill
         {
             if (collision.gameObject.GetComponent<PlayerDamageController>() != null)
             {
-                collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
-                Runner.Spawn(hitEffect, gameObject.transform.position, gameObject.transform.rotation);
+                collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
+                //Runner.Spawn(hitEffect, gameObject.transform.position, gameObject.transform.rotation);
                 GetComponent<AudioSource>().Play(); 
             }
             else
             {
                 if (collision.gameObject.TryGetComponent(out BotController component))
                 {
-                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
-                    Runner.Spawn(hitEffect, gameObject.transform.position, gameObject.transform.rotation);
+                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime, transform.position);
+                    //Runner.Spawn(hitEffect, gameObject.transform.position, gameObject.transform.rotation);
                     GetComponent<AudioSource>().Play();
                 }
             }

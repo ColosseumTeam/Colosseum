@@ -8,7 +8,6 @@ public class RangePlayerNormalAttack : NetworkBehaviour
     [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = false;
     [SerializeField] private float stiffnessTime = 1f;
-    [SerializeField] private GameObject attecktEffect;
     
     private GameObject player;
     private float speed = 10f;
@@ -45,16 +44,16 @@ public class RangePlayerNormalAttack : NetworkBehaviour
                 && collision.gameObject != player && HasStateAuthority) 
             {
                 Debug.Log("Player Hit");
-                collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
-                Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
+                collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
+                //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
             else
             {             
                 if (collision.gameObject.TryGetComponent(out BotController component))
                 {
                     Debug.Log("Bot Hit");
-                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
-                    Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
+                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime, transform.position);
+                    //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
                 }
                 //collision.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
             }

@@ -17,6 +17,7 @@ public class RangePlayerThreeAttackDamage : NetworkBehaviour
     private float timer = 0f;
     private float timerArrive = 10f;
     private bool timerCheck;
+    private Vector3 attackPoint;
 
     private void Start()
     {
@@ -38,10 +39,7 @@ public class RangePlayerThreeAttackDamage : NetworkBehaviour
             }
         }
 
-        if (otherGameObject != null)
-        {
-            DealingPeriodEvent();
-        }
+        DealingPeriodEvent();
     }
 
     public void GetPlayer(Transform newPlayer)
@@ -56,25 +54,28 @@ public class RangePlayerThreeAttackDamage : NetworkBehaviour
     {
         dealingPeriodTime += Time.deltaTime;
 
-        if (dealingPeriodTime >= dealingPeriodEndTIme)
+        if (otherGameObject != null)
         {
-            if (otherGameObject.GetComponent<PlayerDamageController>() != null
-                && otherGameObject != player && HasStateAuthority)
+            if (dealingPeriodTime >= dealingPeriodEndTIme)
             {
-                otherGameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
-                Runner.Spawn(attecktEffect, otherGameObject.transform.position, otherGameObject.transform.rotation);
-            }
-            else
-            {                
-                if (otherGameObject.TryGetComponent(out BotController component))
+                if (otherGameObject.GetComponent<PlayerDamageController>() != null
+                    && otherGameObject != player && HasStateAuthority)
                 {
-                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
-                    Runner.Spawn(attecktEffect, otherGameObject.transform.position, otherGameObject.transform.rotation);
+                    otherGameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, attackPoint);
+                    //Runner.Spawn(attecktEffect, otherGameObject.transform.position, otherGameObject.transform.rotation);
                 }
-            }
+                else
+                {
+                    if (otherGameObject.TryGetComponent(out BotController component))
+                    {
+                        component.TakeDamage(damage, botHitType, downAttack, stiffnessTime, attackPoint);
+                        //Runner.Spawn(attecktEffect, otherGameObject.transform.position, otherGameObject.transform.rotation);
+                    }
+                }
 
-            
-            dealingPeriodTime = 0f;
+
+                dealingPeriodTime = 0f;
+            }
         }
     }
 
@@ -83,6 +84,17 @@ public class RangePlayerThreeAttackDamage : NetworkBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             otherGameObject = other.gameObject;
+            
+            Vector3 triggerPosition = transform.position;
+            Vector3 otherPosition = other.ClosestPoint(triggerPosition);
+
+            Ray ray = new Ray(triggerPosition, (otherPosition - triggerPosition).normalized);
+            RaycastHit hitInfo;
+
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                attackPoint = hitInfo.point;
+            }
         }
     }
 

@@ -23,15 +23,15 @@ public class FighterPlayerShiftClick : NetworkBehaviour
         {
             if (other.gameObject.GetComponent<PlayerDamageController>() != null)
             {
-                other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
-                Runner.Spawn(hitEffect, hitPosition.transform.position, hitPosition.transform.rotation);
+                other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
+                //Runner.Spawn(hitEffect, hitPosition.transform.position, hitPosition.transform.rotation);
             }
             else
             {
                 if (other.TryGetComponent(out BotController component))
                 {
-                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
-                    Runner.Spawn(hitEffect, hitPosition.transform.position, hitPosition.transform.rotation);
+                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime, transform.position);
+                    //Runner.Spawn(hitEffect, hitPosition.transform.position, hitPosition.transform.rotation);
                 }
             }
         }

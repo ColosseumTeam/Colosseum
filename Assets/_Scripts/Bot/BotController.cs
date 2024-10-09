@@ -26,6 +26,7 @@ public class BotController : NetworkBehaviour
     [SerializeField] private Transform botAttackPosition;
     [SerializeField] private GameObject botSkillObj;
     [SerializeField] private float botSkillSpeed = 15f;
+    [SerializeField] private GameObject hitEffect;
 
     private bool isAttacking = false;
 
@@ -57,12 +58,17 @@ public class BotController : NetworkBehaviour
         }
     }
 
-    public void TakeDamage(float damage, BotHitType newBotHitType, bool downAttack, float stiffnessTime)
+    public void TakeDamage(float damage, BotHitType newBotHitType, bool downAttack, float stiffnessTime, Vector3 gameObject)
     {
         Debug.Log($"{downAttack} && {newBotHitType}");
 
         if (!isDowning || !isGrounding || (isDowning && downAttack))
         {
+            if (gameObject != null)
+            {
+                Runner.Spawn(hitEffect, gameObject);
+            }
+
             switch (newBotHitType)
             {
                 case BotHitType.None:
@@ -94,7 +100,7 @@ public class BotController : NetworkBehaviour
 
                     break;
             }
-        }        
+        }
     }
 
 

@@ -24,16 +24,16 @@ public class RangePlayerTwoAfterAttack : NetworkBehaviour
         {
             if (other.gameObject.GetComponent<PlayerDamageController>() != null)
             {
-                other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
-                Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
+                other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
 
             else
             {
                 if (other.gameObject.TryGetComponent(out BotController component))
                 {
-                    component.TakeDamage(damage, botHitType, downAttack, 1f);
-                    Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
+                    component.TakeDamage(damage, botHitType, downAttack, 1f, transform.position);
+                    //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
                 }
             }            
         }

@@ -48,7 +48,8 @@ public class PlayerRangeAttackController : NetworkBehaviour
         animator = GetComponent<Animator>();
         mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
         playerController = GetComponent<PlayerController>();
-        rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();        
+        rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();
+
     }
 
 
@@ -181,7 +182,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         Rigidbody normalObjRb = normalObj.GetComponent<Rigidbody>();
         normalObj.GetComponent<RangePlayerNormalAttack>().Look(aimObject.transform.position);
         normalObj.GetComponent<RangePlayerNormalAttack>().GetRangePlayer(gameObject);
-        
+
     }
 
     // 첫 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
@@ -234,8 +235,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         Vector3 centerPosition = centerObject.position;
 
         for (int i = 0; i < numberOfOrbits; i++)
-        {
-            // 부모를 명시적으로 null로 설정하여 씬의 루트에 생성되도록 함
+        {            
             NetworkObject orbitInstance = Runner.Spawn(rangeThreeSkillPrefab, centerPosition, Quaternion.identity, null);
 
             RangePlayerThreeAttack orbitScript = orbitInstance.GetComponent<RangePlayerThreeAttack>();
@@ -245,16 +245,11 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
                 orbitScript.ThreeSkillOptionChanged(centerObject, orbitRadius, orbitSpeed, initialAngle);
 
-                // 위치 설정 전에 orbitScript의 변수가 올바르게 초기화되었는지 확인
-                // orbitScript의 Start 메서드가 위치를 다시 설정할 수 있으므로, 필요시 Start에서 위치 설정을 제거하거나 수정
                 orbitInstance.transform.position = centerObject.position + new Vector3(
                     Mathf.Cos(initialAngle * Mathf.Deg2Rad),
                     0,
                     Mathf.Sin(initialAngle * Mathf.Deg2Rad)
                 ) * orbitRadius;
-
-                // 디버그 로그 추가
-                Debug.Log($"OrbitInstance {i} Position: {orbitInstance.transform.position}");
             }
         }
 
@@ -266,6 +261,8 @@ public class PlayerRangeAttackController : NetworkBehaviour
     // 네 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
     public void FourRangeSkillAttackEvent()
     {
+        Debug.Log(HasStateAuthority);
+
         Vector3 fourSkillObjPosition = rangeHitPosition;
 
         NetworkObject fourSkillObj = Runner.Spawn(rangeFourSkillPrefab, fourSkillObjPosition, Quaternion.identity);
@@ -275,9 +272,9 @@ public class PlayerRangeAttackController : NetworkBehaviour
         if (fourSkillObjRb != null)
         {
             //fourSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
-            fourSkillObjRb.velocity = Vector3.down * rangeFourSkillPrefabSpeed;
+            //fourSkillObjRb.velocity = Vector3.down * rangeFourSkillPrefabSpeed;
         }
-
+         
     }
 
     // 1번 키를 누를 경우 춤 추도록 하는 메서드

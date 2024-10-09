@@ -11,6 +11,7 @@ public class RangePlayerOneAttack : NetworkBehaviour
     [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = true;
     [SerializeField] private GameObject attecktEffect;
+    [SerializeField] private GameObject balanceObject;
 
     private GameObject player;
     private float maxHeight = 0f;
@@ -42,17 +43,25 @@ public class RangePlayerOneAttack : NetworkBehaviour
             if (other.gameObject.GetComponentInParent<PlayerDamageController>() != null
                 && other.gameObject != player && HasStateAuthority)
             {
-                other.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f);
-                Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
+                other.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
             else
             {
                 if (other.gameObject.TryGetComponent(out BotController component))
                 {
-                    component.TakeDamage(damage, botHitType, downAttack, 1f);
-                    Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
+                    component.TakeDamage(damage, botHitType, downAttack, 1f, transform.position);
+                    //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
                 }
             }
+
+            Vector3 instanceBalanceRotation = new Vector3(
+                                gameObject.transform.eulerAngles.x + 90f,
+                                gameObject.transform.eulerAngles.y,
+                                gameObject.transform.eulerAngles.z
+                            );
+
+            Runner.Spawn(balanceObject, gameObject.transform.position, Quaternion.Euler(instanceBalanceRotation));
 
             GetComponent<BoxCollider>().enabled = false;
         }

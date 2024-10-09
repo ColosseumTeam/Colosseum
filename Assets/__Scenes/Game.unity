@@ -19771,6 +19771,7 @@ MonoBehaviour:
   botAttackPosition: {fileID: 0}
   botSkillObj: {fileID: 0}
   botSkillSpeed: 15
+  hitEffect: {fileID: 0}
 --- !u!54 &1206010472
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -26075,6 +26076,7 @@ MonoBehaviour:
   - {fileID: 1684414125}
   - {fileID: 1692788248}
   hpBar: {fileID: 93682580}
+  bgAudioSource: {fileID: 0}
 --- !u!114 &1602521908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36698,6 +36700,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4748305744709498200, guid: e0e9b41f89f2dce489d0a5e269746f97, type: 3}
+      propertyPath: hitEffect
+      value: 
+      objectReference: {fileID: 7728366230342544413, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
     - target: {fileID: 5187340188739333718, guid: e0e9b41f89f2dce489d0a5e269746f97, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.9170365
@@ -36745,8 +36751,45 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5187340188739564150, guid: e0e9b41f89f2dce489d0a5e269746f97, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1987458958}
   m_SourcePrefab: {fileID: 100100000, guid: e0e9b41f89f2dce489d0a5e269746f97, type: 3}
+--- !u!1 &1987458956 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5187340188739564150, guid: e0e9b41f89f2dce489d0a5e269746f97, type: 3}
+  m_PrefabInstance: {fileID: 1987458955}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1987458957 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4748305744709498200, guid: e0e9b41f89f2dce489d0a5e269746f97, type: 3}
+  m_PrefabInstance: {fileID: 1987458955}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987458956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 749743874a4f27e4a9aba437184d7e6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1987458958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987458956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2963203991
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1987458957}
 --- !u!1001 &1990335264
 PrefabInstance:
   m_ObjectHideFlags: 0

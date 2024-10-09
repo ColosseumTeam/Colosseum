@@ -21,13 +21,13 @@ public class FighterESkill : NetworkBehaviour
         {
             if (other.gameObject.GetComponent<PlayerDamageController>() != null)
             {
-                other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime);
+                other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
             }
             else
             {
                 if (other.TryGetComponent(out BotController component))
                 {
-                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime, transform.position);
                 }
             }
 

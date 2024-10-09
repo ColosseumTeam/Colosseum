@@ -5477,7 +5477,6 @@ GameObject:
   - component: {fileID: 6723840173950459857}
   - component: {fileID: -3007750675426362701}
   - component: {fileID: 3859240491041883072}
-  - component: {fileID: 5298124052377606061}
   m_Layer: 0
   m_Name: Ranger Player for Test
   m_TagString: Untagged
@@ -5745,7 +5744,6 @@ MonoBehaviour:
   damageManager: {fileID: 0}
   aimObject: {fileID: 0}
   corssHairLookAt: {fileID: 2977825786148993041}
-  skillSoundManager: {fileID: 0}
   rangeTransform: {fileID: 375595944680219053}
   rangeThreeSkillTransform: {fileID: 581098205518225566}
   rangeNormalSkillPrefab: {fileID: 8829451551789304542, guid: e6c2aa6f3b140f84db99d0b27e732000, type: 3}
@@ -5804,7 +5802,9 @@ MonoBehaviour:
   upForce: 10
   downTimer: 0
   downEndTimer: 3
-  attecktEffect: {fileID: 0}
+  hitEffect: {fileID: 7728366230342544413, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
+  airTimer: 0
+  airEndTimer: 0.5
 --- !u!114 &6723840173950459857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5883,20 +5883,6 @@ MonoBehaviour:
   SyncSettings: 79
   StateHashes: 000000002b1a167c7940695546980c4f14c2736678529982fa1dd5076bd28ad9e99dc65ce7c4dea4fd55e44e8a18fce4c765c7ddadd67ef28b7ab85e2746b9e535e7c26b8048b961d0b26d01651d160bdb2cdcdd6e83a7d783e68b2149ce5228
   TriggerHashes: 000000000d286c4073cbfc9f28a98107fb369af62b1a167c
---- !u!114 &5298124052377606061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5319581205106527644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b513806e60ade841a2415ac846df381, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioSource: {fileID: 1310197395173578651}
-  playerData: {fileID: 0}
 --- !u!1 &5339053485418124171
 GameObject:
   m_ObjectHideFlags: 0

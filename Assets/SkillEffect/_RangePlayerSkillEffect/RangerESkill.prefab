@@ -4945,10 +4945,12 @@ MonoBehaviour:
   playerHitType: 1
   botHitType: 1
   downAttack: 1
-  attackTime: 0
-  attackTimeEnd: 1
   afterAttackObject: {fileID: 1102374203008830, guid: 0011bd88cb09fb3458e92717bcf5aa72, type: 3}
+  balanceObject: {fileID: 4691470043686925241, guid: d1489864852b8e248bc7e93565b8d56d, type: 3}
   attecktEffect: {fileID: 7728366230342544413, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
+  downClip: {fileID: 8300000, guid: c83515b23ab38bd4e844eaf2a3309f2b, type: 3}
+  isAttacking: 0
+  fallSpeed: 5
 --- !u!114 &5167220378891103666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14947,7 +14949,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -14965,6 +14967,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08f384a277851bf49aaf4a07c172ebe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timerCheck: 0
+  timer: 0
+  endTimer: 1
+  rayDistance: 0.5
 --- !u!114 &4758722456922155677
 MonoBehaviour:
   m_ObjectHideFlags: 0

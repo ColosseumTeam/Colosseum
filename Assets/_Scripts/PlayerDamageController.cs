@@ -23,9 +23,13 @@ public class PlayerDamageController : NetworkBehaviour
     [SerializeField] private bool upDamageCheck;
     [SerializeField] private float upForce = 12f;
     [SerializeField] private float downTimer = 0f;
-    [SerializeField] private float downEndTimer = 3f;
-    [SerializeField] private GameObject attecktEffect;
+    [SerializeField] private float downEndTimer = 3f;   
+    [SerializeField] private GameObject hitEffect;
 
+    [SerializeField] private float airTimer = 0f;
+    [SerializeField] private float airEndTimer = 0.5f;
+    private bool airCheck;
+    private Vector3 airPosition;
 
     private GameObject gameManager;
     private float hp;
@@ -50,6 +54,31 @@ public class PlayerDamageController : NetworkBehaviour
     {
         DownTimeCheck();
 
+        if (kcc.IsGrounded)
+        {
+            isGrounding = true;
+        }
+        else
+        {
+            isGrounding = false;
+        }
+
+        if (airCheck)
+        {
+            airTimer += Runner.DeltaTime;
+            if (airTimer < airEndTimer)
+            {
+                gameObject.transform.position = airPosition;
+                return;
+            }
+
+            else
+            {
+                airCheck = false;
+                airTimer = 0f;
+            }            
+        }
+
         if (isUping && gameObject.transform.position.y <= playerVector.y + upForce)
         {
             kcc.Move(jumpImpulse: upForce);
@@ -62,7 +91,7 @@ public class PlayerDamageController : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = true)]
-    public void RPC_TakeDamage(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime)
+    public void RPC_TakeDamage(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime, Vector3 skillPosition)
     {        
         Debug.Log($"{damage}, {playerHitType}, {downAttack}, {stiffnessTime}");
 
@@ -70,11 +99,24 @@ public class PlayerDamageController : NetworkBehaviour
         {
             PlayerHPDecrease(damage);
 
+            if (HasStateAuthority)
+            {
+                Runner.Spawn(hitEffect, skillPosition);
+            }
+
             switch (playerHitType)
             {
                 case PlayerHitType.None:
                     int rnd = Random.Range(0, 2);
                     animator.speed = stiffnessTime;
+     
+                    if (isDowning && !isGrounding)
+                    {
+                        airPosition = gameObject.transform.position;
+                        airCheck = true;
+                        break;
+                    }
+
                     animator.SetFloat("TakeHitState", rnd);
                     animator.SetTrigger("TakeHit");
                     break;
@@ -112,21 +154,24 @@ public class PlayerDamageController : NetworkBehaviour
     // HP 감소 메서드
     private void PlayerHPDecrease(float newDamage)
     {
-        hp -= newDamage;
-
-        hpBar.fillAmount = hp / MaxHp;
-
-        if (hp <= 0)
+        if (HasStateAuthority)
         {
-            // 플레이어가 패배할 경우 playerNumber의 반대되는 수를 메개변수로 전달
-            if (playerData.playerNumber == 0)
-            {
-                gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(1);
-            }
+            hp -= newDamage;
 
-            else if (playerData.playerNumber == 1)
+            hpBar.fillAmount = hp / MaxHp;
+
+            if (hp <= 0)
             {
-                gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(0);
+                // 플레이어가 패배할 경우 playerNumber의 반대되는 수를 메개변수로 전달
+                if (playerData.playerNumber == 0)
+                {
+                    gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(1);
+                }
+
+                else if (playerData.playerNumber == 1)
+                {
+                    gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(0);
+                }
             }
         }
     }
@@ -153,6 +198,5 @@ public class PlayerDamageController : NetworkBehaviour
             isGrounding = false;
         }
     }
-
 
 }

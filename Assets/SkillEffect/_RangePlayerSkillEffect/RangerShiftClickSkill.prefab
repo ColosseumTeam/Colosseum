@@ -169,6 +169,7 @@ MonoBehaviour:
   botHitType: 1
   downAttack: 1
   attecktEffect: {fileID: 7728366230342544413, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
+  balanceObject: {fileID: 4691470043686925241, guid: e5d555f657f1a8247abc9f39e0ad9902, type: 3}
 --- !u!114 &3543992647581363040
 MonoBehaviour:
   m_ObjectHideFlags: 0
