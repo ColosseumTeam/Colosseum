@@ -21,9 +21,9 @@ public class FighterRightClickSkill : NetworkBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            if (other.gameObject.GetComponent<PlayerDamageController>() != null)
+            if (other.GetComponentInParent<PlayerDamageController>() != null)
             {
-                other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, hitPosition.transform.position);
+                other.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, hitPosition.transform.position);
                 //Runner.Spawn(hitEffect, hitPosition.transform.position, hitPosition.transform.rotation);
             }
             else

@@ -23,15 +23,28 @@ public class VolumeSettingManager : MonoBehaviour
 
     private void Awake()
     {
-        if (FindAnyObjectByType<VolumeSettingManager>() != this)
+        if (FindObjectOfType<VolumeSettingManager>() != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 
         DontDestroyOnLoad(this);
 
         InitVolumeOnLobbyScene();
+    }
+
+    public void InitReference()
+    {
+        LobbyManager lobbyManager = FindObjectOfType<LobbyManager>();
+
+        bgBar = lobbyManager.BgBar;
+        skillBar = lobbyManager.SkillBar;
+        uiBar = lobbyManager.UiBar;
+        voiceBar = lobbyManager.VoiceBar;
+
+        bgAudioSource = lobbyManager.BgAudioSource;
+        uiAudioSource = lobbyManager.UiAudioSource;
     }
 
     // Will be used on first line of SceneLoadDone
