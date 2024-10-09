@@ -15,7 +15,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
         E,
     }
 
-    [Header("Primary Setting")]
+    [Header("Component Reference")]
     [SerializeField] private AimController aimController;
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private CrossHairLookAt crossHairLookAt;
@@ -38,6 +38,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
     private PlayerController playerController;
     private Animator animator;
+    private NetworkMecanimAnimator mecanimAnimator;
     private float eState;
     [SerializeField] private bool isAttacking;
     private bool isPressedShift;
@@ -53,13 +54,21 @@ public class PlayerFighterAttackController : NetworkBehaviour
     {
         playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
+        mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
         //crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
     }
 
-    private void Start()
+    public override void Spawned()
     {
+        base.Spawned();
+
         gameManager = FindObjectOfType<GameManager>();
         aimController = gameManager.AimController;
+
+        if (aimController == null)
+        {
+            Debug.Log("Couldn't find AimController");
+        }
     }
 
     // Shift + Click
@@ -94,7 +103,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
             skillPos = crossHairLookAt.GroundHitPositionTransmission();
 
-            animator.SetTrigger("Skill");
+            mecanimAnimator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 2);
         }
 
@@ -122,7 +131,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
                 eState = 0f;
             }
 
-            animator.SetTrigger("Skill");
+            mecanimAnimator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 0);
 
             GetComponent<AudioSource>().clip = rightClickSkillClip;
@@ -141,7 +150,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
             if (!IsQSkillOn)
             {
                 IsQSkillOn = true;
-                animator.SetTrigger("Skill");
+                mecanimAnimator.SetTrigger("Skill");
                 animator.SetInteger("SkillState", 1);
 
                 GetComponent<AudioSource>().clip = qSkillClip;
@@ -156,9 +165,9 @@ public class PlayerFighterAttackController : NetworkBehaviour
                     return;
                 }
 
-                //NetworkObject stone = Runner.Spawn(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
-                //stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
-                StartCoroutine(SpawnStone());
+                NetworkObject stone = Runner.Spawn(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
+                stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
+                //StartCoroutine(SpawnStone());
                 qCount--;
 
                 qSkillGroup.GetChild(qCount).gameObject.SetActive(false);
@@ -200,7 +209,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
         {
             skillPos = crossHairLookAt.GroundHitPositionTransmission();
 
-            animator.SetTrigger("Skill");
+            mecanimAnimator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 3);
         }
     }
@@ -214,7 +223,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
     {
         if (value.isPressed)
         {
-            animator.SetTrigger("Emotion1");
+            mecanimAnimator.SetTrigger("Emotion1");
         }
     }
 

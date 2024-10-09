@@ -260,7 +260,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     // 네 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
     public void FourRangeSkillAttackEvent()
     {
-        Debug.Log(HasStateAuthority);
+        if (!HasStateAuthority) { return; }
 
         Vector3 fourSkillObjPosition = rangeHitPosition;
 

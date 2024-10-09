@@ -14,11 +14,11 @@ public class FighterQSkillProjectile : FighterQSkill
             Destroy(gameObject);
         }
 
-        if (collision.transform.CompareTag("Enemy"))
+        if (collision.transform.CompareTag("Enemy") && HasStateAuthority)
         {
-            if (collision.gameObject.GetComponent<PlayerDamageController>() != null)
+            if (collision.gameObject.GetComponentInParent<PlayerDamageController>() != null)
             {
-                collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
+                collision.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
                 //Runner.Spawn(hitEffect, gameObject.transform.position, gameObject.transform.rotation);
                 GetComponent<AudioSource>().Play(); 
             }
