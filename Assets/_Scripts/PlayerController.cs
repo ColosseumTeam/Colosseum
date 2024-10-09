@@ -52,6 +52,7 @@ public class PlayerController : NetworkBehaviour
     private bool isGrounding = true;
     private bool isSkilling;
     private bool isDowning;
+    [SerializeField] private bool isLeftRightAttack;
 
     public PlayerData PlayerData => playerData;
 
@@ -193,7 +194,6 @@ public class PlayerController : NetworkBehaviour
         {
             kcc.Move(newPosition, jumpState);
         }
-        //kcc.Move(newPosition, jumpState);
     }
 
     private void OnMove(InputValue value)
@@ -211,7 +211,6 @@ public class PlayerController : NetworkBehaviour
             animator.SetBool("Run", false);
         }
     }
-
     private void OnLeftStep()
     {
         audioSource.PlayOneShot(playerData.LeftStep);
@@ -242,6 +241,7 @@ public class PlayerController : NetworkBehaviour
 
     public void SkillReady()
     {
+        isLeftRightAttack = false;
         isSkilling = true;
     }
 

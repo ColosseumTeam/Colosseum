@@ -1,4 +1,5 @@
 using Fusion;
+using Fusion.Addons.SimpleKCC;
 using System.Collections;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
@@ -264,7 +265,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
         switch (skill)
         {
             case Skill.LeftClick:
-                leftClickSkillCollider.enabled = false;
+                leftClickSkillCollider.enabled = false;                
                 isAttacking = false;
                 break;
 
