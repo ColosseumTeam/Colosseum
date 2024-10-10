@@ -19,4 +19,10 @@ public class LobbyManager : MonoBehaviour
     public Slider SkillBar { get { return skillBar; } }
     public Slider UiBar { get { return uiBar; } }
     public Slider VoiceBar { get { return voiceBar; } }
+
+
+    private void Awake()
+    {
+        FindObjectOfType<VolumeSettingManager>().InitReference();
+    }
 }
