@@ -52,7 +52,7 @@ public class PlayerController : NetworkBehaviour
     private bool isGrounding = true;
     private bool isSkilling;
     private bool isDowning;
-    [SerializeField] private bool isLeftRightAttack;
+    private bool rangerESkillActive = false;
 
     public PlayerData PlayerData => playerData;
 
@@ -236,12 +236,14 @@ public class PlayerController : NetworkBehaviour
 
     private void Look(Vector2 input)
     {
-        kcc.AddLookRotation(0, input.x * rotationSpeed * Runner.DeltaTime);
+        if (HasStateAuthority && rangerESkillActive == false)
+        {
+            kcc.AddLookRotation(0, input.x * rotationSpeed * Runner.DeltaTime);
+        }
     }
 
     public void SkillReady()
-    {
-        isLeftRightAttack = false;
+    {        
         isSkilling = true;
     }
 
@@ -391,6 +393,16 @@ public class PlayerController : NetworkBehaviour
     {
         isSkilling = false;
         isAttacking = false;
+    }
+
+    public void RangerESkillActiveCheck()
+    {
+        rangerESkillActive = true;
+    }
+
+    public void RangerESkillNonActiveCheck()
+    {
+        rangerESkillActive = false;
     }
 
     public void DowningManagement(bool check)

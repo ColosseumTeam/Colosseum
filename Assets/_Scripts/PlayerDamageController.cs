@@ -158,6 +158,8 @@ public class PlayerDamageController : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
+            GetComponentInChildren<CameraRotation>().CameraShake();
+
             hp -= newDamage;
 
             hpBar.fillAmount = hp / MaxHp;

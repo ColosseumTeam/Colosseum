@@ -1,4 +1,5 @@
 using Fusion;
+using System.ComponentModel;
 using UnityEngine;
 
 public class RangePlayerFourAttack : NetworkBehaviour
@@ -47,53 +48,28 @@ public class RangePlayerFourAttack : NetworkBehaviour
 
         if (isAttacking)
         {
-            HandleAttack();
-        }
-    }
+            NetworkObject afterObj = Runner.Spawn(afterAttackObject, gameObject.transform.position, Quaternion.identity);
+            afterObj.GetComponent<RangePlayerFourAfterAttack>().GetRanger(player);
 
-    private void HandleAttack()
-    {
-        if (enemyObj != null)
-        {
-            Runner.Spawn(afterAttackObject, gameObject.transform.position, Quaternion.identity);
-
-            if (enemyObj.GetComponent<PlayerDamageController>() != null)
-            {
-                downAttack = true;
-                enemyObj.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
-            }
-            else
-            {
-                if (enemyObj.gameObject.TryGetComponent(out BotController component))
-                {
-                    downAttack = true;
-
-                    Vector3 instanceBalanceRotation = new Vector3(
+            Vector3 instanceBalanceRotation = new Vector3(
                         gameObject.transform.eulerAngles.x + 90f,
                         gameObject.transform.eulerAngles.y,
                         gameObject.transform.eulerAngles.z
-                    );
+            );
 
-                    component.TakeDamage(damage, botHitType, downAttack, 1f, transform.position);
+            Ray ray = new Ray(gameObject.transform.position, Vector3.down);
+            RaycastHit hit;
 
-                    Ray ray = new Ray(enemyObj.transform.position, Vector3.down);
-                    RaycastHit hit;
-
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-                    {
-                        if (hit.collider.CompareTag("Ground"))
-                        {
-                            Runner.Spawn(balanceObject, hit.point, Quaternion.Euler(instanceBalanceRotation));
-                        }
-                    }
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                if (hit.collider.CompareTag("Ground"))
+                {
+                    Runner.Spawn(balanceObject, hit.point, Quaternion.Euler(instanceBalanceRotation));
                 }
             }
 
-            Destroy(gameObject); // 공격 후 오브젝트 삭제
-        }
-        else
-        {
-            Destroy(gameObject); // 적이 없을 때도 삭제
+            Destroy(gameObject);
+
         }
     }
 
@@ -103,8 +79,7 @@ public class RangePlayerFourAttack : NetworkBehaviour
         {
             enemyObj = other.gameObject;
 
-            if (enemyObj.GetComponent<PlayerDamageController>() != null
-                && enemyObj != player && HasStateAuthority)
+            if (enemyObj.GetComponent<PlayerDamageController>() != null && enemyObj != player && HasStateAuthority)
             {
                 enemyObj.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
                 GetComponent<Collider>().enabled = false;
@@ -124,13 +99,14 @@ public class RangePlayerFourAttack : NetworkBehaviour
         }
     }
 
+    // RangePlayerFourAttackMiddle이 오브젝트를 멈추도록 신호를 보내줌
     public void OnGroundCheck()
     {
-        // 물리적 충돌 처리 중지
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
         isDowning = false;
     }
 
+    // RangePlayerFourAttackMiddle이 일정 시간 지나면 폭발할 수 있도록 신호를 보내줌
     public void IsAttackingActive()
     {
         isAttacking = true;

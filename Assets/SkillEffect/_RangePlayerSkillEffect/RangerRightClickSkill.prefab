@@ -111,7 +111,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   fieldTimer: 0
-  fieldEndTimer: 0.2
+  fieldEndTimer: 0.1
   attecktEffect: {fileID: 7728366230342544413, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
 --- !u!114 &1760995181815975085
 MonoBehaviour:

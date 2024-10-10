@@ -2470,6 +2470,9 @@ MonoBehaviour:
   maxXRotation: -10
   minXRotation: 25
   xRotation: 0
+  shakeDuration: 0.2
+  shakeMagnitude: 5
+  shakeSpeed: 1
 --- !u!114 &1264273697295819384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3935,6 +3938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  mecanimAnimator: {fileID: 0}
   kcc: {fileID: 0}
   playerData: {fileID: 0}
   isDowning: 0

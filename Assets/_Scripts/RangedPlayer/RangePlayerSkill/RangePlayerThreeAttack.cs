@@ -5,7 +5,7 @@ public class RangePlayerThreeAttack : NetworkBehaviour
 {    
     private Transform centerObject;
     private float orbitRadius;
-    private float orbitSpeed;
+    [SerializeField] private float orbitSpeed;
     private float currentAngle;    
 
     private void Start()
@@ -29,7 +29,7 @@ public class RangePlayerThreeAttack : NetworkBehaviour
         if (centerObject == null)
             return;
 
-        currentAngle += orbitSpeed * Time.deltaTime;
+        currentAngle += orbitSpeed * Runner.DeltaTime;
         if (currentAngle >= 360f)
         {
             currentAngle -= 360f;

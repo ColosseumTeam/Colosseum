@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -6027045946977971719}
   - component: {fileID: 5555939525410520722}
   - component: {fileID: 7569879531957138026}
+  - component: {fileID: 7967164268882002368}
   m_Layer: 0
   m_Name: RangerEAfterSkill
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4391550899060370}
@@ -52,8 +53,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2b051ab403b1e41a8cf01c41c41ad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 0
-  timerEnd: 2
+  damage: 10
+  playerHitType: 1
+  botHitType: 1
+  downAttack: 1
 --- !u!114 &-6027045946977971719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,6 +188,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!135 &7967164268882002368
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102374203008830}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 11.32
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1208184945689846
 GameObject:
   m_ObjectHideFlags: 0

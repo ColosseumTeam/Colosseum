@@ -37,8 +37,9 @@ public class PlayerRangeAttackController : NetworkBehaviour
     private NetworkMecanimAnimator mecanimAnimator;
     private Vector3 rangeHitPosition;
     private int isCoolTimeSkill;
-    [SerializeField] private bool isSkillReady;
+    private bool isSkillReady;
     private bool isOneSkillReady;
+    private GameObject cameraRig;
 
     private void Awake()
     {
@@ -48,8 +49,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         animator = GetComponent<Animator>();
         mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
         playerController = GetComponent<PlayerController>();
-        rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();
-
+        rangePlayerCoolTImeManager = GetComponent<RangePlayerCoolTImeManager>();       
     }
 
     public void GetState(PlayerRangeAttackBehaviour.State newState)
@@ -168,6 +168,9 @@ public class PlayerRangeAttackController : NetworkBehaviour
         if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[3] && HasStateAuthority)
         {
             isCoolTimeSkill = 3;
+            cameraRig = GetComponentInChildren<RangePlayerFourAttackCameraChanged>().gameObject;
+            cameraRig.GetComponent<RangePlayerFourAttackCameraChanged>().ActivateCloseUp();
+            playerController.RangerESkillActiveCheck();
             SkillStateChagned(3f);
         }
     }
@@ -268,11 +271,20 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         Rigidbody fourSkillObjRb = fourSkillObj.GetComponent<Rigidbody>();
 
+        fourSkillObj.GetComponent<RangePlayerFourAttack>().GetRangePlayer(gameObject);
+
         if (fourSkillObjRb != null)
         {
             //fourSkillObj.GetComponent<ISkill>().GetDamageManager(damageManager);
             //fourSkillObjRb.velocity = Vector3.down * rangeFourSkillPrefabSpeed;
         }
+    }
+
+
+    public void EndESkill()
+    {
+        cameraRig.GetComponent<RangePlayerFourAttackCameraChanged>().DeactivateCloseUp();
+        playerController.RangerESkillNonActiveCheck();
     }
 
     // 1번 키를 누를 경우 춤 추도록 하는 메서드

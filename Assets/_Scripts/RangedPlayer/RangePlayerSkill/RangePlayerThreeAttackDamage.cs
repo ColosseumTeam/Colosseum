@@ -31,15 +31,15 @@ public class RangePlayerThreeAttackDamage : NetworkBehaviour
         if (timerCheck)
         {
             transform.position = player.transform.position;
-            timer += Time.deltaTime;
+            timer += Runner.DeltaTime;
+
+            DealingPeriodEvent();
             if (timer >= timerArrive)
             {
                 timerCheck = false;
                 gameObject.GetComponent<Collider>().enabled = false;
             }
         }
-
-        DealingPeriodEvent();
     }
 
     public void GetPlayer(Transform newPlayer)
