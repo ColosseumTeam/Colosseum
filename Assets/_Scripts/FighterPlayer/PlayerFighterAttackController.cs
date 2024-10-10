@@ -1,9 +1,10 @@
+using Cinemachine;
 using Fusion;
-using Fusion.Addons.SimpleKCC;
-using System.Collections;
-using System.Security.Cryptography.X509Certificates;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 public class PlayerFighterAttackController : NetworkBehaviour
 {
@@ -16,11 +17,14 @@ public class PlayerFighterAttackController : NetworkBehaviour
         E,
     }
 
-    [Header("Component Reference")]
+    [Header("References")]
     [SerializeField] private AimController aimController;
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private CrossHairLookAt crossHairLookAt;
     [SerializeField] private GameManager gameManager;
+    [SerializeField] private TimelineClip ultTimeline;
+    [SerializeField] private Transform ultEffectCameraGroup;
+    [SerializeField] private Camera ultCamera;
 
     [Header("Skill Collider")]
     [SerializeField] private CapsuleCollider leftClickSkillCollider;
@@ -31,6 +35,8 @@ public class PlayerFighterAttackController : NetworkBehaviour
     [SerializeField] private NetworkObject qSkillPrefab;
     [SerializeField] private GameObject shiftClickSkillPrefab;
     [SerializeField] private GameObject eSkillPrefab;
+    [SerializeField] private GameObject eSkillRockFront;
+    [SerializeField] private GameObject eSkillRockBack;
 
     [Header("Skill Sound")]
     [SerializeField] private AudioClip leftClickSkillClip;
@@ -40,15 +46,20 @@ public class PlayerFighterAttackController : NetworkBehaviour
     private PlayerController playerController;
     private Animator animator;
     private NetworkMecanimAnimator mecanimAnimator;
+    private PlayableDirector playableDirector;
     private float eState;
     [SerializeField] private bool isAttacking;
     private bool isPressedShift;
     private Vector3 skillPos;
     private int qCount;
+    private Transform enemyTr;
+    // for test
+    [SerializeField] private GameObject mainCam;
 
     private bool isReadyToShootQ;
 
     public bool IsQSkillOn { get; set; }
+    public PlayableDirector PlayableDirector { get { return playableDirector; } }
 
 
     private void Awake()
@@ -56,6 +67,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
         playerController = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
+        playableDirector = GetComponent<PlayableDirector>();
         //crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
     }
 
@@ -69,6 +81,11 @@ public class PlayerFighterAttackController : NetworkBehaviour
         if (aimController == null)
         {
             Debug.Log("Couldn't find AimController");
+        }
+
+        if (HasStateAuthority)
+        {
+            mainCam.SetActive(true);
         }
     }
 
@@ -168,7 +185,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
                 NetworkObject stone = Runner.Spawn(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
                 stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
-                //StartCoroutine(SpawnStone());
+
                 qCount--;
 
                 qSkillGroup.GetChild(qCount).gameObject.SetActive(false);
@@ -180,13 +197,6 @@ public class PlayerFighterAttackController : NetworkBehaviour
                 }
             }
         }
-    }
-
-    private IEnumerator SpawnStone()
-    {
-        NetworkObject stone = new NetworkObject();
-        yield return new WaitUntil(() => stone = Runner.Spawn(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation));
-        stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
     }
 
     public void QSkillInit(int count)
@@ -215,9 +225,65 @@ public class PlayerFighterAttackController : NetworkBehaviour
         }
     }
 
+    [Rpc]
+    public void RPC_StartESkillEffect()
+    {
+        playableDirector.Play();
+    }
+
     public void OnInstantiateESkillPrefab()
     {
-        GameObject eSkillObj = Instantiate(eSkillPrefab, skillPos, transform.rotation);        
+        GameObject eSkillObj = Instantiate(eSkillPrefab, skillPos, transform.rotation);
+        eSkillObj.GetComponent<FighterESkill>().SetAttackController(this);
+    }
+
+    [Rpc]
+    public void RPC_SetEnemyOnUltCamera()
+    {
+        //enemyTr = enemy;
+        List<NetworkObject> networkObjects = Runner.GetAllNetworkObjects();
+        foreach (var obj in networkObjects)
+        {
+            if (obj.TryGetComponent(out PlayerController component))
+            {
+                if (obj.tag == "Enemy")
+                {
+                    enemyTr = obj.transform;
+                    Debug.Log("Found enemy");
+                }
+            }
+        }
+
+        for (int i = 0; i < ultEffectCameraGroup.childCount; i++)
+        {
+            CinemachineVirtualCamera vircam = ultEffectCameraGroup.GetChild(i).GetComponent<CinemachineVirtualCamera>();
+            if (enemyTr != transform)
+            {
+                vircam.Follow = transform;
+                vircam.LookAt = enemyTr;
+            }
+            else
+            {
+                vircam.Follow = enemyTr;
+                vircam.LookAt = transform;
+            }
+        }
+    }
+
+    public void OnUltEffectStart()
+    {
+        //Camera.main.enabled = false;
+        ultCamera.gameObject.SetActive(true);
+        GameObject rock1 = Instantiate(eSkillRockFront, enemyTr.position - (enemyTr.position - transform.position).normalized * 2, Quaternion.identity);
+        rock1.transform.LookAt(enemyTr);
+        GameObject rock2 = Instantiate(eSkillRockBack, enemyTr.position + (enemyTr.position - transform.position).normalized * 2, Quaternion.identity);
+        rock2.transform.LookAt(enemyTr);
+    }
+
+    public void OnUltEffectEnd()
+    {
+        //Camera.main.enabled = true;
+        ultCamera.gameObject.SetActive(false);
     }
 
     private void OnEmotion1(InputValue value)
