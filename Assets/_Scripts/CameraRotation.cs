@@ -45,7 +45,6 @@ public class CameraRotation : MonoBehaviour
         if (!shaking)
         {
             StartCoroutine(Shake());
-            Debug.Log(1);
         }
     }
 
@@ -56,7 +55,6 @@ public class CameraRotation : MonoBehaviour
 
         while (elapsed < shakeDuration)
         {
-            // Z축을 중심으로 랜덤 회전 적용
             float angle = Random.Range(-1f, 1f) * shakeMagnitude;
             transform.localRotation = Quaternion.Euler(xRotation, 0f, angle);
 
@@ -64,7 +62,6 @@ public class CameraRotation : MonoBehaviour
             yield return null;
         }
 
-        // 원래 회전으로 복원
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         shaking = false;
     }

@@ -1,3 +1,4 @@
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class RangePlayerFourAttackCameraChanged : MonoBehaviour
@@ -18,6 +19,8 @@ public class RangePlayerFourAttackCameraChanged : MonoBehaviour
     {       
         mainCamera.enabled = false;
         closeUpCamera.enabled = true;
+
+        closeUpCamera.GetComponent<RangePlayerQFourAttackCameraShake>().StartShake();
     }
 
     public void DeactivateCloseUp()

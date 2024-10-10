@@ -148,6 +148,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[1] && HasStateAuthority)
         {
             isCoolTimeSkill = 1;
+
             SkillStateChagned(1f);
         }
     }
@@ -168,8 +169,10 @@ public class PlayerRangeAttackController : NetworkBehaviour
         if (value.isPressed && !isSkillReady && rangePlayerCoolTImeManager.SkillCheckLis[3] && HasStateAuthority)
         {
             isCoolTimeSkill = 3;
+            
             cameraRig = GetComponentInChildren<RangePlayerFourAttackCameraChanged>().gameObject;
             cameraRig.GetComponent<RangePlayerFourAttackCameraChanged>().ActivateCloseUp();
+
             playerController.RangerESkillActiveCheck();
             SkillStateChagned(3f);
         }
@@ -209,6 +212,10 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         // 생성된 프리팹 RigidBody 참조
         Rigidbody twoSkillObjRb = twoSkillObj.GetComponent<Rigidbody>();
+
+        cameraRig = GetComponentInChildren<RangePlayerFourAttackCameraChanged>().gameObject;
+        CameraRotation cr = cameraRig.GetComponentInChildren<CameraRotation>();
+        cr.CameraShake();
 
         // 생성된 프리팹의 RigidBody를 정면으로 날아가도록
         if (twoSkillObjRb != null)
