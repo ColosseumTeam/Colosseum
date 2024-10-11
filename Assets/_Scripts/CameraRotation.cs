@@ -43,7 +43,7 @@ public class CameraRotation : MonoBehaviour
     public void CameraShake()
     {
         if (!shaking)
-        {
+        {            
             StartCoroutine(Shake());
         }
     }

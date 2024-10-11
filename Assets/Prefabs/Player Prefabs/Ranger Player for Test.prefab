@@ -1294,11 +1294,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccfc24aa8ff614643af251ab4430f166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeDuration: 4.57
-  shakeMagnitudeX: 0.05
+  shakeDuration: 2
+  shakeMagnitude: 5
   shakeMagnitudeY: 0.05
   shakeMagnitudeZ: 0.05
   frequency: 4.16
+  xRotation: -12.94
+  shaking: 0
 --- !u!1 &1531212859419815061
 GameObject:
   m_ObjectHideFlags: 0
@@ -5922,13 +5924,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22721a96b91ea034ba543547976de72b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCheckList: 01010101
+  skillCheckList: 0101010101
   skillCoolTimer:
   - 0
   - 0
   - 0
   - 0
+  - 0
   skillCoolTimerEnd:
+  - 4
   - 4
   - 4
   - 4

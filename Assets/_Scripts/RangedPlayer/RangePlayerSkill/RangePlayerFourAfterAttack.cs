@@ -6,13 +6,19 @@ public class RangePlayerFourAfterAttack : NetworkBehaviour
     [SerializeField] private float damage = 10f;
     [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
     [SerializeField] private BotController.BotHitType botHitType;
-    [SerializeField] private bool downAttack = true;   
+    [SerializeField] private bool downAttack = true;
 
+    private Camera rotationCamera;
     private GameObject ranger;
 
     private void Awake()
-    {
+    {        
         Destroy(gameObject, 1f);        
+    }
+
+    private void Start()
+    {
+        rotationCamera.GetComponent<CameraRotation>().CameraShake();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -31,8 +37,9 @@ public class RangePlayerFourAfterAttack : NetworkBehaviour
         }
     }
 
-    public void GetRanger(GameObject newRanger)
+    public void GetRanger(GameObject newRanger, Camera newCamera)
     {
         ranger = newRanger;
+        rotationCamera = newCamera;
     }
 }

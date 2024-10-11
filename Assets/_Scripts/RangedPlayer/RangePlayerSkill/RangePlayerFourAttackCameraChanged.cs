@@ -6,8 +6,6 @@ public class RangePlayerFourAttackCameraChanged : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Camera closeUpCamera;
 
-    private Vector3 fixedPosition;
-    private Quaternion fixedRoataion;
 
     private void Awake()
     {
@@ -20,7 +18,8 @@ public class RangePlayerFourAttackCameraChanged : MonoBehaviour
         mainCamera.enabled = false;
         closeUpCamera.enabled = true;
 
-        closeUpCamera.GetComponent<RangePlayerQFourAttackCameraShake>().StartShake();
+        //closeUpCamera.GetComponent<RangePlayerQFourAttackCameraShake>().StartShake();
+        closeUpCamera.GetComponent<RangePlayerQFourAttackCameraShake>().CameraShake();
     }
 
     public void DeactivateCloseUp()

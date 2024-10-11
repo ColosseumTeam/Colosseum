@@ -13,6 +13,7 @@ public class RangePlayerFourAttack : NetworkBehaviour
     [SerializeField] private GameObject attecktEffect;
     [SerializeField] private AudioClip downClip;
 
+    private Camera rotationCamera;
     private AudioSource audioSource;
     private GameObject player;
     private bool isAttacking;
@@ -49,7 +50,7 @@ public class RangePlayerFourAttack : NetworkBehaviour
         if (isAttacking)
         {
             NetworkObject afterObj = Runner.Spawn(afterAttackObject, gameObject.transform.position, Quaternion.identity);
-            afterObj.GetComponent<RangePlayerFourAfterAttack>().GetRanger(player);
+            afterObj.GetComponent<RangePlayerFourAfterAttack>().GetRanger(player, rotationCamera);
 
             Vector3 instanceBalanceRotation = new Vector3(
                         gameObject.transform.eulerAngles.x + 90f,
@@ -112,8 +113,9 @@ public class RangePlayerFourAttack : NetworkBehaviour
         isAttacking = true;
     }
 
-    public void GetRangePlayer(GameObject newPlayer)
+    public void GetRangePlayer(GameObject newPlayer, Camera newCamera)
     {
         player = newPlayer;
+        rotationCamera = newCamera;
     }
 }

@@ -39,7 +39,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     private int isCoolTimeSkill;
     private bool isSkillReady;
     private bool isOneSkillReady;
-    private GameObject cameraRig;
+    [SerializeField] private GameObject cameraRig;
 
     private void Awake()
     {
@@ -116,11 +116,12 @@ public class PlayerRangeAttackController : NetworkBehaviour
             // 두 개의 버튼을 클릭해야 하는 SkillOne은 예외처리
             if (isOneSkillReady)
             {
-                SkillStateChagned(0f);
+                SkillStateChagned(0f);                
 
                 animator.SetFloat("SkillState", 0f);
 
                 RangeAttackOn();
+
             }
         }
     }
@@ -276,9 +277,10 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         NetworkObject fourSkillObj = Runner.Spawn(rangeFourSkillPrefab, fourSkillObjPosition, Quaternion.identity);
 
-        Rigidbody fourSkillObjRb = fourSkillObj.GetComponent<Rigidbody>();
+        Rigidbody fourSkillObjRb = fourSkillObj.GetComponent<Rigidbody>();        
 
-        fourSkillObj.GetComponent<RangePlayerFourAttack>().GetRangePlayer(gameObject);
+        fourSkillObj.GetComponent<RangePlayerFourAttack>().GetRangePlayer(gameObject, 
+            cameraRig.GetComponentInChildren<CameraRotation>().GetComponent<Camera>());
 
         if (fourSkillObjRb != null)
         {
