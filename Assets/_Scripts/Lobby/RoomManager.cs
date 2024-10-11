@@ -43,13 +43,12 @@ public class RoomManager : NetworkBehaviour
         base.Spawned();
 
         // 플레이어가 합류할 때 수행할 작업
-        WhenPlayerJoined();
+        //WhenPlayerJoined();
     }
 
 
     public void WhenPlayerJoined()
     {
-        if (!HasStateAuthority) return;
 
         if (isReady)
         {
@@ -67,13 +66,13 @@ public class RoomManager : NetworkBehaviour
         enemyCharacterRawImage.enabled = false;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
+    [Rpc]
     public void RPCEnemyPlayerLeft()
     {
         enemyCharacterRawImage.enabled = false;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
+    [Rpc(InvokeLocal = false)]
     private void RPC_GetReady()
     {
         enemyReadyCheckBox.enabled = true;
@@ -82,14 +81,14 @@ public class RoomManager : NetworkBehaviour
         RPC_GameStart();
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
+    [Rpc(InvokeLocal = false)]
     private void RPC_GetNotReady()
     {
         enemyReadyCheckBox.enabled = false;
         isEnemyReady = false;
     }
 
-    [Rpc]
+    [Rpc(InvokeLocal = false)]
     private void RPC_GameStart()
     {
         if (isReady && isEnemyReady && Runner.IsSceneAuthority)
@@ -104,7 +103,7 @@ public class RoomManager : NetworkBehaviour
         RPC_CharacterSelected(index);
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
+    [Rpc(InvokeLocal = false)]
     private void RPC_CharacterSelected(int index)
     {
         if (!enemyCharacterRawImage.enabled)
