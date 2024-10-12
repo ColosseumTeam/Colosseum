@@ -12,6 +12,7 @@ public class RangePlayerTwoAfterAttack : NetworkBehaviour
     [SerializeField] private GameObject attecktEffect;
 
     private GameObject targetObj;
+    private GameObject player;
 
     private void Awake()
     {
@@ -22,7 +23,8 @@ public class RangePlayerTwoAfterAttack : NetworkBehaviour
     {
         if(other.gameObject.tag == "Enemy" && other.gameObject == targetObj)
         {
-            if (other.gameObject.GetComponent<PlayerDamageController>() != null)
+            if (other.gameObject.GetComponent<PlayerDamageController>() != null &&
+                other.gameObject == player)
             {
                 other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
                 //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
@@ -39,8 +41,9 @@ public class RangePlayerTwoAfterAttack : NetworkBehaviour
         }
     }
 
-    public void GetTargetObject(GameObject newTargetObj)
+    public void GetTargetObject(GameObject newTargetObj, GameObject newPlayer)
     {
         targetObj = newTargetObj;
+        player = newPlayer;
     }
 }

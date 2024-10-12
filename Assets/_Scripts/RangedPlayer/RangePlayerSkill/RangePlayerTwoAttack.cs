@@ -44,7 +44,7 @@ public class RangePlayerTwoAttack : NetworkBehaviour
         if (fieldTimer >= fieldEndTimer)
         {
             NetworkObject instaceFireField = Runner.Spawn(fireFieldMaker, gameObject.transform.position, Quaternion.identity);
-            instaceFireField.GetComponent<RangePlayerTwoAfterAttack>().GetTargetObject(targetObj);
+            instaceFireField.GetComponent<RangePlayerTwoAfterAttack>().GetTargetObject(targetObj, player);
             fieldTimer = 0f;
         }
     }
