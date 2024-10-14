@@ -11,8 +11,9 @@ public class RangePlayerCoolTImeManager : MonoBehaviour
 
     public List<bool> SkillCheckLis { get { return skillCheckList; } }
 
-    private void Awake()
+    private void Start()
     {
+        GetComponent<RangePlayerCoolTImeManager>().enabled = true;
         skillUI = FindAnyObjectByType<GameManager>().SkillUI;
     }
 

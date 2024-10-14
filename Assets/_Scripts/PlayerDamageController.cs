@@ -38,7 +38,7 @@ public class PlayerDamageController : NetworkBehaviour
     private Image hpBar;
     private Vector3 playerVector;
 
-    private void Awake()
+    private void Start()
     {
         playerData = GetComponent<PlayerController>().PlayerData;
         MaxHp = playerData.MaxHp;
@@ -145,13 +145,18 @@ public class PlayerDamageController : NetworkBehaviour
     {
         Debug.Log($"{damage}, {playerHitType}, {downAttack}, {stiffnessTime}");
 
+        if (!HasStateAuthority)
+        {
+            return;
+        }
+
         if (!isDowning || !isGrounding || (isDowning && downAttack))
         {
             PlayerHPDecrease(damage);
 
             if (HasStateAuthority)
             {
-                Runner.Spawn(hitEffect, skillPosition);
+                //Runner.Spawn(hitEffect, skillPosition);                
             }
 
             switch (playerHitType)
@@ -208,23 +213,23 @@ public class PlayerDamageController : NetworkBehaviour
         {
             GetComponentInChildren<CameraRotation>().CameraShake();
 
-            hp -= newDamage;
+            //hp -= newDamage;
 
-            hpBar.fillAmount = hp / MaxHp;
+            //hpBar.fillAmount = hp / MaxHp;
 
-            if (hp <= 0)
-            {
-                // 플레이어가 패배할 경우 playerNumber의 반대되는 수를 메개변수로 전달
-                if (playerData.playerNumber == 0)
-                {
-                    gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(1);
-                }
+            //if (hp <= 0)
+            //{
+            //    // 플레이어가 패배할 경우 playerNumber의 반대되는 수를 메개변수로 전달
+            //    if (playerData.playerNumber == 0)
+            //    {
+            //        gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(1);
+            //    }
 
-                else if (playerData.playerNumber == 1)
-                {
-                    gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(0);
-                }
-            }
+            //    else if (playerData.playerNumber == 1)
+            //    {
+            //        gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(0);
+            //    }
+            //}
         }
     }
 

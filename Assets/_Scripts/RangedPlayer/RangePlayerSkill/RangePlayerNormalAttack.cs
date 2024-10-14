@@ -42,8 +42,7 @@ public class RangePlayerNormalAttack : NetworkBehaviour
         {
             if (collision.gameObject.GetComponent<PlayerDamageController>() != null 
                 && collision.gameObject != player && HasStateAuthority) 
-            {
-                Debug.Log("Player Hit");
+            {                
                 collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
                 //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
