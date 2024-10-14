@@ -872,7 +872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
+  m_TrackedObjectOffset: {x: 0, y: -2, z: 0}
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
@@ -900,7 +900,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 2, z: -6}
+  m_FollowOffset: {x: 2, y: 2, z: -6}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -2195,7 +2195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
+  m_TrackedObjectOffset: {x: 0, y: -2, z: 0}
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
@@ -2223,7 +2223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 2, z: -3}
+  m_FollowOffset: {x: 2, y: 2, z: -4}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -3703,7 +3703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 656ad118c1ab2e04887a62773efb7c6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 100
   playerHitType: 0
   botHitType: 0
   downAttack: 0
@@ -4449,7 +4449,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   cameraRig: {fileID: 2471055506994107653}
   kcc: {fileID: 7108571392344828822}
-  isLeftRightAttack: 0
+  mainCam: {fileID: 3841934039432290073}
 --- !u!114 &-3801540215900170025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5502,7 +5502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TrackedObjectOffset: {x: 0, y: 1, z: 0}
+  m_TrackedObjectOffset: {x: 0, y: -1, z: 0}
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
@@ -5530,7 +5530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 3
-  m_FollowOffset: {x: 0, y: 2, z: 2}
+  m_FollowOffset: {x: 0, y: 1, z: 2}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1

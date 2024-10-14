@@ -970,6 +970,7 @@ GameObject:
   m_Component:
   - component: {fileID: 101819226}
   - component: {fileID: 101819227}
+  - component: {fileID: 101819228}
   m_Layer: 0
   m_Name: Network Manager
   m_TagString: Untagged
@@ -1010,6 +1011,24 @@ MonoBehaviour:
   joinButton: {fileID: 1889261099}
   lobbyCanvas: {fileID: 1073386453}
   roomCanvas: {fileID: 1129076297}
+--- !u!114 &101819228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101819224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2599170184
+  ObjectInterest: 1
+  Flags: 524289
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 101819227}
 --- !u!1 &109862343
 GameObject:
   m_ObjectHideFlags: 0
@@ -6156,6 +6175,53 @@ Transform:
   - {fileID: 1057916948}
   m_Father: {fileID: 1941990845}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &667474589
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 667474591}
+  - component: {fileID: 667474590}
+  m_Layer: 0
+  m_Name: Character Select Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &667474590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667474589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3e392545f0577e4ba3416c9dcdea085, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myCharacterNumber: 0
+  enemyCharacterNumber: 0
+  win: 0
+--- !u!4 &667474591
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667474589}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.9423559, y: -7.1764803, z: 0.5852709}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &671436907
 GameObject:
   m_ObjectHideFlags: 0
@@ -11223,6 +11289,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e893f1c5302e24d438bdc420880fb3c9, type: 2}
   roomManager: {fileID: 1070134550}
   characterSelectSound: {fileID: 8300000, guid: 533f680f29eeae4479cd8efc41e67b52, type: 3}
+  characterSelectManager: {fileID: 0}
   myCharacterImage: {fileID: 1532295434}
   enemyCharacterImage: {fileID: 2001545134}
   selectedCharacterImage: {fileID: 914983279}
@@ -11248,6 +11315,8 @@ MonoBehaviour:
   myCharacterRawImage: {fileID: 1532295434}
   enemyCharacterRawImage: {fileID: 2001545134}
   characterSelection: {fileID: 1070134549}
+  startCanvas: {fileID: 1073386453}
+  roomCanvas: {fileID: 1129076297}
 --- !u!4 &1070134551
 Transform:
   m_ObjectHideFlags: 0
@@ -11279,7 +11348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 153935232
   ObjectInterest: 1
-  Flags: 786433
+  Flags: 524289
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 1070134550}
@@ -38827,3 +38896,4 @@ SceneRoots:
   - {fileID: 645035691}
   - {fileID: 1299900575}
   - {fileID: 1399674810}
+  - {fileID: 667474591}

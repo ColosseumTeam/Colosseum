@@ -13,6 +13,7 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private List<CharacterInfo> characterDatas;
     [SerializeField] private RoomManager roomManager;
     [SerializeField] private AudioClip characterSelectSound;
+    [SerializeField] private CharacterSelectManager characterSelectManager;
 
     [Header("# UI")]
     [SerializeField] private RawImage myCharacterImage;
@@ -33,6 +34,7 @@ public class CharacterSelection : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        characterSelectManager = FindObjectOfType<CharacterSelectManager>();
 
         for (int i = 0; i < characterDatas.Count; i++)
         {
@@ -46,11 +48,11 @@ public class CharacterSelection : MonoBehaviour
     private void Start()
     {
         // Init first character
-        selectedCharacterImage.texture = characterDatas[clickedIndex].CharacterRenderTexture;
-        characterDescription.text = characterDatas[clickedIndex].CharacterDesciption;
-        characterName.text = characterDatas[clickedIndex].CharacterName;
-        characterConcept.text = characterDatas[clickedIndex].CharacterConcept;
-        characterStory.text = characterDatas[clickedIndex].CharacterStory;
+        selectedCharacterImage.texture = characterDatas[characterSelectManager.MyCharacterNumber].CharacterRenderTexture;
+        characterDescription.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterDesciption;
+        characterName.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterName;
+        characterConcept.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterConcept;
+        characterStory.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterStory;
     }
 
     public void ClickedIcon(int index)

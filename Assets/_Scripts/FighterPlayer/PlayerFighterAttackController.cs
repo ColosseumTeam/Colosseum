@@ -82,11 +82,6 @@ public class PlayerFighterAttackController : NetworkBehaviour
         {
             Debug.Log("Couldn't find AimController");
         }
-
-        if (HasStateAuthority)
-        {
-            mainCam.SetActive(true);
-        }
     }
 
     // Shift + Click
@@ -240,11 +235,10 @@ public class PlayerFighterAttackController : NetworkBehaviour
     [Rpc]
     public void RPC_SetEnemyOnUltCamera()
     {
-        //enemyTr = enemy;
         List<NetworkObject> networkObjects = Runner.GetAllNetworkObjects();
         foreach (var obj in networkObjects)
         {
-            if (obj.TryGetComponent(out PlayerController component))
+            if (obj.TryGetComponent(out PlayerController component) || obj.TryGetComponent(out BotController botComponent))
             {
                 if (obj.tag == "Enemy")
                 {
@@ -272,7 +266,6 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
     public void OnUltEffectStart()
     {
-        //Camera.main.enabled = false;
         ultCamera.gameObject.SetActive(true);
         GameObject rock1 = Instantiate(eSkillRockFront, enemyTr.position - (enemyTr.position - transform.position).normalized * 2, Quaternion.identity);
         rock1.transform.LookAt(enemyTr);
@@ -282,7 +275,6 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
     public void OnUltEffectEnd()
     {
-        //Camera.main.enabled = true;
         ultCamera.gameObject.SetActive(false);
     }
 

@@ -166,16 +166,17 @@ public class PlayerDamageController : NetworkBehaviour
 
             if (hp <= 0)
             {
-                // 플레이어가 패배할 경우 playerNumber의 반대되는 수를 메개변수로 전달
-                if (playerData.playerNumber == 0)
+                CharacterSelectManager characterSelectManager = FindObjectOfType<CharacterSelectManager>();
+                if (HasStateAuthority)
                 {
-                    gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(1);
+                    characterSelectManager.Winner(true);
+                }
+                else
+                {
+                    characterSelectManager.Winner(false);
                 }
 
-                else if (playerData.playerNumber == 1)
-                {
-                    gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(0);
-                }
+                gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn();
             }
         }
     }
