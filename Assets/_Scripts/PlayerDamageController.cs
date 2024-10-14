@@ -92,7 +92,55 @@ public class PlayerDamageController : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = true)]
+    public void TakeDamage(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime, Vector3 skillPosition)
+    {
+        Debug.Log($"{damage}, {playerHitType}, {downAttack}, {stiffnessTime}");
+
+        if (!isDowning || !isGrounding || (isDowning && downAttack))
+        {
+            PlayerHPDecrease(damage);
+
+            if (HasStateAuthority)
+            {
+                Runner.Spawn(hitEffect, skillPosition);
+            }
+
+            switch (playerHitType)
+            {
+                case PlayerHitType.None:
+                    int rnd = Random.Range(0, 2);
+                    animator.speed = stiffnessTime;
+
+                    if (isDowning && !isGrounding)
+                    {
+                        airPosition = gameObject.transform.position;
+                        airCheck = true;
+                        break;
+                    }
+
+                    animator.SetFloat("TakeHitState", rnd);
+                    mecanimAnimator.SetTrigger("TakeHit");
+                    break;
+
+                case PlayerHitType.Down:
+                    animator.SetFloat("TakeHitState", 2);
+                    if (isDowning)
+                    {
+                        animator.SetFloat("TakeHitState", 3);
+                    }
+
+                    isDowning = true;
+                    isUping = true;
+                    playerVector = gameObject.transform.position;
+                    mecanimAnimator.SetTrigger("TakeHit");
+                    break;
+            }
+        }
+
+        RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, skillPosition);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
     public void RPC_TakeDamage(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime, Vector3 skillPosition)
     {
         Debug.Log($"{damage}, {playerHitType}, {downAttack}, {stiffnessTime}");

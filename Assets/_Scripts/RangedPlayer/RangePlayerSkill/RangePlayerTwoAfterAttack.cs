@@ -9,10 +9,8 @@ public class RangePlayerTwoAfterAttack : NetworkBehaviour
     [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
     [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = false;
-    [SerializeField] private GameObject attecktEffect;
-
-    private GameObject targetObj;
-    private GameObject player;
+    [SerializeField] private GameObject attecktEffect;    
+    [SerializeField] private GameObject player;
 
     private void Awake()
     {
@@ -20,30 +18,40 @@ public class RangePlayerTwoAfterAttack : NetworkBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.tag == "Enemy" && other.gameObject == targetObj)
+    {        
+
+        if (!HasStateAuthority)
+            return;
+
+        var obj = other.transform.root;
+
+        if (obj.TryGetComponent(out PlayerDamageController controller) &&
+            controller.gameObject.tag == "Enemy")
         {
-            if (other.gameObject.GetComponent<PlayerDamageController>() != null &&
-                other.gameObject == player)
+            if (other.gameObject != player)
             {
-                other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                Debug.Log("Main Two Skill After Attack");
+                other.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
                 //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
 
-            else
-            {
-                if (other.gameObject.TryGetComponent(out BotController component))
-                {
-                    component.TakeDamage(damage, botHitType, downAttack, 1f, transform.position);
-                    //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
-                }
-            }            
+            //else
+            //{
+            //    if (other.gameObject.TryGetComponent(out BotController component))
+            //    {
+            //        component.TakeDamage(damage, botHitType, downAttack, 1f, transform.position);
+            //        //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
+            //    }
+            //}
+
+            Debug.Log(other.gameObject);
+
+            Destroy(gameObject);
         }
     }
 
-    public void GetTargetObject(GameObject newTargetObj, GameObject newPlayer)
-    {
-        targetObj = newTargetObj;
+    public void GetTargetObject(GameObject newPlayer)
+    { 
         player = newPlayer;
     }
 }

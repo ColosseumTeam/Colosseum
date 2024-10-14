@@ -58,10 +58,10 @@ public class RangePlayerThreeAttackDamage : NetworkBehaviour
         {
             if (dealingPeriodTime >= dealingPeriodEndTIme)
             {
-                if (otherGameObject.GetComponent<PlayerDamageController>() != null
+                if (otherGameObject.GetComponentInParent<PlayerDamageController>() != null
                     && otherGameObject != player && HasStateAuthority)
                 {
-                    otherGameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, attackPoint);
+                    otherGameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, attackPoint);
                     //Runner.Spawn(attecktEffect, otherGameObject.transform.position, otherGameObject.transform.rotation);
                 }
                 else
@@ -81,22 +81,12 @@ public class RangePlayerThreeAttackDamage : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            otherGameObject = other.gameObject;
-            
-            Vector3 triggerPosition = transform.position;
-            Vector3 otherPosition = other.ClosestPoint(triggerPosition);
+        otherGameObject = other.gameObject;
 
-            Ray ray = new Ray(triggerPosition, (otherPosition - triggerPosition).normalized);
-            RaycastHit hitInfo;
-
-            if (Physics.Raycast(ray, out hitInfo))
-            {
-                attackPoint = hitInfo.point;
-            }
-        }
+        attackPoint = other.ClosestPoint(transform.position);
     }
+
+
 
     private void OnTriggerExit(Collider other)
     {

@@ -182,6 +182,8 @@ public class PlayerRangeAttackController : NetworkBehaviour
     // 기본 공격 시 특정 프레임에서 실행되는 기본 공격 이벤트
     public void NormalRangeAttackEvent()
     {
+        if (!HasStateAuthority) return;
+
         // rangeTransform의 위치와 회전을 사용하여 오브젝트 생성
         NetworkObject normalObj = Runner.Spawn(rangeNormalSkillPrefab, rangeTransform.position, rangeTransform.rotation);
 
@@ -194,6 +196,8 @@ public class PlayerRangeAttackController : NetworkBehaviour
     // 첫 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
     public void OneRangeAttackEvent()
     {
+        if (!HasStateAuthority) return;
+
         // aimObject.GetGroundIndicatorCenter()로부터 일정 거리 아래에서 오브젝트 생성
         Vector3 oneSkillObjPosition = rangeHitPosition;
 
@@ -208,6 +212,8 @@ public class PlayerRangeAttackController : NetworkBehaviour
     // 두 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
     public void TwoRangeSkillAttackEvent()
     {
+        if (!HasStateAuthority) return;
+
         // 프리팹 생성
         NetworkObject twoSkillObj = Runner.Spawn(rangeTwoSkillPrefab, rangeTransform.position, rangeTransform.rotation);
 
@@ -231,6 +237,8 @@ public class PlayerRangeAttackController : NetworkBehaviour
     // 세 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
     public void ThreeRangeSkillAttackEvent()
     {
+        if (!HasStateAuthority) return;
+
         Transform centerObject = rangeThreeSkillTransform;
         float orbitRadius = 1.5f;
         float orbitSpeed = 300f;

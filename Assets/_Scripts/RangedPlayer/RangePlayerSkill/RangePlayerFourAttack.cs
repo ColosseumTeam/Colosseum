@@ -16,8 +16,7 @@ public class RangePlayerFourAttack : NetworkBehaviour
     private Camera rotationCamera;
     private AudioSource audioSource;
     private GameObject player;
-    private bool isAttacking;
-    private GameObject enemyObj;
+    private bool isAttacking;    
     private bool isDowning = true;
 
     private float fallSpeed = 5f; // 떨어지는 속도를 조절할 변수
@@ -77,18 +76,16 @@ public class RangePlayerFourAttack : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Enemy"))
-        {
-            enemyObj = other.gameObject;
-
-            if (enemyObj.GetComponent<PlayerDamageController>() != null && enemyObj != player && HasStateAuthority)
+        {            
+            if (other.GetComponentInParent<PlayerDamageController>() != null && other.gameObject != player && HasStateAuthority)
             {
-                enemyObj.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                other.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
                 GetComponent<Collider>().enabled = false;
                 GetComponent<Collider>().isTrigger = false;
             }
             else
             {
-                if (enemyObj.gameObject.TryGetComponent(out BotController component))
+                if (other.gameObject.TryGetComponent(out BotController component))
                 {
                     component.TakeDamage(damage, botHitType, downAttack, 1f, transform.position);
                     GetComponent<Collider>().enabled = false;

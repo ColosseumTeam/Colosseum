@@ -23,11 +23,13 @@ public class RangePlayerFourAfterAttack : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other);
+
         if (other.gameObject.tag == "Enemy")
         {
-            if (other.GetComponent<PlayerDamageController>() != null && other.gameObject == ranger && HasStateAuthority)
+            if (other.gameObject.GetComponentInParent<PlayerDamageController>() != null && other.gameObject != ranger && HasStateAuthority)
             {
-                other.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                other.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
             }
 
             if (other.gameObject.TryGetComponent(out BotController component))

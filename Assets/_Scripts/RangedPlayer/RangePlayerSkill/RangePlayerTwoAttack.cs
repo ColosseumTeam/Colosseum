@@ -9,14 +9,11 @@ public class RangePlayerTwoAttack : NetworkBehaviour
     [SerializeField] private bool downAttack = false;
     [SerializeField] private float knockBackFoce = 10f;
     [SerializeField] private float knockBackEndForce = 500f;
-    [SerializeField] private GameObject fireFieldMaker;
-    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private GameObject fireFieldMaker;    
     [SerializeField] private float fieldTimer = 0f;
-    [SerializeField] private float fieldEndTimer = 1f;
-    [SerializeField] private GameObject attecktEffect;
+    [SerializeField] private float fieldEndTimer = 1f;    
 
-    private GameObject player;
-    private GameObject targetObj;
+    private GameObject player;    
 
     private void Awake()
     {
@@ -44,13 +41,18 @@ public class RangePlayerTwoAttack : NetworkBehaviour
         if (fieldTimer >= fieldEndTimer)
         {
             NetworkObject instaceFireField = Runner.Spawn(fireFieldMaker, gameObject.transform.position, Quaternion.identity);
-            instaceFireField.GetComponent<RangePlayerTwoAfterAttack>().GetTargetObject(targetObj, player);
+            instaceFireField.GetComponent<RangePlayerTwoAfterAttack>().GetTargetObject(player);
             fieldTimer = 0f;
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!HasStateAuthority)
+        {
+            return;
+        }
+
         if (collision.gameObject.CompareTag("Ground"))
         {
             Destroy(gameObject);
@@ -59,6 +61,8 @@ public class RangePlayerTwoAttack : NetworkBehaviour
         //Todo: Runner 및 Network 상태에 맞춰 수정할 수 있어야 함
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            Debug.Log(collision.gameObject);
+
             Collider[] colls = Physics.OverlapSphere(this.transform.position, 1f, 1 << LayerMask.NameToLayer("Enemy"));
 
             foreach (Collider coll in colls)
@@ -70,20 +74,19 @@ public class RangePlayerTwoAttack : NetworkBehaviour
                 }
             }
 
-            if (collision.gameObject.GetComponent<PlayerDamageController>() != null
+            if (collision.gameObject.GetComponentInParent<PlayerDamageController>() != null
                 && collision.gameObject != player && HasStateAuthority)
             {
-                collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
-                //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
-                targetObj = collision.gameObject;
+                Debug.Log("Main Two Skill Attack");
+                collision.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);                
             }
             else
             {
                 if (collision.gameObject.TryGetComponent(out BotController component))
                 {
                     component.TakeDamage(damage, botHitType, downAttack, 1f, transform.position);
-                    //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
-                    targetObj = collision.gameObject;
+                    //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);                    
                 }
             }
 

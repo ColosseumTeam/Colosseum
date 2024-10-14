@@ -5912,6 +5912,7 @@ MonoBehaviour:
   rangeTwoSkillPrefabSpeed: 15
   rangeFourSkillPrefabSpeed: 15
   rangeFourSkillSpawnHeight: 10
+  cameraRig: {fileID: 0}
 --- !u!114 &5208695130796655025
 MonoBehaviour:
   m_ObjectHideFlags: 0
