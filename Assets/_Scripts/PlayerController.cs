@@ -41,6 +41,7 @@ public class PlayerController : NetworkBehaviour
     private Animator animator;
     private NetworkMecanimAnimator mecanimAnimator;
     private AudioSource audioSource;
+    private VolumeManager volumeManager;
 
     // 공격 상태 및 이동 방향을 저장하는 변수
     private float attackState;
@@ -57,6 +58,10 @@ public class PlayerController : NetworkBehaviour
 
     public PlayerData PlayerData => playerData;
 
+    public VolumeManager VolumeManager { get { return volumeManager; } }
+    public bool IsSkilling { get { return isSkilling; } }
+
+
     private void Awake()
     {
         // Rigidbody와 Animator 컴포넌트를 가져옴
@@ -64,6 +69,7 @@ public class PlayerController : NetworkBehaviour
         animator = GetComponent<Animator>();
         mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
         audioSource = GetComponent<AudioSource>();
+        volumeManager = FindObjectOfType<VolumeManager>();
 
         //GameObject cameraObject = GetComponentInChildren<Camera>().gameObject;
         //if(cameraObject != null)
@@ -225,6 +231,11 @@ public class PlayerController : NetworkBehaviour
         {
             kcc.Move(newPosition, jumpState);
         }
+    }
+
+    public void SetMoveSpeed(float speed)
+    {
+        moveSpeed = speed;
     }
 
     private void OnMove(InputValue value)

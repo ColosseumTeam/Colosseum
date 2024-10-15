@@ -12,9 +12,19 @@ public class FighterPlayerShiftClick : NetworkBehaviour
     [SerializeField] private GameObject hitEffect;
     [SerializeField] private GameObject hitPosition;
 
+    private AudioSource audioSource;
+
+
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         Destroy(gameObject, 1f);
+    }
+
+    public void SetVolume(float volume)
+    {
+        audioSource.volume = volume;
     }
 
     private void OnTriggerEnter(Collider other)

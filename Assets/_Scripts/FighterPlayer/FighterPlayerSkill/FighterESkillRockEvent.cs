@@ -27,14 +27,13 @@ public class FighterESkillRockEvent : MonoBehaviour
 
     public void OnRockMove()
     {
-        rigid.AddForce(transform.forward * 100, ForceMode.Impulse);
+        rigid.AddForce(transform.forward * 30, ForceMode.Impulse);
     }
 
     public void OnFracture()
     {
         for (int i = 0; i < 10; i++)
         {
-            //transform.GetChild(1).GetChild(i).GetComponentInChildren<MeshCollider>().isTrigger = true;
             transform.GetChild(1).GetChild(i).GetComponentInChildren<Rigidbody>().useGravity = true;
         }
     }

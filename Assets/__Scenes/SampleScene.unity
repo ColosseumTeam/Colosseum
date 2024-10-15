@@ -1235,6 +1235,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.018178018
       objectReference: {fileID: 0}
+    - target: {fileID: 1403917649077343982, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}
+      propertyPath: m_TrackedObjectOffset.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1942142303575154323, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}
       propertyPath: m_FollowOffset.x
       value: 1
@@ -1254,11 +1258,11 @@ PrefabInstance:
     - target: {fileID: 4679889850328518579, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 922556065}
+      objectReference: {fileID: 1755452761}
     - target: {fileID: 4898238019349985147, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 922556065}
+      objectReference: {fileID: 1755452761}
     - target: {fileID: 5513945395785779221, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}
       propertyPath: SortKey
       value: 3287522611
@@ -1347,6 +1351,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8382107535079284066, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}
+      propertyPath: m_TrackedObjectOffset.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8497190990790534543, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}
       propertyPath: m_FollowOffset.x
       value: 1
@@ -1362,7 +1370,7 @@ PrefabInstance:
     - target: {fileID: 9135756492849309584, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 922556065}
+      objectReference: {fileID: 1755452761}
     - target: {fileID: 9175359325930175113, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1
@@ -1589,11 +1597,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906152766}
   m_CullTransparentMesh: 1
---- !u!4 &922556065 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5187340188739333718, guid: e0e9b41f89f2dce489d0a5e269746f97, type: 3}
-  m_PrefabInstance: {fileID: 7434394966868335705}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &950666360
 GameObject:
   m_ObjectHideFlags: 0

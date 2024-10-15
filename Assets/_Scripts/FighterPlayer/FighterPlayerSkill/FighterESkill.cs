@@ -29,7 +29,7 @@ public class FighterESkill : NetworkBehaviour
             if (other.GetComponentInParent<PlayerDamageController>() != null)
             {
                 other.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
-                attackController.RPC_SetEnemyOnUltCamera();
+                attackController.RPC_SetEnemyTr();
                 attackController.RPC_StartESkillEffect();
             }
             else
@@ -37,7 +37,7 @@ public class FighterESkill : NetworkBehaviour
                 if (other.TryGetComponent(out BotController component))
                 {
                     component.TakeDamage(damage, botHitType, downAttack, stiffnessTime, transform.position);
-                    attackController.RPC_SetEnemyOnUltCamera();
+                    attackController.SetBotTr();
                     attackController.PlayableDirector.Play();
                 }
             }
