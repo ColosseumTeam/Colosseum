@@ -1,7 +1,6 @@
 using Fusion;
 using System;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class RangePlayerNormalAttack : NetworkBehaviour
 {
@@ -21,48 +20,37 @@ public class RangePlayerNormalAttack : NetworkBehaviour
         Destroy(gameObject, 3f);
     }
 
-    //private void Update()
-    //{
-    //    transform.position += dir * Time.deltaTime * speed;
-    //}
-
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
-
-        //transform.position += dir * Runner.DeltaTime * speed;
+        // 스킬의 움직임 처리 (필요한 경우 주석 해제)
+        transform.position += dir * Runner.DeltaTime * speed;
     }
 
     private void OnCollisionEnter(Collision collision)
-    {        
+    {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            Destroy(gameObject); 
+            Destroy(gameObject);
         }
 
         if (collision.gameObject.CompareTag("Enemy"))
-        //if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            if (collision.gameObject.GetComponent<PlayerDamageController>() != null 
-                && collision.gameObject != player && HasStateAuthority) 
-            {                
+            if (collision.gameObject.GetComponent<PlayerDamageController>() != null && collision.gameObject != player && HasStateAuthority)
+            {
                 collision.gameObject.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
-                //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
-            else
-            {             
-                if (collision.gameObject.TryGetComponent(out BotController component))
-                {
-                    Debug.Log("Bot Hit");
-                    component.TakeDamage(damage, botHitType, downAttack, stiffnessTime, transform.position);
-                    //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
-                }
-                //collision.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
+            else if (collision.gameObject.TryGetComponent(out BotController component))
+            {
+                Debug.Log("Bot Hit");
+                component.TakeDamage(damage, botHitType, downAttack, stiffnessTime, transform.position);
             }
-            
-            //Destroy(gameObject); 
+
+            if (HasStateAuthority)
+            {
+                Destroy(gameObject);  // 권한이 있는 경우에만 파괴
+            }
         }
-    
     }
 
     public void Look(Vector3 aimPos)
@@ -83,8 +71,7 @@ public class RangePlayerNormalAttack : NetworkBehaviour
         player = newPlayer;
         gameElementsSynchronizer = newGameElementsSynchronizer;
 
-        // todo -> ID가 겹칠 확률이 있으니 그럴 경우 while문으로 겹치지 않으면 넣을 수 있도록 수정 필요
-        int normalId = Guid.NewGuid().GetHashCode();
-        gameElementsSynchronizer.SpawnProjectile(normalId, "RangerLeftClickSkill", Vector3.forward, gameObject.transform.position);
+        //int normalId = Guid.NewGuid().GetHashCode();
+        //gameElementsSynchronizer.SpawnProjectile(normalId, "RangerLeftClickSkill", Vector3.forward, gameObject.transform.position);
     }
 }

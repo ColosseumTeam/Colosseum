@@ -13,14 +13,17 @@ public class GameElementsSynchronizer : NetworkBehaviour
         public GameElementsSynchronizer gameElementsSynchronizer;
 
         private void Start()
-        {            
+        {
             Debug.Log($"Sync tag started {id}");
         }
 
         private void OnDestroy()
         {
-
-            gameElementsSynchronizer.RPC_DespawnProjectile(id);
+            // 객체가 파괴되기 전에 gameElementsSynchronizer의 RPC 호출
+            if (gameElementsSynchronizer != null)
+            {
+                gameElementsSynchronizer.RPC_DespawnProjectile(id);
+            }
             Debug.Log($"Sync tag destroyed {id}");
         }
     }
@@ -48,26 +51,17 @@ public class GameElementsSynchronizer : NetworkBehaviour
             projectilePrefabs.Add(prefabs[i].name, prefabs[i]);
         }
         Instantiate(projectilePrefabs["TestProjectile"], Vector3.one * 9999, Quaternion.identity).name = "Awake test";
-        //StartCoroutine(C_Spawned());
         Invoke("TestSpawn", 10);
     }
 
     int testId;
-    //public IEnumerator C_Spawned()
-    //{
-    //    yield return new WaitForSeconds(10f);
-    //    testId = Guid.NewGuid().GetHashCode();
-    //    Instantiate(projectilePrefabs["TestProjectile"], Vector3.one * 9999, Quaternion.identity).name = "Spawned test";
-    //    SpawnProjectile(testId, "TestProjectile", Vector3.forward, Vector3.right * 5f);
-    //}
 
     private void TestSpawn()
     {
         testId = Guid.NewGuid().GetHashCode();
         Instantiate(projectilePrefabs["TestProjectile"], Vector3.one * 9999, Quaternion.identity).name = "Spawned test";
-        SpawnProjectile(testId, "TestProjectile", Vector3.forward, Vector3.right * 5f); 
+        SpawnProjectile(testId, "TestProjectile", Vector3.forward, Vector3.right * 5f);
     }
-
 
     public void SpawnProjectile(int id, string prefabName, Vector3 velocity, Vector3 firedPosition)
     {
@@ -82,7 +76,6 @@ public class GameElementsSynchronizer : NetworkBehaviour
             RPC_DespawnProjectile(tag.id);
         }
     }
-
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     void RPC_SpawnProjectile(int id, string prefabName, Vector3 velocity, Vector3 firedPosition)
@@ -100,7 +93,6 @@ public class GameElementsSynchronizer : NetworkBehaviour
         projectilesData.Add(projectile.id, projectile);
     }
 
-
     [Rpc(RpcSources.All, RpcTargets.All)]
     void RPC_DespawnProjectile(int id)
     {
@@ -115,43 +107,48 @@ public class GameElementsSynchronizer : NetworkBehaviour
 
     private void UpdateProjectiles()
     {
-        // Spawn / Despawn 등을 할때마다 갱신된 projectilesDAta 를 전체 순회하면서 projectile 을 업데이트한다.
+        // 갱신된 projectilesData를 순회하면서 projectile을 업데이트
         foreach (var projectileData in projectilesData)
         {
-            // Data 는 있고 Projectile 객체도 있을때
+            // Data가 있고 Projectile 객체도 있을 때
             if (projectiles.TryGetValue(projectileData.Key, out GameObject projectile))
             {
-                projectile.transform.position = projectileData.Value.firedPosition + (elapsedTime - projectileData.Value.firedTime) * projectileData.Value.velocity;
+                if (projectile != null)
+                {
+                    projectile.transform.position = projectileData.Value.firedPosition +
+                        (elapsedTime - projectileData.Value.firedTime) * projectileData.Value.velocity;
+                }
             }
-            // Data는 있는데 Projectile 객체 없어서 새로 생성해야할때
+            // Data는 있는데 Projectile 객체가 없을 때 새로 생성
             else
             {
                 projectile = Instantiate(projectilePrefabs[projectileData.Value.prefabName], projectileData.Value.firedPosition, Quaternion.LookRotation(projectileData.Value.velocity));
-                projectile.AddComponent<SyncTag>().id = projectileData.Key;
 
-                SyncTag synTag = projectile.AddComponent<SyncTag>();
-                synTag.gameElementsSynchronizer = GetComponent<GameElementsSynchronizer>();                
+                SyncTag syncTag = projectile.AddComponent<SyncTag>();
+                syncTag.id = projectileData.Key;
+                syncTag.gameElementsSynchronizer = this;
 
                 projectiles.Add(projectileData.Key, projectile);
                 Debug.Log("Instantiated projectile");
             }
         }
 
-        // 생성된 객체를 전체 탐색하고, 데이터가 없어지면 생성되어있으면 안되니까 파괴
+        // 생성된 객체 탐색 후 데이터가 없으면 파괴
         var ids = projectiles.Keys.ToList();
 
         foreach (var id in ids)
         {
-            if (projectilesData.TryGetValue(id, out ProjectileData projectileData))
+            if (!projectilesData.ContainsKey(id))
             {
-                // nothing to do
-            }
-            else
-            {
-                Destroy(projectiles[id]);
-                projectiles.Remove(id);
-                Debug.Log("Destroyed projectile");
-
+                if (projectiles.TryGetValue(id, out GameObject projectile))
+                {
+                    if (projectile != null)
+                    {
+                        Destroy(projectile);
+                    }
+                    projectiles.Remove(id);
+                    Debug.Log("Destroyed projectile");
+                }
             }
         }
     }
