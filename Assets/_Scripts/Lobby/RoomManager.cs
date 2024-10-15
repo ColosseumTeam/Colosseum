@@ -31,6 +31,7 @@ public class RoomManager : NetworkBehaviour, ISceneLoadDone
     public RawImage MyCharacterRawImage { get { return myCharacterRawImage; } }
     public RawImage EnemyCharacterRawImage { get { return enemyCharacterRawImage; } }
 
+    
 
     private void Awake()
     {

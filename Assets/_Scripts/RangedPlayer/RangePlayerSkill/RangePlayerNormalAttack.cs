@@ -1,5 +1,7 @@
 using Fusion;
+using System;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class RangePlayerNormalAttack : NetworkBehaviour
 {
@@ -8,7 +10,8 @@ public class RangePlayerNormalAttack : NetworkBehaviour
     [SerializeField] private BotController.BotHitType botHitType;
     [SerializeField] private bool downAttack = false;
     [SerializeField] private float stiffnessTime = 1f;
-    
+
+    private GameElementsSynchronizer gameElementsSynchronizer;
     private GameObject player;
     private float speed = 10f;
     private Vector3 dir;
@@ -27,7 +30,7 @@ public class RangePlayerNormalAttack : NetworkBehaviour
     {
         base.FixedUpdateNetwork();
 
-        transform.position += dir * Runner.DeltaTime * speed;
+        //transform.position += dir * Runner.DeltaTime * speed;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -43,7 +46,7 @@ public class RangePlayerNormalAttack : NetworkBehaviour
             if (collision.gameObject.GetComponent<PlayerDamageController>() != null 
                 && collision.gameObject != player && HasStateAuthority) 
             {                
-                collision.gameObject.GetComponent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
+                collision.gameObject.GetComponent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
                 //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
             else
@@ -57,7 +60,7 @@ public class RangePlayerNormalAttack : NetworkBehaviour
                 //collision.gameObject.GetComponent<BotController>().TakeDamage(damage, botHitType, downAttack, stiffnessTime);
             }
             
-            Destroy(gameObject); 
+            //Destroy(gameObject); 
         }
     
     }
@@ -75,8 +78,13 @@ public class RangePlayerNormalAttack : NetworkBehaviour
         }
     }
 
-    public void GetRangePlayer(GameObject newPlayer)
+    public void GetRangePlayer(GameObject newPlayer, GameElementsSynchronizer newGameElementsSynchronizer)
     {
         player = newPlayer;
+        gameElementsSynchronizer = newGameElementsSynchronizer;
+
+        // todo -> ID가 겹칠 확률이 있으니 그럴 경우 while문으로 겹치지 않으면 넣을 수 있도록 수정 필요
+        int normalId = Guid.NewGuid().GetHashCode();
+        gameElementsSynchronizer.SpawnProjectile(normalId, "RangerLeftClickSkill", Vector3.forward, gameObject.transform.position);
     }
 }

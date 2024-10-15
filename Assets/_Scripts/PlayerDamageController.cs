@@ -1,5 +1,6 @@
 using Fusion;
 using Fusion.Addons.SimpleKCC;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,6 +39,7 @@ public class PlayerDamageController : NetworkBehaviour
     private Image hpBar;
     private Vector3 playerVector;
 
+
     private void Start()
     {
         playerData = GetComponent<PlayerController>().PlayerData;
@@ -56,14 +58,11 @@ public class PlayerDamageController : NetworkBehaviour
     {
         DownTimeCheck();
 
-        if (kcc.IsGrounded)
-        {
-            isGrounding = true;
-        }
-        else
-        {
-            isGrounding = false;
-        }
+        // todo -> dont update until kcc initialize.
+        if (kcc == null)
+            return;
+
+        isGrounding = kcc.IsGrounded;
 
         if (airCheck)
         {
@@ -73,7 +72,6 @@ public class PlayerDamageController : NetworkBehaviour
                 gameObject.transform.position = airPosition;
                 return;
             }
-
             else
             {
                 airCheck = false;
@@ -98,43 +96,8 @@ public class PlayerDamageController : NetworkBehaviour
 
         if (!isDowning || !isGrounding || (isDowning && downAttack))
         {
-            PlayerHPDecrease(damage);
-
-            if (HasStateAuthority)
-            {
-                Runner.Spawn(hitEffect, skillPosition);
-            }
-
-            switch (playerHitType)
-            {
-                case PlayerHitType.None:
-                    int rnd = Random.Range(0, 2);
-                    animator.speed = stiffnessTime;
-
-                    if (isDowning && !isGrounding)
-                    {
-                        airPosition = gameObject.transform.position;
-                        airCheck = true;
-                        break;
-                    }
-
-                    animator.SetFloat("TakeHitState", rnd);
-                    mecanimAnimator.SetTrigger("TakeHit");
-                    break;
-
-                case PlayerHitType.Down:
-                    animator.SetFloat("TakeHitState", 2);
-                    if (isDowning)
-                    {
-                        animator.SetFloat("TakeHitState", 3);
-                    }
-
-                    isDowning = true;
-                    isUping = true;
-                    playerVector = gameObject.transform.position;
-                    mecanimAnimator.SetTrigger("TakeHit");
-                    break;
-            }
+            Debug.Log("TakeDamage On");
+            // 로컬 애니메이션 트리거 제거
         }
 
         RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, skillPosition);
@@ -143,52 +106,40 @@ public class PlayerDamageController : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
     public void RPC_TakeDamage(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime, Vector3 skillPosition)
     {
-        Debug.Log($"{damage}, {playerHitType}, {downAttack}, {stiffnessTime}");
-
         if (!HasStateAuthority)
         {
             return;
         }
 
-        if (!isDowning || !isGrounding || (isDowning && downAttack))
+        PlayerHPDecrease(damage);
+
+        switch (playerHitType)
         {
-            PlayerHPDecrease(damage);
+            case PlayerHitType.None:
+                int rnd = Random.Range(0, 2);
+                animator.speed = stiffnessTime;
+                animator.SetFloat("TakeHitState", rnd);
+                animator.SetTrigger("TakeHit");
+                mecanimAnimator.SetTrigger("TakeHit");
+                break;
 
-            if (HasStateAuthority)
-            {
-                //Runner.Spawn(hitEffect, skillPosition);                
-            }
+            case PlayerHitType.Down:
+                animator.SetFloat("TakeHitState", isDowning ? 3 : 2);
+                mecanimAnimator.SetTrigger("TakeHit");
+                break;
+        }
 
-            switch (playerHitType)
-            {
-                case PlayerHitType.None:
-                    int rnd = Random.Range(0, 2);
-                    animator.speed = stiffnessTime;
-
-                    if (isDowning && !isGrounding)
-                    {
-                        airPosition = gameObject.transform.position;
-                        airCheck = true;
-                        break;
-                    }
-
-                    animator.SetFloat("TakeHitState", rnd);
-                    mecanimAnimator.SetTrigger("TakeHit");
-                    break;
-
-                case PlayerHitType.Down:
-                    animator.SetFloat("TakeHitState", 2);
-                    if (isDowning)
-                    {
-                        animator.SetFloat("TakeHitState", 3);
-                    }
-
-                    isDowning = true;
-                    isUping = true;
-                    playerVector = gameObject.transform.position;
-                    mecanimAnimator.SetTrigger("TakeHit");
-                    break;
-            }
+        // 추가 상태 처리
+        if (playerHitType == PlayerHitType.Down)
+        {
+            isDowning = true;
+            isUping = true;
+            playerVector = gameObject.transform.position;
+        }
+        else if (playerHitType == PlayerHitType.None && isDowning && !isGrounding)
+        {
+            airPosition = gameObject.transform.position;
+            airCheck = true;
         }
     }
 
@@ -213,23 +164,21 @@ public class PlayerDamageController : NetworkBehaviour
         {
             GetComponentInChildren<CameraRotation>().CameraShake();
 
-            //hp -= newDamage;
+            hp -= newDamage;
+            hpBar.fillAmount = hp / MaxHp;
 
-            //hpBar.fillAmount = hp / MaxHp;
-
-            //if (hp <= 0)
-            //{
-            //    // 플레이어가 패배할 경우 playerNumber의 반대되는 수를 메개변수로 전달
-            //    if (playerData.playerNumber == 0)
-            //    {
-            //        gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(1);
-            //    }
-
-            //    else if (playerData.playerNumber == 1)
-            //    {
-            //        gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(0);
-            //    }
-            //}
+            if (hp <= 0)
+            {
+                // 플레이어가 패배할 경우 playerNumber의 반대되는 수를 메개변수로 전달
+                if (playerData.playerNumber == 0)
+                {
+                    //gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(1);
+                }
+                else if (playerData.playerNumber == 1)
+                {
+                    //gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(0);
+                }
+            }
         }
     }
 
@@ -242,7 +191,7 @@ public class PlayerDamageController : NetworkBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.tag == "Ground")
+        if (collision.collider.CompareTag("Ground"))
         {
             isGrounding = true;
         }
@@ -250,10 +199,9 @@ public class PlayerDamageController : NetworkBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.collider.tag == "Ground")
+        if (collision.collider.CompareTag("Ground"))
         {
             isGrounding = false;
         }
     }
-
 }

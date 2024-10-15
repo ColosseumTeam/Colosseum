@@ -4,7 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : NetworkBehaviour
-{
+{    
+
+    public int ElapsedTicks => Runner.Tick;
+
     [Header("# UI")]
     [SerializeField] private AimController aimController;
     [SerializeField] private List<Image> skillUI;

@@ -56,7 +56,8 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         }
         else
         {
-            roomManager.WhenPlayerJoined();
+            // todo -> Guess why roomManager set null
+            roomManager?.WhenPlayerJoined();
         }
 
         if (_playerStatusDictionary.TryAdd(player, playerStatus) == false)

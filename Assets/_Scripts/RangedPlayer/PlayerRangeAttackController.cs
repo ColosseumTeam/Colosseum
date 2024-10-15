@@ -40,11 +40,13 @@ public class PlayerRangeAttackController : NetworkBehaviour
     private bool isSkillReady;
     private bool isOneSkillReady;
     [SerializeField] private GameObject cameraRig;
+    private GameElementsSynchronizer gameElementsSynchronizer;
 
     private void Awake()
     {
         aimObject = FindAnyObjectByType<AimController>();
         damageManager = FindAnyObjectByType<DamageManager>();
+        gameElementsSynchronizer = FindAnyObjectByType<GameElementsSynchronizer>();
 
         animator = GetComponent<Animator>();
         mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
@@ -189,7 +191,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         Rigidbody normalObjRb = normalObj.GetComponent<Rigidbody>();
         normalObj.GetComponent<RangePlayerNormalAttack>().Look(aimObject.transform.position);
-        normalObj.GetComponent<RangePlayerNormalAttack>().GetRangePlayer(gameObject);
+        normalObj.GetComponent<RangePlayerNormalAttack>().GetRangePlayer(gameObject, gameElementsSynchronizer);
 
     }
 
