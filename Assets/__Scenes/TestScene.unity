@@ -309,6 +309,8 @@ MonoBehaviour:
   myCharacterRawImage: {fileID: 0}
   enemyCharacterRawImage: {fileID: 0}
   characterSelection: {fileID: 0}
+  startCanvas: {fileID: 0}
+  roomCanvas: {fileID: 0}
 --- !u!4 &95391477
 Transform:
   m_ObjectHideFlags: 0
@@ -551,6 +553,54 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.18421268, y: 0.22998026, z: -3.8252788}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &543872619
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 543872621}
+  - component: {fileID: 543872620}
+  m_Layer: 0
+  m_Name: Volume Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &543872620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543872619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29f995aac10d9d4cb493f7077ef6971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgVolume: 1
+  skillVolume: 1
+  uiVolume: 1
+  voiceVolume: 1
+--- !u!4 &543872621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543872619}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1507,3 +1557,4 @@ SceneRoots:
   - {fileID: 909896309}
   - {fileID: 440805031}
   - {fileID: 95391477}
+  - {fileID: 543872621}

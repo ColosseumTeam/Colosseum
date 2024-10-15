@@ -25,12 +25,14 @@ public class PlayerFighterAttackController : NetworkBehaviour
     [SerializeField] private TimelineClip ultTimeline;
     [SerializeField] private Transform ultEffectCameraGroup;
     [SerializeField] private Camera ultCamera;
+    [SerializeField] private RangePlayerCoolTImeManager coolTimeManager;
 
     [Header("Skill Collider")]
     [SerializeField] private CapsuleCollider leftClickSkillCollider;
     [SerializeField] private CapsuleCollider rightClickSkillCollider;
 
     [Header("Skill Object")]
+    [SerializeField] private Transform attackPositionObj;
     [SerializeField] private Transform qSkillGroup;
     [SerializeField] private NetworkObject qSkillPrefab;
     [SerializeField] private GameObject shiftClickSkillPrefab;
@@ -47,6 +49,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
     private Animator animator;
     private NetworkMecanimAnimator mecanimAnimator;
     private PlayableDirector playableDirector;
+    private AudioSource audioSource;
     private float eState;
     [SerializeField] private bool isAttacking;
     private bool isPressedShift;
@@ -68,6 +71,8 @@ public class PlayerFighterAttackController : NetworkBehaviour
         animator = GetComponent<Animator>();
         mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
         playableDirector = GetComponent<PlayableDirector>();
+        coolTimeManager = GetComponent<RangePlayerCoolTImeManager>();
+        audioSource = GetComponent<AudioSource>();
         //crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
     }
 
@@ -109,7 +114,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
     {
         if (!HasStateAuthority) return;
 
-        if (value.isPressed && isPressedShift)
+        if (value.isPressed && isPressedShift && coolTimeManager.SkillCheckLis[0] && !playerController.IsSkilling)
         {
             isPressedShift = false;
             aimController.AimSkillReadyNonActive();
@@ -118,6 +123,8 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
             mecanimAnimator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 2);
+
+            coolTimeManager.SkillChecking(0);
         }
 
         else if (value.isPressed)
@@ -128,7 +135,10 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
     public void OnInstantiateShiftClickSkillPrefab()
     {
-        NetworkObject shifhtClickObj = Runner.Spawn(shiftClickSkillPrefab, skillPos, transform.rotation);
+        if (!HasStateAuthority) return;
+
+        NetworkObject shiftClickObj = Runner.Spawn(shiftClickSkillPrefab, skillPos, transform.rotation);
+        shiftClickObj.GetComponent<FighterPlayerShiftClick>().SetVolume(playerController.VolumeManager.skillVolume);
     }
 
     // Right Click Skill
@@ -136,7 +146,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
     {
         if (!HasStateAuthority) return;
 
-        if (value.isPressed && !isAttacking)
+        if (value.isPressed && !isAttacking && coolTimeManager.SkillCheckLis[1] && !playerController.IsSkilling)
         {
             isAttacking = true;
             if (eState > 1f)
@@ -147,9 +157,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
             mecanimAnimator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 0);
 
-            GetComponent<AudioSource>().clip = rightClickSkillClip;
-            GetComponent<AudioSource>().volume = 0.3f;
-            GetComponent<AudioSource>().Play();
+            audioSource.PlayOneShot(rightClickSkillClip, playerController.VolumeManager.skillVolume);
         }
     }
 
@@ -158,7 +166,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
     {
         if (!HasStateAuthority) return;
 
-        if (value.isPressed)
+        if (value.isPressed && coolTimeManager.SkillCheckLis[2] && !playerController.IsSkilling)
         {
             if (!IsQSkillOn)
             {
@@ -166,9 +174,9 @@ public class PlayerFighterAttackController : NetworkBehaviour
                 mecanimAnimator.SetTrigger("Skill");
                 animator.SetInteger("SkillState", 1);
 
-                GetComponent<AudioSource>().clip = qSkillClip;
-                GetComponent<AudioSource>().volume = 0.3f;
-                GetComponent<AudioSource>().Play();
+                playerController.SetMoveSpeed(100f);
+
+                audioSource.PlayOneShot(qSkillClip, playerController.VolumeManager.skillVolume);
                 // Todo: 공중에 떠있는 돌 애니메이션 이벤트에 적용
             }
             else
@@ -178,23 +186,27 @@ public class PlayerFighterAttackController : NetworkBehaviour
                     return;
                 }
 
-                NetworkObject stone = Runner.Spawn(qSkillPrefab, transform.position + new Vector3(0, 1.5f, 0), transform.rotation);
+                NetworkObject stone = Runner.Spawn(qSkillPrefab, attackPositionObj.position, transform.rotation);
                 stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
+                stone.GetComponent<FighterQSkill>().SetVolume(playerController.VolumeManager.skillVolume);
 
-                qCount--;
-
-                qSkillGroup.GetChild(qCount).gameObject.SetActive(false);
+                RPC_QShoot();
 
                 if (qCount <= 0)
                 {
                     IsQSkillOn = false;
                     isReadyToShootQ = false;
+
+                    playerController.SetMoveSpeed(200f);
+
+                    coolTimeManager.SkillChecking(2);
                 }
             }
         }
     }
 
-    public void QSkillInit(int count)
+    [Rpc]
+    public void RPC_QSkillInit(int count)
     {
         qCount = count;
 
@@ -206,17 +218,27 @@ public class PlayerFighterAttackController : NetworkBehaviour
         isReadyToShootQ = true;
     }
 
+    [Rpc]
+    private void RPC_QShoot()
+    {
+        qCount--;
+
+        qSkillGroup.GetChild(qCount).gameObject.SetActive(false);
+    }
+
     // E Skill
     private void OnRangeFourSkill(InputValue value)
     {
         if (!HasStateAuthority) return;
 
-        if (value.isPressed)
+        if (value.isPressed && !playerController.IsSkilling)
         {
             skillPos = crossHairLookAt.GroundHitPositionTransmission();
 
             mecanimAnimator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 3);
+
+            coolTimeManager.SkillChecking(3);
         }
     }
 
@@ -228,49 +250,60 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
     public void OnInstantiateESkillPrefab()
     {
-        GameObject eSkillObj = Instantiate(eSkillPrefab, skillPos, transform.rotation);
+        if (!HasStateAuthority) return;
+
+        NetworkObject eSkillObj = Runner.Spawn(eSkillPrefab, skillPos, transform.rotation);
         eSkillObj.GetComponent<FighterESkill>().SetAttackController(this);
     }
 
     [Rpc]
-    public void RPC_SetEnemyOnUltCamera()
+    public void RPC_SetEnemyTr()
     {
         List<NetworkObject> networkObjects = Runner.GetAllNetworkObjects();
         foreach (var obj in networkObjects)
         {
-            if (obj.TryGetComponent(out PlayerController component) || obj.TryGetComponent(out BotController botComponent))
+            if (obj.TryGetComponent(out PlayerController component))
             {
                 if (obj.tag == "Enemy")
                 {
                     enemyTr = obj.transform;
-                    Debug.Log("Found enemy");
+                    RPC_SetRockPosition(enemyTr.position);
                 }
             }
         }
+    }
 
-        for (int i = 0; i < ultEffectCameraGroup.childCount; i++)
+    public void SetBotTr()
+    {
+        List<NetworkObject> networkObjects = Runner.GetAllNetworkObjects();
+        foreach (var obj in networkObjects)
         {
-            CinemachineVirtualCamera vircam = ultEffectCameraGroup.GetChild(i).GetComponent<CinemachineVirtualCamera>();
-            if (enemyTr != transform)
+            if (obj.TryGetComponent(out BotController botComponent))
             {
-                vircam.Follow = transform;
-                vircam.LookAt = enemyTr;
-            }
-            else
-            {
-                vircam.Follow = enemyTr;
-                vircam.LookAt = transform;
+                if (obj.tag == "Enemy")
+                {
+                    enemyTr = obj.transform;
+                    skillPos = obj.transform.position;
+                }
             }
         }
+    }
+
+    [Rpc]
+    private void RPC_SetRockPosition(Vector3 pos)
+    {
+        skillPos = pos;
     }
 
     public void OnUltEffectStart()
     {
         ultCamera.gameObject.SetActive(true);
-        GameObject rock1 = Instantiate(eSkillRockFront, enemyTr.position - (enemyTr.position - transform.position).normalized * 2, Quaternion.identity);
-        rock1.transform.LookAt(enemyTr);
-        GameObject rock2 = Instantiate(eSkillRockBack, enemyTr.position + (enemyTr.position - transform.position).normalized * 2, Quaternion.identity);
-        rock2.transform.LookAt(enemyTr);
+        //GameObject rock1 = Instantiate(eSkillRockFront, enemyTr.position - (enemyTr.position - transform.position).normalized * 2, Quaternion.identity);
+        GameObject rock1 = Instantiate(eSkillRockFront, skillPos - (skillPos - transform.position).normalized * 2, Quaternion.identity);
+        //GameObject rock2 = Instantiate(eSkillRockBack, enemyTr.position + (enemyTr.position - transform.position).normalized * 2, Quaternion.identity);
+        GameObject rock2 = Instantiate(eSkillRockBack, skillPos + (skillPos - transform.position).normalized * 2, Quaternion.identity);
+        rock1.transform.LookAt(rock2.transform);
+        rock2.transform.LookAt(rock1.transform);
     }
 
     public void OnUltEffectEnd()

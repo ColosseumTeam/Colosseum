@@ -15,6 +15,12 @@ public class FighterRightClickSkillBehaviour : FighterBehaviourBase
         }
 
         animator.SetFloat("RightClickState", rightClickState);
+
+        if (rightClickState >= 1)
+        {
+            animator.GetComponent<RangePlayerCoolTImeManager>().SkillChecking(1);
+        }
+
         rightClickState += 0.5f;
     }
 

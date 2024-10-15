@@ -8,7 +8,6 @@ public class FighterQSkillProjectile : FighterQSkill
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.transform.name);
         if (collision.transform.CompareTag("Ground"))
         {
             // Todo: Destory 사용한 모든 오브젝트 풀링 필요.
@@ -21,7 +20,7 @@ public class FighterQSkillProjectile : FighterQSkill
             {
                 collision.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
                 //Runner.Spawn(hitEffect, gameObject.transform.position, gameObject.transform.rotation);
-                GetComponent<AudioSource>().Play();
+                //GetComponent<AudioSource>().Play();
             }
             else
             {
@@ -29,7 +28,7 @@ public class FighterQSkillProjectile : FighterQSkill
                 {
                     component.TakeDamage(damage, botHitType, downAttack, stiffnessTime, transform.position);
                     //Runner.Spawn(hitEffect, gameObject.transform.position, gameObject.transform.rotation);
-                    GetComponent<AudioSource>().Play();
+                    //GetComponent<AudioSource>().Play();
                 }
             }
 

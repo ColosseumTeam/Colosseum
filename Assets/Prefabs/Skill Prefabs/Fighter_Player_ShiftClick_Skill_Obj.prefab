@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1560367185132797213}
   - component: {fileID: 1161005712279292428}
   - component: {fileID: 9126604860211414124}
-  - component: {fileID: -4862275288076773990}
+  - component: {fileID: 4658093132424105748}
   m_Layer: 0
   m_Name: Fighter_Player_ShiftClick_Skill_Obj
   m_TagString: Untagged
@@ -113,7 +113,7 @@ MonoBehaviour:
   SyncParent: 0
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
---- !u!82 &-4862275288076773990
+--- !u!82 &4658093132424105748
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,7 +125,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 74ec98e028596a14b91a90eaa80f21f9, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0

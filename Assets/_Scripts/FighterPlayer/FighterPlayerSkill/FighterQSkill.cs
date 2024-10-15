@@ -11,8 +11,14 @@ public class FighterQSkill : NetworkBehaviour
     [SerializeField] private float speed = 5f;
     [SerializeField] protected GameObject hitEffect;
 
+    private AudioSource audioSource;
     private Vector3 dir;
 
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void OnEnable()
     {
@@ -21,6 +27,11 @@ public class FighterQSkill : NetworkBehaviour
 
         // Todo: Destory 사용한 모든 오브젝트 풀링 필요.
         Destroy(gameObject, 5f);
+    }
+
+    public void SetVolume(float volume)
+    {
+        audioSource.volume = volume;
     }
 
     public override void FixedUpdateNetwork()
