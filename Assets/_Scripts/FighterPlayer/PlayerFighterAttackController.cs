@@ -278,6 +278,18 @@ public class PlayerFighterAttackController : NetworkBehaviour
         ultCamera.gameObject.SetActive(false);
     }
 
+    public void OnUltEnemyHit()
+    {
+        if (enemyTr.TryGetComponent(out PlayerDamageController enemyComponent))
+        {
+            enemyComponent.RPC_TakeDamage(10f, PlayerDamageController.PlayerHitType.Down, true, 1f, enemyTr.position);
+        }
+        else if (enemyTr.TryGetComponent(out BotController botComponent))
+        {
+            botComponent.TakeDamage(10f, BotController.BotHitType.Down, true, 1f, enemyTr.position);
+        }
+    }
+
     private void OnEmotion1(InputValue value)
     {
         if (value.isPressed)
