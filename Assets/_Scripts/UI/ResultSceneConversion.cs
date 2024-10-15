@@ -6,12 +6,10 @@ public class ResultSceneConversion : NetworkBehaviour
 {
     [SerializeField] private SceneData sceneData;
 
-    public void ResultSceneBringIn(int winner)
+    public void ResultSceneBringIn()
     {
-        if (HasStateAuthority)
+        if (Runner.IsSceneAuthority)
         {
-            sceneData.winPlayer = winner;
-
             Runner.LoadScene("ResultScene");
         }
 

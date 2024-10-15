@@ -4,8 +4,14 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomManager : NetworkBehaviour
+public class RoomManager : NetworkBehaviour, ISceneLoadDone
 {
+    public enum PreviousScene
+    {
+        Lobby,
+        Result,
+    }
+
     [Header("Room Setting")]
     [SerializeField] private string gameSceneName = "Game";
 
@@ -15,12 +21,21 @@ public class RoomManager : NetworkBehaviour
     [SerializeField] private RawImage myCharacterRawImage;
     [SerializeField] private RawImage enemyCharacterRawImage;
     [SerializeField] private CharacterSelection characterSelection;
+    [SerializeField] private Canvas startCanvas;
+    [SerializeField] private Canvas roomCanvas;
+
+    private CharacterSelectManager characterSelectManager;
 
     public bool isReady { get; private set; }
     public bool isEnemyReady { get; private set; }
     public RawImage MyCharacterRawImage { get { return myCharacterRawImage; } }
     public RawImage EnemyCharacterRawImage { get { return enemyCharacterRawImage; } }
 
+
+    private void Awake()
+    {
+        characterSelectManager = FindObjectOfType<CharacterSelectManager>();
+    }
 
     public void ReadyButton()
     {
@@ -49,7 +64,6 @@ public class RoomManager : NetworkBehaviour
 
     public void WhenPlayerJoined()
     {
-
         if (isReady)
         {
             RPC_GetReady();
@@ -88,7 +102,7 @@ public class RoomManager : NetworkBehaviour
         isEnemyReady = false;
     }
 
-    [Rpc(InvokeLocal = false)]
+    [Rpc]
     private void RPC_GameStart()
     {
         if (isReady && isEnemyReady && Runner.IsSceneAuthority)
@@ -100,6 +114,7 @@ public class RoomManager : NetworkBehaviour
     public void CharacterSelected(int index)
     {
         myCharacterRawImage.texture = characterSelection.CharacterDatas[index].CharacterRenderTexture;
+        characterSelectManager.ChangeMyCharacter(index);
         RPC_CharacterSelected(index);
     }
 
@@ -112,5 +127,20 @@ public class RoomManager : NetworkBehaviour
         }
 
         enemyCharacterRawImage.texture = characterSelection.CharacterDatas[index].CharacterRenderTexture;
+        characterSelectManager.ChangeEnemyCharacter(index);
+    }
+
+    [Rpc]
+    private void RPC_LoadLobbySceneFromResult()
+    {
+        startCanvas.enabled = false;
+        roomCanvas.enabled = true;
+        // Todo: 0 나중에 캐릭터에 맞게 바꿔줘야함.
+        CharacterSelected(characterSelectManager.MyCharacterNumber);
+    }
+
+    public void SceneLoadDone(in SceneLoadDoneArgs sceneInfo)
+    {
+        RPC_LoadLobbySceneFromResult();
     }
 }

@@ -35,6 +35,7 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private GameObject cameraRig;
     [SerializeField] private SimpleKCC kcc;
+    [SerializeField] private Camera mainCam;
 
     // 캐릭터 애니메이션 제어를 위한 Animator 참조
     private Animator animator;
@@ -74,12 +75,40 @@ public class PlayerController : NetworkBehaviour
 
     private void Start()
     {
+        //if (HasStateAuthority)
+        //{
+        //    cameraRig.SetActive(true);
+        //    transform.tag = "Player";
+        //    kcc.Collider.tag = "Player";
+            
+        //    aimController = FindAnyObjectByType<AimController>();
+
+        //    if (aimController != null)
+        //    {
+        //        aimController.PlayerObjectTransmission(GetComponent<NetworkObject>());
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Do not have AimController");
+        //    }
+        //}
+        //else
+        //{
+        //    transform.tag = "Enemy";
+        //    kcc.Collider.tag = "Enemy";
+        //}
+    }
+
+    public override void Spawned()
+    {
+        base.Spawned();
+
         if (HasStateAuthority)
         {
             cameraRig.SetActive(true);
             transform.tag = "Player";
             kcc.Collider.tag = "Player";
-            
+
             aimController = FindAnyObjectByType<AimController>();
 
             if (aimController != null)
@@ -90,13 +119,15 @@ public class PlayerController : NetworkBehaviour
             {
                 Debug.Log("Do not have AimController");
             }
+
+            mainCam.gameObject.SetActive(true);
         }
         else
         {
             transform.tag = "Enemy";
             kcc.Collider.tag = "Enemy";
         }
-    }    
+    }
 
     public override void FixedUpdateNetwork()
     {

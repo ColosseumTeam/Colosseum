@@ -1,9 +1,10 @@
+using Fusion;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ResultUIManager : MonoBehaviour
+public class ResultUIManager : NetworkBehaviour
 {
-    [SerializeField] private SceneData sceneData;
+    [SerializeField] private CharacterSelectManager characterSelectManager;
 
     [SerializeField] private GameObject losePosition;
     [SerializeField] private GameObject winPosition;
@@ -17,24 +18,60 @@ public class ResultUIManager : MonoBehaviour
 
     private void Awake()
     {
-        GameObject winObj;
-        GameObject loseObj;
+        characterSelectManager = FindObjectOfType<CharacterSelectManager>();
 
-        if(sceneData.winPlayer == 0)
+        if (characterSelectManager.Win)
         {
-            loseObj = Instantiate(rangePlayer, losePosition.transform.position, losePosition.transform.rotation);
-            winObj = Instantiate(fightPlayer, winPosition.transform.position, winPosition.transform.rotation);
-
-            loseObj.GetComponent<Animator>().SetTrigger("Idle");
-            winObj.GetComponent<Animator>().SetTrigger("Dance");
+            switch (characterSelectManager.MyCharacterNumber)
+            {
+                case 0:
+                    Instantiate(fightPlayer, winPosition.transform.position, winPosition.transform.rotation);
+                    break;
+                case 1:
+                    Instantiate(rangePlayer, winPosition.transform.position, winPosition.transform.rotation);
+                    break;
+            }
+            switch (characterSelectManager.EnemyCharacterNumber)
+            {
+                case 0:
+                    Instantiate(fightPlayer, losePosition.transform.position, losePosition.transform.rotation);
+                    break;
+                case 1:
+                    Instantiate(rangePlayer, losePosition.transform.position, losePosition.transform.rotation);
+                    break;
+            }
         }
         else
         {
-            loseObj = Instantiate(fightPlayer, losePosition.transform.position, losePosition.transform.rotation);
-            winObj = Instantiate(rangePlayer, winPosition.transform.position, winPosition.transform.rotation);            
+            switch (characterSelectManager.MyCharacterNumber)
+            {
+                case 0:
+                    Instantiate(fightPlayer, losePosition.transform.position, losePosition.transform.rotation);
+                    break;
+                case 1:
+                    Instantiate(rangePlayer, losePosition.transform.position, losePosition.transform.rotation);
+                    break;
+            }
+            switch (characterSelectManager.EnemyCharacterNumber)
+            {
+                case 0:
+                    Instantiate(fightPlayer, winPosition.transform.position, winPosition.transform.rotation);
+                    break;
+                case 1:
+                    Instantiate(rangePlayer, winPosition.transform.position, winPosition.transform.rotation);
+                    break;
+            }
+        }
 
-            loseObj.GetComponent<Animator>().SetTrigger("Idle");
-            winObj.GetComponent<Animator>().SetTrigger("Dance");
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void LoadLobbyScene()
+    {
+        if (Runner.IsSceneAuthority)
+        {
+            Runner.LoadScene(SceneRef.FromIndex(0));
         }
     }
 }

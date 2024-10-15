@@ -22,18 +22,14 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
 
     private void Awake()
     {
-        //if (FindAnyObjectByType<PlayerJoinedStatusManager>() != this)
-        //{
-        //    Destroy(gameObject);
-        //    return;
-        //}
         DontDestroyOnLoad(this);
-        roomManager = FindAnyObjectByType<RoomManager>();
-        characterSelection = FindAnyObjectByType<CharacterSelection>();
     }
 
     private void Start()
     {
+        roomManager = FindAnyObjectByType<RoomManager>();
+        characterSelection = FindAnyObjectByType<CharacterSelection>();
+
         onAllPlayersLoadedScene += InstantiatePlayer;
     }
 
@@ -101,6 +97,9 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
 
     void CheckAllPlayerLoadedScene()
     {
+        roomManager = FindAnyObjectByType<RoomManager>();
+        characterSelection = FindAnyObjectByType<CharacterSelection>();
+
         SceneRef sceneRef = _playerStatusDictionary.Values.First().scene;
 
         foreach (var playerStatus in _playerStatusDictionary.Values)

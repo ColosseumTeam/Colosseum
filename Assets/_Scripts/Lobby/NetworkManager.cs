@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class NetworkManager : MonoBehaviour
+public class NetworkManager : NetworkBehaviour
 {
     [Header("Network Setting")]
     [SerializeField] private NetworkRunner runnerPrefab;
@@ -18,8 +18,6 @@ public class NetworkManager : MonoBehaviour
     [SerializeField] private Canvas roomCanvas;
 
     private NetworkRunner runner;
-
-    public NetworkRunner Runner { get { return runner; } }
 
 
     public async void JoinRoom()
@@ -54,7 +52,6 @@ public class NetworkManager : MonoBehaviour
         }
         else
         {
-            //StatusText.text = $"Connection Failed: {startTask.Result.ShutdownReason}";
             Debug.Log("Failed Connecting");
         }
 
@@ -68,15 +65,13 @@ public class NetworkManager : MonoBehaviour
 
     public async Task Disconnect()
     {
-        if (runner == null)
+        if (Runner == null)
             return;
 
-        //StatusText.text = "Disconnecting...";
-        //PanelGroup.interactable = false;
-        var events = runner.GetComponent<NetworkEvents>();
+        var events = Runner.GetComponent<NetworkEvents>();
         events.OnShutdown.RemoveListener(OnShutdown);
 
-        await runner.Shutdown();
+        await Runner.Shutdown();
         runner = null;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
