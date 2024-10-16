@@ -1,14 +1,11 @@
 using Fusion;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class RangePlayerOneAttack : NetworkBehaviour
 {
     [SerializeField] private float damage = 10f;
-    [SerializeField] private PlayerDamageController.PlayerHitType playerHitType;
-    [SerializeField] private BotController.BotHitType botHitType;
+    [SerializeField] private PlayerDamageController.PlayerHitType playerHitType = PlayerDamageController.PlayerHitType.Down;
+    [SerializeField] private BotController.BotHitType botHitType = BotController.BotHitType.Down;
     [SerializeField] private bool downAttack = true;
     [SerializeField] private GameObject attecktEffect;
     [SerializeField] private GameObject balanceObject;
@@ -31,7 +28,7 @@ public class RangePlayerOneAttack : NetworkBehaviour
         {
             // 기존 position을 받아와서 y 값을 수정한 후 다시 할당
             Vector3 newPosition = transform.position;
-            newPosition.y += upSpeed * Time.deltaTime;
+            newPosition.y += upSpeed * Runner.DeltaTime;
             transform.position = newPosition;
         }
     }
@@ -40,18 +37,16 @@ public class RangePlayerOneAttack : NetworkBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            if (other.gameObject.GetComponentInParent<PlayerDamageController>() != null
-                && other.gameObject != player && HasStateAuthority)
-            {
-                other.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
-                //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
+            if (other.gameObject.GetComponentInParent<PlayerDamageController>() != null && other.gameObject != player && HasStateAuthority)
+            {                
+                other.gameObject.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
             }
             else
             {
                 if (other.gameObject.TryGetComponent(out BotController component))
                 {
                     component.TakeDamage(damage, botHitType, downAttack, 1f, transform.position);
-                    //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
+                    Debug.Log("BotController의 TakeDamage 호출됨");
                 }
             }
 
@@ -61,7 +56,7 @@ public class RangePlayerOneAttack : NetworkBehaviour
                                 gameObject.transform.eulerAngles.z
                             );
 
-            Runner.Spawn(balanceObject, gameObject.transform.position, Quaternion.Euler(instanceBalanceRotation));
+            Runner.Spawn(balanceObject, gameObject.transform.position, Quaternion.Euler(instanceBalanceRotation));            
 
             GetComponent<BoxCollider>().enabled = false;
         }

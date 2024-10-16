@@ -1163,7 +1163,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2481083408417119137
 Transform:
   m_ObjectHideFlags: 0
@@ -5913,7 +5913,7 @@ MonoBehaviour:
   rangeTwoSkillPrefabSpeed: 15
   rangeFourSkillPrefabSpeed: 15
   rangeFourSkillSpawnHeight: 10
-  cameraRig: {fileID: 0}
+  cameraRig: {fileID: 5484600412609759898}
 --- !u!114 &5208695130796655025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5959,7 +5959,6 @@ MonoBehaviour:
   isDowning: 0
   isUping: 0
   isGrounding: 0
-  upDamageCheck: 0
   upForce: 10
   downTimer: 0
   downEndTimer: 3
@@ -6189,7 +6188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1152089762074811222
 Transform:
   m_ObjectHideFlags: 0
@@ -10068,7 +10067,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6706386496970891747
 Transform:
   m_ObjectHideFlags: 0
