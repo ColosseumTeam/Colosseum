@@ -188,7 +188,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
                 NetworkObject stone = Runner.Spawn(qSkillPrefab, attackPositionObj.position, transform.rotation);
                 stone.GetComponent<FighterQSkill>().Look(aimController.transform.position);
-                stone.GetComponent<FighterQSkill>().SetVolume(playerController.VolumeManager.skillVolume);
+                stone.GetComponent<FighterQSkill>().RPC_SetVolume();
 
                 RPC_QShoot();
 
