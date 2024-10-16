@@ -28,7 +28,7 @@ public class FighterESkill : NetworkBehaviour
         {
             if (other.GetComponentInParent<PlayerDamageController>() != null)
             {
-                other.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
+                other.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, stiffnessTime, other.gameObject.transform.position);
                 attackController.RPC_SetEnemyTr();
                 attackController.RPC_StartESkillEffect();
             }

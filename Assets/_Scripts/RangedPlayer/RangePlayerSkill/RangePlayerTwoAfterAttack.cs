@@ -31,7 +31,7 @@ public class RangePlayerTwoAfterAttack : NetworkBehaviour
             if (other.gameObject != player)
             {
                 Debug.Log("Main Two Skill After Attack");
-                other.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                other.gameObject.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
                 //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
 

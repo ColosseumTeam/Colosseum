@@ -12,7 +12,7 @@ public class RangePlayerNormalAttack : NetworkBehaviour
 
     private GameElementsSynchronizer gameElementsSynchronizer;
     private GameObject player;
-    private float speed = 10f;
+    private float speed = 20f;
     private Vector3 dir;
 
     private void Awake()

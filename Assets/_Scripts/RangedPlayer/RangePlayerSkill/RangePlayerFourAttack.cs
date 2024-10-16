@@ -79,7 +79,7 @@ public class RangePlayerFourAttack : NetworkBehaviour
         {            
             if (other.GetComponentInParent<PlayerDamageController>() != null && other.gameObject != player && HasStateAuthority)
             {
-                other.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                other.gameObject.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
                 GetComponent<Collider>().enabled = false;
                 GetComponent<Collider>().isTrigger = false;
             }

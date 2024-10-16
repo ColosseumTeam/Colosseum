@@ -64,29 +64,33 @@ public class PlayerDamageController : NetworkBehaviour
 
         isGrounding = kcc.IsGrounded;
 
-        if (airCheck)
-        {
-            airTimer += Runner.DeltaTime;
-            if (airTimer < airEndTimer)
-            {
-                transform.position = airPosition;
-                return;
-            }
-            else
-            {
-                airCheck = false;
-                airTimer = 0f;
-            }
-        }
-
+        // 위로 올라가는 상태라면 플레이어를 점프시킴
         if (isUping && transform.position.y <= playerVector.y + upForce)
         {
             kcc.Move(jumpImpulse: upForce);
-            isUping = false;
         }
         else
         {
-            kcc.Move();
+            if (airCheck)
+            {
+                airTimer += Runner.DeltaTime;
+
+                if(airTimer < airEndTimer)
+                {
+                    return;
+                }
+            }
+
+            airCheck = false;
+            airTimer = 0;
+            kcc.Move(); // 일반 이동 처리
+        }
+
+        if (isGrounding && isUping)
+        {
+            EndAirTime();
+            RPC_EndAirTime();
+            isUping = false;
         }
     }
 
@@ -110,9 +114,7 @@ public class PlayerDamageController : NetworkBehaviour
     // 모든 다른 클라이언트에 피해 시각적 효과와 애니메이션을 동기화
     [Rpc(RpcSources.All, RpcTargets.All, InvokeLocal = false)]
     public void RPC_TakeDamage(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime, Vector3 skillPosition)
-    {
-        Debug.Log("RPC_TakeDamage 호출됨");
-
+    {        
         if (!HasStateAuthority)
         {
             return;
@@ -129,9 +131,7 @@ public class PlayerDamageController : NetworkBehaviour
 
     // 소유 클라이언트에서 즉각적인 시각적 효과와 애니메이션을 처리
     private void HandleLocalDamageVisuals(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime, Vector3 skillPosition)
-    {         
-        Debug.Log("HandleLocalDamageVisuals 호출됨");
-
+    {                 
         if (hitEffectPrefab != null)
         {
             Instantiate(hitEffectPrefab, skillPosition, Quaternion.identity);
@@ -142,14 +142,23 @@ public class PlayerDamageController : NetworkBehaviour
         switch (playerHitType)
         {
             case PlayerHitType.None:
+                if (isDowning && isGrounding) { break; }
+
                 int rnd = Random.Range(0, 2);
                 animator.speed = stiffnessTime;
                 animator.SetFloat("TakeHitState", rnd);
-                animator.SetTrigger("TakeHit");
+                animator.SetTrigger("TakeHit");               
+
                 //mecanimAnimator.SetTrigger("TakeHit");
                 break;
 
             case PlayerHitType.Down:
+
+                if (!downAttack && isDowning)
+                {
+                    break;
+                } 
+
                 animator.SetFloat("TakeHitState", 2);
                 animator.SetTrigger("TakeHit");
                 //mecanimAnimator.SetTrigger("TakeHit");
@@ -160,14 +169,12 @@ public class PlayerDamageController : NetworkBehaviour
         {
             isDowning = true;
             isUping = true;
-            playerVector = transform.position;
-            Debug.Log("isDowning 및 isUping 설정됨");
+            playerVector = transform.position;            
         }
         else if (playerHitType == PlayerHitType.None && isDowning && !isGrounding)
         {
             airPosition = transform.position;
-            airCheck = true;
-            Debug.Log("airCheck 설정됨");
+            airCheck = true;            
         }
     }
 
@@ -178,9 +185,7 @@ public class PlayerDamageController : NetworkBehaviour
         if (!HasStateAuthority)
         {
             return;
-        }
-
-        Debug.Log("HandleRemoteDamageVisuals 호출됨");
+        }        
 
         if (hitEffectPrefab != null)
         {
@@ -191,8 +196,9 @@ public class PlayerDamageController : NetworkBehaviour
 
         switch (playerHitType)
         {
-            case PlayerHitType.None:
-                Debug.Log("None Active");
+            case PlayerHitType.None:                
+                if(isDowning && isGrounding) { break; }
+
                 int rnd = Random.Range(0, 2);
                 animator.speed = stiffnessTime;
                 animator.SetFloat("TakeHitState", rnd);
@@ -201,7 +207,12 @@ public class PlayerDamageController : NetworkBehaviour
                 break;
 
             case PlayerHitType.Down:
-                Debug.Log("Down Active");
+
+                if (!downAttack && isDowning)
+                {
+                    break;
+                }
+
                 animator.SetFloat("TakeHitState", 2);
                 animator.SetTrigger("TakeHit");
                 //mecanimAnimator.SetTrigger("TakeHit");
@@ -267,7 +278,7 @@ public class PlayerDamageController : NetworkBehaviour
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_TakeHitNonActive()
-    {
+    { 
         mecanimAnimator.SetTrigger("Idle");
         GetComponent<PlayerController>().PlayerTakeHitStopAction();
     }
@@ -295,4 +306,20 @@ public class PlayerDamageController : NetworkBehaviour
         // NetworkMecanimAnimator에는 ResetTrigger가 없으므로 제거
         // animator.SetFloat("TakeHitState", 0); // 필요 시 파라미터 리셋
     }
-}
+
+    private void EndAirTime()
+    {
+        animator.SetFloat("TakeHitState", 2);
+        animator.SetTrigger("TakeHit");
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void RPC_EndAirTime()
+    {
+        if (!HasStateAuthority)
+        {
+            animator.SetFloat("TakeHitState", 2);
+            animator.SetTrigger("TakeHit");
+        }
+    }
+}   

@@ -4540,11 +4540,10 @@ MonoBehaviour:
   isDowning: 0
   isUping: 0
   isGrounding: 0
-  upDamageCheck: 0
   upForce: 12
   downTimer: 0
   downEndTimer: 3
-  hitEffect: {fileID: 7728366230342544413, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
+  hitEffectPrefab: {fileID: 7728366230342544413, guid: 212ef1a41838ce044a9ac54994866708, type: 3}
   airTimer: 0
   airEndTimer: 0.5
 --- !u!114 &2648615578118388969

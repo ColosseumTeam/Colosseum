@@ -29,7 +29,7 @@ public class RangePlayerFourAfterAttack : NetworkBehaviour
         {
             if (other.gameObject.GetComponentInParent<PlayerDamageController>() != null && other.gameObject != ranger && HasStateAuthority)
             {
-                other.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                other.gameObject.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
             }
 
             if (other.gameObject.TryGetComponent(out BotController component))

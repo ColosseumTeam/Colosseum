@@ -18,7 +18,7 @@ public class FighterQSkillProjectile : FighterQSkill
         {
             if (collision.gameObject.GetComponentInParent<PlayerDamageController>() != null)
             {
-                collision.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
+                collision.gameObject.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, stiffnessTime, transform.position);
                 //Runner.Spawn(hitEffect, gameObject.transform.position, gameObject.transform.rotation);
                 //GetComponent<AudioSource>().Play();
             }

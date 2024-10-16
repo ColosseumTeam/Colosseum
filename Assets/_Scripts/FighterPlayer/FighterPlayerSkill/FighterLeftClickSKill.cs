@@ -22,7 +22,7 @@ public class FighterLeftClickSKill : NetworkBehaviour
         {
             if (other.GetComponentInParent<PlayerDamageController>() != null && HasStateAuthority)
             {
-                other.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, hitPosition.transform.position);
+                other.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, stiffnessTime, hitPosition.transform.position);
                 //Runner.Spawn(hitEffect, hitPosition.transform.position, hitPosition.transform.rotation);
             }
             else

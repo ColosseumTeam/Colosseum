@@ -76,9 +76,8 @@ public class RangePlayerTwoAttack : NetworkBehaviour
 
             if (collision.gameObject.GetComponentInParent<PlayerDamageController>() != null
                 && collision.gameObject != player && HasStateAuthority)
-            {
-                Debug.Log("Main Two Skill Attack");
-                collision.gameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+            {                
+                collision.gameObject.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
                 //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);                
             }
             else

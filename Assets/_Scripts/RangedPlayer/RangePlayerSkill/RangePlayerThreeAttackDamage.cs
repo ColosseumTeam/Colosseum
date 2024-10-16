@@ -61,7 +61,7 @@ public class RangePlayerThreeAttackDamage : NetworkBehaviour
                 if (otherGameObject.GetComponentInParent<PlayerDamageController>() != null
                     && otherGameObject != player && HasStateAuthority)
                 {
-                    otherGameObject.GetComponentInParent<PlayerDamageController>().RPC_TakeDamage(damage, playerHitType, downAttack, stiffnessTime, attackPoint);
+                    otherGameObject.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, stiffnessTime, attackPoint);
                     //Runner.Spawn(attecktEffect, otherGameObject.transform.position, otherGameObject.transform.rotation);
                 }
                 else
