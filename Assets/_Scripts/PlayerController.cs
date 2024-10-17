@@ -62,6 +62,7 @@ public class PlayerController : NetworkBehaviour
 
     public VolumeManager VolumeManager { get { return volumeManager; } }
     public bool IsSkilling { get { return isSkilling; } }
+    public float MoveSpeed { get {  return moveSpeed; } }
 
 
     private void Awake()

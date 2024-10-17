@@ -1145,7 +1145,7 @@ Transform:
   m_GameObject: {fileID: 2471055506994107653}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: -1.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2822,7 +2822,7 @@ Transform:
   m_GameObject: {fileID: 3905972779161679474}
   serializedVersion: 2
   m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 2, z: -3}
+  m_LocalPosition: {x: 0, y: 2.11, z: -2.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4134,12 +4134,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'Bip001-R-Finger01'\n\tTransform 'Bip001-Pelvis'\n\tTransform
-    'Bip001-Spine'\n\tTransform 'Bip001-L-Finger01'\n\tTransform 'Bip001-L-Finger0'\n\tTransform
-    'Bip001-R-Forearm'\n\tTransform 'Bip001-R-Calf'\n\tTransform 'Bip001-L-Forearm'\n\tTransform
-    'Bip001-R-Finger2'\n\tTransform 'Bip001-R-Finger21'\n\tand more ..."
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0

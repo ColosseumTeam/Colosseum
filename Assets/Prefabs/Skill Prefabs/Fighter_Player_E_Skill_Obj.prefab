@@ -125,7 +125,7 @@ MonoBehaviour:
   playerHitType: 1
   botHitType: 1
   downAttack: 1
-  stiffnessTime: 1
+  stiffnessTime: 2
   attackController: {fileID: 0}
 --- !u!114 &2500266454652125490
 MonoBehaviour:
