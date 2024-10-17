@@ -29,9 +29,10 @@ public class FighterQSkill : NetworkBehaviour
         Destroy(gameObject, 5f);
     }
 
-    public void SetVolume(float volume)
+    [Rpc]
+    public void RPC_SetVolume()
     {
-        audioSource.volume = volume;
+        audioSource.volume = FindObjectOfType<VolumeManager>().skillVolume;
     }
 
     public override void FixedUpdateNetwork()
