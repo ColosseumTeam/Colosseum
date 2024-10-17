@@ -12,9 +12,20 @@ public class RangePlayerTwoAfterAttack : NetworkBehaviour
     [SerializeField] private GameObject attecktEffect;    
     [SerializeField] private GameObject player;
 
+    private AudioSource audioSource;
+
+
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         Destroy(gameObject, 3f);
+    }
+
+    [Rpc]
+    public void RPC_SetVolume()
+    {
+        audioSource.volume = FindObjectOfType<VolumeManager>().skillVolume;
     }
 
     private void OnTriggerEnter(Collider other)

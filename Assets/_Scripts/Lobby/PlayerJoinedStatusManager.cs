@@ -124,7 +124,6 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
     {
         if (sceneRef.AsIndex == 2)
         {
-            Debug.Log("Spawn player");
             NetworkObject player = Runner.Spawn(characterPrefab, Vector3.zero, Quaternion.identity, Runner.LocalPlayer);
             Runner.SetPlayerObject(Runner.LocalPlayer, player);
         }

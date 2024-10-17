@@ -11,12 +11,22 @@ public class RangePlayerOneAttack : NetworkBehaviour
     [SerializeField] private GameObject balanceObject;
 
     private GameObject player;
+    private AudioSource audioSource;
     private float maxHeight = 0f;
     private float upSpeed = 20f;
 
+
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         Destroy(gameObject, 1.5f);
+    }
+
+    [Rpc]
+    public void RPC_SetVolume()
+    {
+        audioSource.volume = FindObjectOfType<VolumeManager>().skillVolume;
     }
 
 
@@ -56,7 +66,8 @@ public class RangePlayerOneAttack : NetworkBehaviour
                                 gameObject.transform.eulerAngles.z
                             );
 
-            Runner.Spawn(balanceObject, gameObject.transform.position, Quaternion.Euler(instanceBalanceRotation));            
+            NetworkObject balance = Runner.Spawn(balanceObject, gameObject.transform.position, Quaternion.Euler(instanceBalanceRotation));
+            balance.GetComponent<RangePlayerBalance>().RPC_SetVolume();
 
             GetComponent<BoxCollider>().enabled = false;
         }

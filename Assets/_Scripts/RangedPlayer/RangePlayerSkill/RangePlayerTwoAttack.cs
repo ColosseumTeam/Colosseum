@@ -9,23 +9,27 @@ public class RangePlayerTwoAttack : NetworkBehaviour
     [SerializeField] private bool downAttack = false;
     [SerializeField] private float knockBackFoce = 10f;
     [SerializeField] private float knockBackEndForce = 500f;
-    [SerializeField] private GameObject fireFieldMaker;    
+    [SerializeField] private GameObject fireFieldMaker;
     [SerializeField] private float fieldTimer = 0f;
-    [SerializeField] private float fieldEndTimer = 1f;    
+    [SerializeField] private float fieldEndTimer = 1f;
 
-    private GameObject player;    
+    private GameObject player;
+    private AudioSource audioSource;
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         GroundPositionGrasp();
 
         Destroy(gameObject, 3f);
     }
 
-    //private void Update()
-    //{
-    //    GroundPositionGrasp();
-    //}
+    [Rpc]
+    public void RPC_SetVolume()
+    {
+        audioSource.volume = FindObjectOfType<VolumeManager>().skillVolume;
+    }
 
     public override void FixedUpdateNetwork()
     {
@@ -41,6 +45,7 @@ public class RangePlayerTwoAttack : NetworkBehaviour
         if (fieldTimer >= fieldEndTimer)
         {
             NetworkObject instaceFireField = Runner.Spawn(fireFieldMaker, gameObject.transform.position, Quaternion.identity);
+            instaceFireField.GetComponent<RangePlayerTwoAfterAttack>().RPC_SetVolume();
             instaceFireField.GetComponent<RangePlayerTwoAfterAttack>().GetTargetObject(player);
             fieldTimer = 0f;
         }

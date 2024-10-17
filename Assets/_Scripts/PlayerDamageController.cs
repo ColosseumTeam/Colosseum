@@ -30,7 +30,8 @@ public class PlayerDamageController : NetworkBehaviour
     private bool airCheck;
     private Vector3 airPosition;
 
-    private GameObject gameManager;
+    private GameManager gameManager;
+    private PlayerController playerController;
     private float hp;
     private float MaxHp;
     private Image hpBar;
@@ -42,14 +43,15 @@ public class PlayerDamageController : NetworkBehaviour
         MaxHp = playerData.MaxHp;
         hp = MaxHp;
 
+        playerController = GetComponent<PlayerController>();
         mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
         animator = GetComponent<Animator>();
         kcc = GetComponent<SimpleKCC>();
 
-        gameManager = FindObjectOfType<GameManager>()?.gameObject;
+        gameManager = FindObjectOfType<GameManager>();
         if (gameManager != null)
         {
-            hpBar = gameManager.GetComponent<GameManager>().HpBar;
+            hpBar = gameManager.HpBar;
         }
     }
 
@@ -106,6 +108,8 @@ public class PlayerDamageController : NetworkBehaviour
     {
         Debug.Log($"TakeDamage 호출됨: damage={damage}, HitType={playerHitType}, DownAttack={downAttack}, StiffnessTime={stiffnessTime}");
 
+        playerController.BoostStop();
+
         // 소유 클라이언트에서만 HandleLocalDamageVisuals 호출
         HandleLocalDamageVisuals(damage, playerHitType, downAttack, stiffnessTime, skillPosition);
 
@@ -119,6 +123,7 @@ public class PlayerDamageController : NetworkBehaviour
     {
         if (!HasStateAuthority)
         {
+            playerController.BoostStop();
             return;
         }
 
@@ -127,7 +132,8 @@ public class PlayerDamageController : NetworkBehaviour
 
     // 소유 클라이언트에서 즉각적인 시각적 효과와 애니메이션을 처리
     private void HandleLocalDamageVisuals(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime, Vector3 skillPosition)
-    {           
+    {
+
         // 애니메이션 트리거
         switch (playerHitType)
         {
@@ -188,8 +194,9 @@ public class PlayerDamageController : NetworkBehaviour
     {
         if (!HasStateAuthority)
         {
+            playerController.BoostStop();
             return;
-        }        
+        }
 
         Debug.Log(playerHitType);
 
@@ -252,7 +259,6 @@ public class PlayerDamageController : NetworkBehaviour
             airPosition = transform.position;
             airCheck = true;
         }
-
     }
 
     private void DownTimeCheck()
@@ -269,7 +275,7 @@ public class PlayerDamageController : NetworkBehaviour
         }
     }
 
-    // 플레이어의 HP를 감소시키고 UI를 업데이트    
+    // 플레이어의 HP를 감소시키고 UI를 업데이트
     private void PlayerHPDecrease(float newDamage)
     {
         if (HasStateAuthority)
@@ -285,14 +291,11 @@ public class PlayerDamageController : NetworkBehaviour
 
             if (hp <= 0)
             {
-                if (playerData.playerNumber == 0)
-                {
-                    // gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(1);                    
-                }
-                else if (playerData.playerNumber == 1)
-                {
-                    // gameManager.GetComponent<ResultSceneConversion>().ResultSceneBringIn(0);
-                }
+                CharacterSelectManager characterSelectManager = FindObjectOfType<CharacterSelectManager>();
+                //characterSelectManager.Local_Winner(characterSelectManager.EnemyCharacterNumber, characterSelectManager.MyCharacterNumber);
+                //characterSelectManager.RPC_Winner(characterSelectManager.EnemyCharacterNumber, characterSelectManager.MyCharacterNumber);
+
+                gameManager.GetComponent<ResultSceneConversion>().RPC_ResultSceneBringIn(characterSelectManager.EnemyCharacterNumber, characterSelectManager.MyCharacterNumber);
             }
         }
     }

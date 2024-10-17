@@ -6,7 +6,14 @@ public class RangePlayerThreeAttack : NetworkBehaviour
     private Transform centerObject;
     private float orbitRadius;
     [SerializeField] private float orbitSpeed;
-    private float currentAngle;    
+    private float currentAngle;
+    private AudioSource audioSource;
+
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void Start()
     {
@@ -20,6 +27,12 @@ public class RangePlayerThreeAttack : NetworkBehaviour
         transform.position = centerObject.position + offset;
 
         Destroy(gameObject, 10f);
+    }
+
+    [Rpc]
+    public void RPC_SetVolume()
+    {
+        audioSource.volume = FindObjectOfType<VolumeManager>().skillVolume;
     }
 
     public override void FixedUpdateNetwork()

@@ -83,6 +83,8 @@ public class PlayerFighterAttackController : NetworkBehaviour
         gameManager = FindObjectOfType<GameManager>();
         aimController = gameManager.AimController;
 
+        audioSource.volume = playerController.VolumeManager.skillVolume;
+
         if (aimController == null)
         {
             Debug.Log("Couldn't find AimController");
@@ -138,7 +140,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
         if (!HasStateAuthority) return;
 
         NetworkObject shiftClickObj = Runner.Spawn(shiftClickSkillPrefab, skillPos, transform.rotation);
-        shiftClickObj.GetComponent<FighterPlayerShiftClick>().SetVolume(playerController.VolumeManager.skillVolume);
+        shiftClickObj.GetComponent<FighterPlayerShiftClick>().RPC_SetVolume();
     }
 
     // Right Click Skill
@@ -157,7 +159,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
             mecanimAnimator.SetTrigger("Skill");
             animator.SetInteger("SkillState", 0);
 
-            audioSource.PlayOneShot(rightClickSkillClip, playerController.VolumeManager.skillVolume);
+            audioSource.PlayOneShot(rightClickSkillClip);
         }
     }
 

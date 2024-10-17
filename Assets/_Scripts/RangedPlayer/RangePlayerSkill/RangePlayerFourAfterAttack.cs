@@ -10,15 +10,24 @@ public class RangePlayerFourAfterAttack : NetworkBehaviour
 
     private Camera rotationCamera;
     private GameObject ranger;
+    private AudioSource audioSource;
 
     private void Awake()
-    {        
-        Destroy(gameObject, 1f);        
+    {
+        audioSource = GetComponent<AudioSource>();
+
+        Destroy(gameObject, 1f);
     }
 
     private void Start()
     {
         rotationCamera.GetComponent<CameraRotation>().CameraShake();
+    }
+
+    [Rpc]
+    public void RPC_SetVolume()
+    {
+        audioSource.volume = FindObjectOfType<VolumeManager>().skillVolume;
     }
 
     private void OnTriggerEnter(Collider other)

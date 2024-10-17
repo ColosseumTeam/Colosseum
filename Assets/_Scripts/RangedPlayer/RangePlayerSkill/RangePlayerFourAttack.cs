@@ -29,6 +29,12 @@ public class RangePlayerFourAttack : NetworkBehaviour
         velocity = Vector3.down * fallSpeed;
     }
 
+    [Rpc]
+    public void RPC_SetVolume()
+    {
+        audioSource.volume = FindObjectOfType<VolumeManager>().skillVolume;
+    }
+
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
@@ -49,6 +55,7 @@ public class RangePlayerFourAttack : NetworkBehaviour
         if (isAttacking)
         {
             NetworkObject afterObj = Runner.Spawn(afterAttackObject, gameObject.transform.position, Quaternion.identity);
+            afterObj.GetComponent<RangePlayerFourAfterAttack>().RPC_SetVolume();
             afterObj.GetComponent<RangePlayerFourAfterAttack>().GetRanger(player, rotationCamera);
 
             Vector3 instanceBalanceRotation = new Vector3(
@@ -64,7 +71,8 @@ public class RangePlayerFourAttack : NetworkBehaviour
             {
                 if (hit.collider.CompareTag("Ground"))
                 {
-                    Runner.Spawn(balanceObject, hit.point, Quaternion.Euler(instanceBalanceRotation));
+                    NetworkObject balance = Runner.Spawn(balanceObject, hit.point, Quaternion.Euler(instanceBalanceRotation));
+                    balance.GetComponent<RangePlayerBalance>().RPC_SetVolume();
                 }
             }
 

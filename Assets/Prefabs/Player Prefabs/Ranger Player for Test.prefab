@@ -1154,7 +1154,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2481083408417119137}
   - component: {fileID: 7885492731256507577}
-  - component: {fileID: 8314175995722048154}
   - component: {fileID: 4793376557316189605}
   - component: {fileID: 4794273026658936248}
   m_Layer: 0
@@ -1230,14 +1229,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &8314175995722048154
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1509033965590756066}
-  m_Enabled: 1
 --- !u!114 &4793376557316189605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2533,6 +2524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5783843999946295476}
   - component: {fileID: 2588197138064577763}
+  - component: {fileID: 4385626662770608132}
   m_Layer: 0
   m_Name: S_3001_HD
   m_TagString: Untagged
@@ -2783,6 +2775,22 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.00000085681677, y: 1.7134452, z: 0.038889855}
     m_Extent: {x: 0.0892091, y: 0.050693512, z: 0.10291766}
   m_DirtyAABB: 0
+--- !u!114 &4385626662770608132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2763268205159710150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d3a9a37257519439f0f7097d31e15d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: b8038d2e00860f9458a9ffdee64cef70, type: 2}
+  _rate: 30
+  _lifeTime: 0.5
+  _capacity: 60
 --- !u!1 &2768958490924935105
 GameObject:
   m_ObjectHideFlags: 0
@@ -5173,6 +5181,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4089375664764520798}
   - component: {fileID: 3336127416948208655}
+  - component: {fileID: 5639896738459138776}
   m_Layer: 0
   m_Name: S_9000_HR_Hi
   m_TagString: Untagged
@@ -5423,6 +5432,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00080540776, y: 1.5157876, z: 0.0014711693}
     m_Extent: {x: 0.18870237, y: 0.2858839, z: 0.21803826}
   m_DirtyAABB: 0
+--- !u!114 &5639896738459138776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5145460876104034961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d3a9a37257519439f0f7097d31e15d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: b8038d2e00860f9458a9ffdee64cef70, type: 2}
+  _rate: 30
+  _lifeTime: 0.5
+  _capacity: 60
 --- !u!1 &5176053216075133224
 GameObject:
   m_ObjectHideFlags: 0
@@ -5634,6 +5659,7 @@ GameObject:
   - component: {fileID: 6723840173950459857}
   - component: {fileID: -3007750675426362701}
   - component: {fileID: 3859240491041883072}
+  - component: {fileID: 1691902732187771799}
   m_Layer: 0
   m_Name: Ranger Player for Test
   m_TagString: Untagged
@@ -5874,7 +5900,7 @@ MonoBehaviour:
   hp: 100
   maxHp: 100
   hpImage: {fileID: 0}
-  moveSpeed: 250
+  moveSpeed: 500
   rotationSpeed: 60
   attackTimer: 0
   attackElapsedTime: 0.5
@@ -6043,6 +6069,18 @@ MonoBehaviour:
   SyncSettings: 79
   StateHashes: 000000002b1a167c7940695546980c4f14c2736678529982fa1dd5076bd28ad9e99dc65ce7c4dea4fd55e44e8a18fce4c765c7ddadd67ef28b7ab85e2746b9e535e7c26b8048b961d0b26d01651d160bdb2cdcdd6e83a7d783e68b2149ce5228
   TriggerHashes: 000000000d286c4073cbfc9f28a981072b1a167cfb369af6
+--- !u!114 &1691902732187771799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5319581205106527644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e0348c0c69b665428fd5c6b8bccea97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5339053485418124171
 GameObject:
   m_ObjectHideFlags: 0
@@ -6356,6 +6394,7 @@ GameObject:
   m_Component:
   - component: {fileID: 699857801566261496}
   - component: {fileID: 3893693601290413564}
+  - component: {fileID: 8360720111264083181}
   m_Layer: 0
   m_Name: S_3001_BD
   m_TagString: Untagged
@@ -6606,6 +6645,22 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.013698548, y: 0.8250752, z: -0.08573416}
     m_Extent: {x: 0.47769865, y: 0.8256219, z: 0.35595182}
   m_DirtyAABB: 0
+--- !u!114 &8360720111264083181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5698141987312222398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d3a9a37257519439f0f7097d31e15d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: b8038d2e00860f9458a9ffdee64cef70, type: 2}
+  _rate: 30
+  _lifeTime: 0.5
+  _capacity: 60
 --- !u!1 &5699231572008495345
 GameObject:
   m_ObjectHideFlags: 0
@@ -7158,6 +7213,7 @@ GameObject:
   m_Component:
   - component: {fileID: 847300400730613867}
   - component: {fileID: 9195596418340472320}
+  - component: {fileID: 61928391814879036}
   m_Layer: 0
   m_Name: S_9000_FC_Eyeshade
   m_TagString: Untagged
@@ -7407,6 +7463,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00000027567148, y: 1.6772397, z: 0.120925695}
     m_Extent: {x: 0.05238301, y: 0.008503437, z: 0.009467576}
   m_DirtyAABB: 0
+--- !u!114 &61928391814879036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6494698769896541686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d3a9a37257519439f0f7097d31e15d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: b8038d2e00860f9458a9ffdee64cef70, type: 2}
+  _rate: 30
+  _lifeTime: 0.5
+  _capacity: 60
 --- !u!1 &6505421160201612792
 GameObject:
   m_ObjectHideFlags: 0
@@ -7449,6 +7521,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7453604960607735983}
   - component: {fileID: 572959953543431707}
+  - component: {fileID: 3676843095093346992}
   m_Layer: 0
   m_Name: S_3001_CL
   m_TagString: Untagged
@@ -7699,6 +7772,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.069126755, y: 0.8806679, z: -0.23212036}
     m_Extent: {x: 0.33286402, y: 0.72574735, z: 0.32422796}
   m_DirtyAABB: 0
+--- !u!114 &3676843095093346992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560386737005872179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d3a9a37257519439f0f7097d31e15d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: b8038d2e00860f9458a9ffdee64cef70, type: 2}
+  _rate: 30
+  _lifeTime: 0.5
+  _capacity: 60
 --- !u!1 &6587318497663089975
 GameObject:
   m_ObjectHideFlags: 0
@@ -9438,6 +9527,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4934411807032367657}
   - component: {fileID: 4803193690552802987}
+  - component: {fileID: 2386126324252852439}
   m_Layer: 0
   m_Name: S_9000_HR_Low
   m_TagString: Untagged
@@ -9688,6 +9778,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00080540776, y: 1.5157876, z: 0.0014711693}
     m_Extent: {x: 0.18870237, y: 0.2858839, z: 0.21803826}
   m_DirtyAABB: 0
+--- !u!114 &2386126324252852439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8634526909705443239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d3a9a37257519439f0f7097d31e15d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: b8038d2e00860f9458a9ffdee64cef70, type: 2}
+  _rate: 30
+  _lifeTime: 0.5
+  _capacity: 60
 --- !u!1 &8665614273379729023
 GameObject:
   m_ObjectHideFlags: 0
@@ -10267,6 +10373,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6730736755267945640}
   - component: {fileID: 4932621699806696654}
+  - component: {fileID: 3658602868972885382}
   m_Layer: 0
   m_Name: S_9000_FC
   m_TagString: Untagged
@@ -10517,6 +10624,22 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000000007450581, y: 1.6804571, z: 0.05454068}
     m_Extent: {x: 0.081860155, y: 0.1097002, z: 0.09563631}
   m_DirtyAABB: 0
+--- !u!114 &3658602868972885382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9045732623921759624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d3a9a37257519439f0f7097d31e15d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: b8038d2e00860f9458a9ffdee64cef70, type: 2}
+  _rate: 30
+  _lifeTime: 0.5
+  _capacity: 60
 --- !u!1 &9085588053340737408
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
 using Fusion;
 using UnityEngine;
 
-// Todo: interface(IRangeSkill 윤빈씨가 수정할 예정) 상속 받기.
 public class FighterPlayerShiftClick : NetworkBehaviour
 {
     [SerializeField] private float damage = 10f;        // 대미지
@@ -22,9 +21,10 @@ public class FighterPlayerShiftClick : NetworkBehaviour
         Destroy(gameObject, 1f);
     }
 
-    public void SetVolume(float volume)
+    [Rpc]
+    public void RPC_SetVolume()
     {
-        audioSource.volume = volume;
+        audioSource.volume = FindObjectOfType<VolumeManager>().skillVolume;
     }
 
     private void OnTriggerEnter(Collider other)

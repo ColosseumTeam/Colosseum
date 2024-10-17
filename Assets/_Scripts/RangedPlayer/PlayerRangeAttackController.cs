@@ -205,6 +205,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         // 오브젝트 생성
         NetworkObject oneSkillObj = Runner.Spawn(rangeOneSkillPrefab, oneSkillObjPosition, Quaternion.identity);
+        oneSkillObj.GetComponent<RangePlayerOneAttack>().RPC_SetVolume();
         oneSkillObj.GetComponent<RangePlayerOneAttack>().GetRangePlayer(gameObject);
         corssHairLookAt.EndPointDistanceChanged(3f);
 
@@ -218,6 +219,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
         // 프리팹 생성
         NetworkObject twoSkillObj = Runner.Spawn(rangeTwoSkillPrefab, rangeTransform.position, rangeTransform.rotation);
+        twoSkillObj.GetComponent<RangePlayerTwoAttack>().RPC_SetVolume();
 
         // 생성된 프리팹 RigidBody 참조
         Rigidbody twoSkillObjRb = twoSkillObj.GetComponent<Rigidbody>();
@@ -257,6 +259,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         for (int i = 0; i < numberOfOrbits; i++)
         {            
             NetworkObject orbitInstance = Runner.Spawn(rangeThreeSkillPrefab, centerPosition, Quaternion.identity, null);
+            orbitInstance.GetComponent<RangePlayerThreeAttack>().RPC_SetVolume();
 
             RangePlayerThreeAttack orbitScript = orbitInstance.GetComponent<RangePlayerThreeAttack>();
             if (orbitScript != null)
@@ -286,8 +289,9 @@ public class PlayerRangeAttackController : NetworkBehaviour
         Vector3 fourSkillObjPosition = rangeHitPosition;
 
         NetworkObject fourSkillObj = Runner.Spawn(rangeFourSkillPrefab, fourSkillObjPosition, Quaternion.identity);
+        fourSkillObj.GetComponent<RangePlayerFourAttack>().RPC_SetVolume();
 
-        Rigidbody fourSkillObjRb = fourSkillObj.GetComponent<Rigidbody>();        
+        Rigidbody fourSkillObjRb = fourSkillObj.GetComponent<Rigidbody>();
 
         fourSkillObj.GetComponent<RangePlayerFourAttack>().GetRangePlayer(gameObject, 
             cameraRig.GetComponentInChildren<CameraRotation>().GetComponent<Camera>());

@@ -16,55 +16,42 @@ public class ResultUIManager : NetworkBehaviour
     [SerializeField] private RawImage winner;
     [SerializeField] private RawImage loser;
 
+    private GameObject winnerObj;
+
+
     private void Awake()
     {
-        characterSelectManager = FindObjectOfType<CharacterSelectManager>();
-
-        if (characterSelectManager.Win)
-        {
-            switch (characterSelectManager.MyCharacterNumber)
-            {
-                case 0:
-                    Instantiate(fightPlayer, winPosition.transform.position, winPosition.transform.rotation);
-                    break;
-                case 1:
-                    Instantiate(rangePlayer, winPosition.transform.position, winPosition.transform.rotation);
-                    break;
-            }
-            switch (characterSelectManager.EnemyCharacterNumber)
-            {
-                case 0:
-                    Instantiate(fightPlayer, losePosition.transform.position, losePosition.transform.rotation);
-                    break;
-                case 1:
-                    Instantiate(rangePlayer, losePosition.transform.position, losePosition.transform.rotation);
-                    break;
-            }
-        }
-        else
-        {
-            switch (characterSelectManager.MyCharacterNumber)
-            {
-                case 0:
-                    Instantiate(fightPlayer, losePosition.transform.position, losePosition.transform.rotation);
-                    break;
-                case 1:
-                    Instantiate(rangePlayer, losePosition.transform.position, losePosition.transform.rotation);
-                    break;
-            }
-            switch (characterSelectManager.EnemyCharacterNumber)
-            {
-                case 0:
-                    Instantiate(fightPlayer, winPosition.transform.position, winPosition.transform.rotation);
-                    break;
-                case 1:
-                    Instantiate(rangePlayer, winPosition.transform.position, winPosition.transform.rotation);
-                    break;
-            }
-        }
-
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        Time.timeScale = 1.0f;
+    }
+
+    public override void Spawned()
+    {
+        base.Spawned();
+
+        characterSelectManager = FindObjectOfType<CharacterSelectManager>();
+
+        switch (characterSelectManager.Winner)
+        {
+            case 0:
+                winnerObj = Instantiate(fightPlayer, winPosition.transform.position, winPosition.transform.rotation);
+                winnerObj.GetComponent<Animator>().SetTrigger("Dance");
+                break;
+            case 1:
+                winnerObj = Instantiate(rangePlayer, winPosition.transform.position, winPosition.transform.rotation);
+                winnerObj.GetComponent<Animator>().SetTrigger("Dance");
+                break;
+        }
+        switch (characterSelectManager.Loser)
+        {
+            case 0:
+                Instantiate(fightPlayer, losePosition.transform.position, losePosition.transform.rotation);
+                break;
+            case 1:
+                Instantiate(rangePlayer, losePosition.transform.position, losePosition.transform.rotation);
+                break;
+        }
     }
 
     public void LoadLobbyScene()

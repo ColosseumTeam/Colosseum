@@ -144,26 +144,25 @@ public class AimController : MonoBehaviour
     //}
 
     // 플레이어가 보유한 카메라를 전달 받는 메서드
-    public void PlayerObjectTransmission(NetworkObject newPg)
+    public void PlayerObjectTransmission(Camera mainCam)
     {
-        pg = newPg;
+        //pg = newPg;
         
-        if(pg == null)
-        {
-            Debug.Log("pg not have");
-            return;
-        }
+        //if(pg == null)
+        //{
+        //    Debug.Log("pg not have");
+        //    return;
+        //}
 
-        foreach(Transform child in pg.transform)
-        {
-            Debug.Log("find mainCemera");
+        //foreach(Transform child in pg.transform)
+        //{
+        //    Camera cam = child.GetComponentInChildren<Camera>();
 
-            Camera cam = child.GetComponentInChildren<Camera>();
-
-            if (cam != null)
-            {
-                mainCamera = cam;
-            }
-        }
+        //    if (cam != null)
+        //    {
+        //        mainCamera = cam;
+        //    }
+        //}
+        mainCamera = mainCam;
     }
 }

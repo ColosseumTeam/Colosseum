@@ -42,10 +42,12 @@ public class PlayerController : NetworkBehaviour
     private NetworkMecanimAnimator mecanimAnimator;
     private AudioSource audioSource;
     private VolumeManager volumeManager;
+    private MotionTrailGeneratorManager motionTrailGeneratorManager;
 
     // 공격 상태 및 이동 방향을 저장하는 변수
     private float attackState;
     private Vector2 moveVec;
+    private Vector2 boostVec;
     private Vector2 rotationVec;
     private float jumpInput;
     private bool isAttacking;
@@ -70,39 +72,7 @@ public class PlayerController : NetworkBehaviour
         mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
         audioSource = GetComponent<AudioSource>();
         volumeManager = FindObjectOfType<VolumeManager>();
-
-        //GameObject cameraObject = GetComponentInChildren<Camera>().gameObject;
-        //if(cameraObject != null)
-        //{
-        //    GameObject aimObject = FindAnyObjectByType<AimController>().gameObject;
-        //    cameraObject.GetComponent<CrossHairLookAt>().CameraReceive(aimObject);
-        //}
-    }
-
-    private void Start()
-    {
-        //if (HasStateAuthority)
-        //{
-        //    cameraRig.SetActive(true);
-        //    transform.tag = "Player";
-        //    kcc.Collider.tag = "Player";
-            
-        //    aimController = FindAnyObjectByType<AimController>();
-
-        //    if (aimController != null)
-        //    {
-        //        aimController.PlayerObjectTransmission(GetComponent<NetworkObject>());
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("Do not have AimController");
-        //    }
-        //}
-        //else
-        //{
-        //    transform.tag = "Enemy";
-        //    kcc.Collider.tag = "Enemy";
-        //}
+        motionTrailGeneratorManager = GetComponent<MotionTrailGeneratorManager>();
     }
 
     public override void Spawned()
@@ -119,7 +89,7 @@ public class PlayerController : NetworkBehaviour
 
             if (aimController != null)
             {
-                aimController.PlayerObjectTransmission(GetComponent<NetworkObject>());
+                aimController.PlayerObjectTransmission(mainCam);
             }
             else
             {
@@ -209,15 +179,23 @@ public class PlayerController : NetworkBehaviour
             // Boost 상태일 때는 Boost 속도로 이동
             float speed = isBoosting ? boostSpeed : moveSpeed;
 
-            Vector3 moveDir = new Vector3(moveVec.x, 0, moveVec.y);
-            newPosition = transform.TransformDirection(moveDir) * speed * Runner.DeltaTime;
+            Vector3 moveDir = isBoosting ? new Vector3(boostVec.x, 0, boostVec.y) : new Vector3(moveVec.x, 0, moveVec.y);
+            newPosition = transform.TransformDirection(moveDir) * speed * Runner.DeltaTime * Time.timeScale;
 
             // 현재 Y 위치 유지
             newPosition.y = 0;
 
             // 애니메이션 파라미터를 업데이트하여 캐릭터의 움직임을 반영
-            animator.SetFloat("Horizontal", moveVec.x);
-            animator.SetFloat("Vertical", moveVec.y);
+            if (isBoosting)
+            {
+                animator.SetFloat("Horizontal", boostVec.x);
+                animator.SetFloat("Vertical", boostVec.y);
+            }
+            else
+            {
+                animator.SetFloat("Horizontal", moveVec.x);
+                animator.SetFloat("Vertical", moveVec.y);
+            }
 
             animator.SetBool("Move", true);
         }
@@ -301,7 +279,7 @@ public class PlayerController : NetworkBehaviour
         if (state == BehaviourBase.State.Damaged || isDowning) { return; }
 
         // 공격 입력이 감지되고 캐릭터가 공격 중이 아닐 때
-        if (value.isPressed && !isAttacking && isGrounding && !isSkilling && HasStateAuthority)
+        if (value.isPressed && !isAttacking && isGrounding && !isSkilling && !isBoosting && HasStateAuthority)
         {
             // 이동 중이라면 이동을 멈춤
             if (rb.velocity != Vector3.zero)
@@ -344,12 +322,13 @@ public class PlayerController : NetworkBehaviour
     {
         isBoosting = false;
         animator.SetBool("Boost", false);
+        motionTrailGeneratorManager.Off();
     }
 
     private void OnBoost(InputValue value)
     {
         // Boost 입력이 감지되었고, 현재 Boost 상태가 아닐 때
-        if (value.isPressed && !isBoosting)
+        if (value.isPressed && !isBoosting && !isAttacking && !isSkilling && HasStateAuthority)
         {
             // 현재 이동 벡터가 뒤로 향하는지 확인
             if (moveVec.y < 0)
@@ -360,10 +339,11 @@ public class PlayerController : NetworkBehaviour
 
             // Boost 상태 시작
             isBoosting = true;
+            boostVec = moveVec == Vector2.zero ? new Vector2(0, 1) : moveVec;
             animator.SetBool("Boost", true);
 
             // Boost 상태에서 애니메이션 트리거
-            animator.SetTrigger("Boost");
+            mecanimAnimator.SetTrigger("Boost");
         }
     }
 

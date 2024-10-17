@@ -11,13 +11,22 @@ public class RangePlayerNormalAttack : NetworkBehaviour
     [SerializeField] private float stiffnessTime = 1f;
 
     private GameElementsSynchronizer gameElementsSynchronizer;
+    private AudioSource audioSource;
     private GameObject player;
     private float speed = 20f;
     private Vector3 dir;
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         Destroy(gameObject, 3f);
+    }
+
+    [Rpc]
+    public void RPC_SetVolume()
+    {
+        audioSource.volume = FindObjectOfType<VolumeManager>().skillVolume;
     }
 
     public override void FixedUpdateNetwork()

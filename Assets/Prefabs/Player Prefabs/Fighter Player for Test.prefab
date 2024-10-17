@@ -4134,7 +4134,12 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Bip001-R-Finger01'\n\tTransform 'Bip001-Pelvis'\n\tTransform
+    'Bip001-Spine'\n\tTransform 'Bip001-L-Finger01'\n\tTransform 'Bip001-L-Finger0'\n\tTransform
+    'Bip001-R-Forearm'\n\tTransform 'Bip001-R-Calf'\n\tTransform 'Bip001-L-Forearm'\n\tTransform
+    'Bip001-R-Finger2'\n\tTransform 'Bip001-R-Finger21'\n\tand more ..."
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -4481,14 +4486,14 @@ MonoBehaviour:
   hp: 100
   maxHp: 100
   hpImage: {fileID: 0}
-  moveSpeed: 200
+  moveSpeed: 400
   rotationSpeed: 60
   attackTimer: 0
   attackElapsedTime: 0.5
   jumpForce: 7
   maxJumpHeight: 0.5
   startYPosition: 0
-  boostSpeed: 100
+  boostSpeed: 300
   rb: {fileID: 0}
   cameraRig: {fileID: 2471055506994107653}
   kcc: {fileID: 7108571392344828822}
@@ -4510,7 +4515,7 @@ MonoBehaviour:
   ApplyTiming: 2
   SyncSettings: 79
   StateHashes: 000000002b1a167c7940695546980c4f14c2736620e23b685928a8ce78529982fa1dd5076bd28ad9e99dc65ce7c4dea4fd55e44eb9f0b9eea3c40b27c01206a983f85c76ef8e6eceaef25cef925ab4d4d32686f5ad8445f6dabe883ff3f9410584c38ccc8b7ab85e2746b9e535e7c26b8048b961d0b26d01651d160bdb2cdcdd6e83a7d783e68b2149ce5228
-  TriggerHashes: 000000000d286c4073cbfc9f28a98107fb369af6c2b7cbb4
+  TriggerHashes: 000000000d286c4073cbfc9f28a98107fb369af6c2b7cbb42b1a167c
 --- !u!320 &8664140191650146626
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -4532,6 +4537,8 @@ PlayableDirector:
     value: {fileID: 1989936177280666123}
   - key: {fileID: -1559239235602842529, guid: 0c527cb7857df3a4788b87159dbaa40b, type: 2}
     value: {fileID: 9209826973666245103}
+  - key: {fileID: 80286162729399125, guid: 0c527cb7857df3a4788b87159dbaa40b, type: 2}
+    value: {fileID: 6384858540570289230}
   m_ExposedReferences:
     m_References:
     - dec6dc46db612ef40a18d7f52016b8cf: {fileID: 4679889850328518579}

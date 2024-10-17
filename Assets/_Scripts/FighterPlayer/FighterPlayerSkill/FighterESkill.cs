@@ -13,7 +13,6 @@ public class FighterESkill : NetworkBehaviour
 
     private void Awake()
     {
-        // Todo: Destory 사용한 모든 오브젝트 풀링 필요.
         Destroy(gameObject, 2f);
     }
 
