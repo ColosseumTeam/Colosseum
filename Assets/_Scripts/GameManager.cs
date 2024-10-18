@@ -1,5 +1,6 @@
 using Fusion;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private AimController aimController;
     [SerializeField] private List<Image> skillUI;
     [SerializeField] private Image hpBar;
-    [SerializeField] private Text gameTime;
+    [SerializeField] private TextMeshProUGUI gameTime;
 
     [Header("# Audio")]
     [SerializeField] private AudioSource bgAudioSource;
@@ -38,6 +39,8 @@ public class GameManager : NetworkBehaviour
     private void Update()
     {
         gameTimer -= Time.deltaTime;
+
+        gameTime.text = $"{(int)(gameTimer / 60)}:{(int)(gameTimer % 60)}";
 
         if (gameTimer <= 0)
         {

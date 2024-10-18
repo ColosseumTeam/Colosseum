@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fc5ae0c79388f342926938f2bc1b7b1, type: 3}
   m_Name: FighterCharacterInfoData
   m_EditorClassIdentifier: 
-  characterDesciption: FighterFighter
-  characterName: Fighter
-  characterConcept: Melee
-  characterStory: 'FighterFighter
-
-    FighterFighter'
+  characterName: Halt
+  characterConcept: "\uD759\uC758 \uC0AC\uC6D0 \uC218\uB3C4\uC2B9"
+  characterStory: "\uC2E0\uCCB4\uC758 \uAE30\uC6B4\uC744 \uB300\uC9C0\uC640 \uC5F0\uACB0\uD558\uB294
+    \uBB34\uC220\uC744 \uC0AC\uC6A9\uD55C\uB2E4"
   characterRenderTexture: {fileID: 8400000, guid: 3359983380513a847b9c74379925c738, type: 2}
   characterPrefab: {fileID: 5513945395785779221, guid: 77ffae01005a56b42a76d46666a7fd7e, type: 3}

@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,7 +45,14 @@ public class MotionTrailGenerator : MonoBehaviour
         public void Off()
         {
             generator.Return(this);
-            transform.parent = generator.transform;
+            if (!generator)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                transform.parent = generator.transform;
+            }
             meshRenderer.enabled = false;
         }
     }

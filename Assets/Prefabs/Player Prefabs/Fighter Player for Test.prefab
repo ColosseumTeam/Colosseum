@@ -2821,7 +2821,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3905972779161679474}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
+  m_LocalRotation: {x: -0.13447404, y: 0.0012633409, z: -0.0047797184, w: -0.9909048}
   m_LocalPosition: {x: 0, y: 2.11, z: -2.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2901,8 +2901,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSensitivity: 100
   playerBody: {fileID: 7821926551100046321}
-  maxXRotation: -10
-  minXRotation: 25
+  maxXRotation: 5
+  minXRotation: 20
   xRotation: 0
   shakeDuration: 0.2
   shakeMagnitude: 5
@@ -2921,7 +2921,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crosshair: {fileID: 0}
   objectToRotate: {fileID: 4470407061195921938}
-  distance: 5
+  distance: 6
   endPoint: {x: 0, y: 0, z: 0}
   rayDistance: 100
   dir: {x: 0, y: 0, z: 0}
@@ -6183,7 +6183,7 @@ Transform:
   m_GameObject: {fileID: 8447052351379676570}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.392, z: 0.807}
+  m_LocalPosition: {x: 0, y: 1.392, z: 0.295}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

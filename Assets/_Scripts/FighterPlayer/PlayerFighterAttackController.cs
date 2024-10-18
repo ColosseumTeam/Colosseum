@@ -178,7 +178,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
                 mecanimAnimator.SetTrigger("Skill");
                 animator.SetInteger("SkillState", 1);
 
-                playerController.SetMoveSpeed(baseMoveSpeed - baseMoveSpeed / 10 * 3);
+                playerController.SetMoveSpeed(baseMoveSpeed - baseMoveSpeed / 5 * 3);
 
                 audioSource.PlayOneShot(qSkillClip, playerController.VolumeManager.skillVolume);
                 // Todo: 공중에 떠있는 돌 애니메이션 이벤트에 적용
@@ -196,7 +196,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
                 RPC_QShoot();
 
-                playerController.SetMoveSpeed(baseMoveSpeed - baseMoveSpeed / 10 * qCount);
+                playerController.SetMoveSpeed(baseMoveSpeed - baseMoveSpeed / 5 * qCount);
 
                 if (qCount <= 0)
                 {

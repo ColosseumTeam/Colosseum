@@ -296,10 +296,14 @@ public class PlayerDamageController : NetworkBehaviour
             if (hp <= 0)
             {
                 CharacterSelectManager characterSelectManager = FindObjectOfType<CharacterSelectManager>();
-                //characterSelectManager.Local_Winner(characterSelectManager.EnemyCharacterNumber, characterSelectManager.MyCharacterNumber);
-                //characterSelectManager.RPC_Winner(characterSelectManager.EnemyCharacterNumber, characterSelectManager.MyCharacterNumber);
 
                 gameManager.GetComponent<ResultSceneConversion>().RPC_ResultSceneBringIn(characterSelectManager.EnemyCharacterNumber, characterSelectManager.MyCharacterNumber);
+
+                MotionTrailGenerator[] motionTrailGenerators = GetComponentsInChildren<MotionTrailGenerator>();
+                for (int i = 0; i < motionTrailGenerators.Length; i++)
+                {
+                    motionTrailGenerators[i].enabled = false;
+                }
             }
         }
     }

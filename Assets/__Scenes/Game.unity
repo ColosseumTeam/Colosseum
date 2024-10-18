@@ -26215,7 +26215,7 @@ MonoBehaviour:
   - {fileID: 1684414125}
   - {fileID: 1692788248}
   hpBar: {fileID: 93682580}
-  gameTime: {fileID: 0}
+  gameTime: {fileID: 1737048501}
   bgAudioSource: {fileID: 1602521910}
   gameTimer: 300
 --- !u!114 &1602521908

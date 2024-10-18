@@ -6,7 +6,6 @@ public class CharacterInfo : ScriptableObject
 {
     [Header("# Character Informations")]
     [TextArea]
-    [SerializeField] private string characterDesciption;
     [SerializeField] private string characterName;
     [SerializeField] private string characterConcept;
     [TextArea]
@@ -14,7 +13,6 @@ public class CharacterInfo : ScriptableObject
     [SerializeField] private RenderTexture characterRenderTexture;
     [SerializeField] private NetworkObject characterPrefab;
 
-    public string CharacterDesciption { get { return characterDesciption; } }
     public string CharacterName { get { return characterName; } }
     public string CharacterConcept { get { return characterConcept; } }
     public string CharacterStory { get { return characterStory; } }

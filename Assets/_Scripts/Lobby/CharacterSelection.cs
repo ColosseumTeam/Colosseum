@@ -19,7 +19,6 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private RawImage myCharacterImage;
     [SerializeField] private RawImage enemyCharacterImage;
     [SerializeField] private RawImage selectedCharacterImage;
-    [SerializeField] private TextMeshProUGUI characterDescription;
     [SerializeField] private TextMeshProUGUI characterName;
     [SerializeField] private TextMeshProUGUI characterConcept;
     [SerializeField] private TextMeshProUGUI characterStory;
@@ -49,7 +48,6 @@ public class CharacterSelection : MonoBehaviour
     {
         // Init first character
         selectedCharacterImage.texture = characterDatas[characterSelectManager.MyCharacterNumber].CharacterRenderTexture;
-        characterDescription.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterDesciption;
         characterName.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterName;
         characterConcept.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterConcept;
         characterStory.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterStory;
@@ -63,7 +61,6 @@ public class CharacterSelection : MonoBehaviour
             clickedIndex = index;
             selectedCharacterImage.texture = characterDatas[clickedIndex].CharacterRenderTexture;
 
-            characterDescription.text = characterDatas[index].CharacterDesciption;
             characterName.text = characterDatas[index].CharacterName;
             characterConcept.text = characterDatas[index].CharacterConcept;
             characterStory.text = characterDatas[index].CharacterStory;
