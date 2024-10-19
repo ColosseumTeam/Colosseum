@@ -14478,7 +14478,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\uC5D0\uC784 \uC2DC\uC2A4\uD15C \uAD6C\uD604, \uCE90\uB9AD\uD130 \uAD6C\uD604,
+    Damage \uC2DC\uC2A4\uD15C, Gmae \uD50C\uB808\uC774UI"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 92754843234d22a40ba894cb872d1021, type: 2}
   m_sharedMaterial: {fileID: 406468596449240288, guid: 92754843234d22a40ba894cb872d1021, type: 2}

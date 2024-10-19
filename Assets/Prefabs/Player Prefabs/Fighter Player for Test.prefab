@@ -4559,6 +4559,7 @@ MonoBehaviour:
   playerData: {fileID: 0}
   isDowning: 0
   isUping: 0
+  isUp: 0
   isGrounding: 0
   upForce: 12
   downTimer: 0

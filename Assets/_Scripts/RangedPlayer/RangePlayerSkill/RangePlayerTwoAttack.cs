@@ -83,6 +83,7 @@ public class RangePlayerTwoAttack : NetworkBehaviour
                 && collision.gameObject != player && HasStateAuthority)
             {                
                 collision.gameObject.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                collision.gameObject.GetComponentInParent<PlayerDamageController>().DownTimeChanged(1f);
                 //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);                
             }
             else

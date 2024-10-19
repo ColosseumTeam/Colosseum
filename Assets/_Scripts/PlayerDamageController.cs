@@ -100,8 +100,6 @@ public class PlayerDamageController : NetworkBehaviour
 
         if (kcc.IsGrounded && isUp)
         {
-            Debug.Log("checkOn");
-
             EndAirTime();
             RPC_EndAirTime();
             isUp = false;
@@ -356,13 +354,13 @@ public class PlayerDamageController : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     private void RPC_EndAirTime()
     {
-        if (HasStateAuthority)
-        {
+        //if (HasStateAuthority)
+        //{
             Debug.Log("RPCEndAirTimeOn");
             animator.SetFloat("TakeHitState", 2);
             animator.ResetTrigger("TakeHit");
             animator.SetTrigger("TakeHit");
-        }
+        //}
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -375,5 +373,19 @@ public class PlayerDamageController : NetworkBehaviour
     private void RPC_UpCheck(bool newState)
     {
         isUping = newState;
+    }
+
+   
+    public void DownTimeChanged(float newDownTime)
+    {
+        Debug.Log(newDownTime);
+        downEndTimer = newDownTime;
+        RPC_DownTimeChanged(downEndTimer);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public void RPC_DownTimeChanged(float newDownTime)
+    {
+        downEndTimer = newDownTime;
     }
 }

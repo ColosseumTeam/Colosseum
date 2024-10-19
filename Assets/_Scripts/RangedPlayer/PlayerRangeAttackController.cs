@@ -122,6 +122,8 @@ public class PlayerRangeAttackController : NetworkBehaviour
 
                 animator.SetFloat("SkillState", 0f);
 
+                corssHairLookAt.SkillDistanceChanged(16f);
+
                 RangeAttackOn();
 
             }
@@ -176,6 +178,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
             cameraRig = GetComponentInChildren<RangePlayerFourAttackCameraChanged>().gameObject;
             cameraRig.GetComponent<RangePlayerFourAttackCameraChanged>().ActivateCloseUp();
 
+            corssHairLookAt.SkillDistanceChanged(24f);
             playerController.RangerESkillActiveCheck();
             SkillStateChagned(3f);
         }
@@ -206,10 +209,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         // 오브젝트 생성
         NetworkObject oneSkillObj = Runner.Spawn(rangeOneSkillPrefab, oneSkillObjPosition, Quaternion.identity);
         oneSkillObj.GetComponent<RangePlayerOneAttack>().RPC_SetVolume();
-        oneSkillObj.GetComponent<RangePlayerOneAttack>().GetRangePlayer(gameObject);
-        corssHairLookAt.EndPointDistanceChanged(3f);
-
-
+        oneSkillObj.GetComponent<RangePlayerOneAttack>().GetRangePlayer(gameObject);        
     }
 
     // 두 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
@@ -284,7 +284,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
     // 네 번째 스킬 사용 시 특정 프레임에서 실행되는 스킬 공격 이벤트
     public void FourRangeSkillAttackEvent()
     {
-        if (!HasStateAuthority) { return; }
+        if (!HasStateAuthority) { return; }        
 
         Vector3 fourSkillObjPosition = rangeHitPosition;
 
@@ -294,7 +294,7 @@ public class PlayerRangeAttackController : NetworkBehaviour
         Rigidbody fourSkillObjRb = fourSkillObj.GetComponent<Rigidbody>();
 
         fourSkillObj.GetComponent<RangePlayerFourAttack>().GetRangePlayer(gameObject, 
-            cameraRig.GetComponentInChildren<CameraRotation>().GetComponent<Camera>());
+            cameraRig.GetComponentInChildren<CameraRotation>().GetComponent<Camera>());       
 
         if (fourSkillObjRb != null)
         {

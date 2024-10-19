@@ -43,6 +43,7 @@ public class RangePlayerTwoAfterAttack : NetworkBehaviour
             {
                 Debug.Log("Main Two Skill After Attack");
                 other.gameObject.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                other.gameObject.GetComponentInParent<PlayerDamageController>().DownTimeChanged(1f);
                 //Runner.Spawn(attecktEffect, gameObject.transform.position, gameObject.transform.rotation);
             }
 

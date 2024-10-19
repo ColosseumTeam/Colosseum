@@ -15,7 +15,6 @@ public class CrossHairLookAt : NetworkBehaviour
 
     private Vector3 direction;  // 오브젝트가 바라보는 방향    
     private bool isGrounding = false;
-    private float endPointDistance;
 
     private void Awake()
     {
@@ -118,9 +117,9 @@ public class CrossHairLookAt : NetworkBehaviour
         return groundHitPosition;
     }
 
-    public void EndPointDistanceChanged(float newDistance)
+    public void SkillDistanceChanged(float newDis)
     {
-        endPointDistance = newDistance;
+        distance = newDis;
     }
 
     private void OnDrawGizmos()

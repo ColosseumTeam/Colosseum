@@ -50,6 +50,7 @@ public class RangePlayerOneAttack : NetworkBehaviour
             if (other.gameObject.GetComponentInParent<PlayerDamageController>() != null && other.gameObject != player && HasStateAuthority)
             {                
                 other.gameObject.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, 1f, transform.position);
+                other.gameObject.GetComponentInParent<PlayerDamageController>().DownTimeChanged(1f);
             }
             else
             {
@@ -72,7 +73,6 @@ public class RangePlayerOneAttack : NetworkBehaviour
             GetComponent<BoxCollider>().enabled = false;
         }
     }
-
 
     public void GetRangePlayer(GameObject newPlayer)
     {
