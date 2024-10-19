@@ -18,7 +18,8 @@ public class PlayerDamageController : NetworkBehaviour
     [SerializeField] private PlayerData playerData;
 
     [SerializeField] private bool isDowning;
-    [SerializeField] private bool isUping;    
+    [SerializeField] private bool isUping;
+    [SerializeField] private bool isUp;
     [SerializeField] private bool isGrounding;
     [SerializeField] private float upForce = 12f;
     [SerializeField] private float downTimer = 0f;
@@ -36,7 +37,7 @@ public class PlayerDamageController : NetworkBehaviour
     private float MaxHp;
     private Image hpBar;
     private Vector3 playerVector;
-
+    
     private void Start()
     {
         playerData = GetComponent<PlayerController>().PlayerData;
@@ -71,10 +72,12 @@ public class PlayerDamageController : NetworkBehaviour
         // 위로 올라가는 상태라면 플레이어를 점프시킴
         if (isUping && transform.position.y <= playerVector.y + upForce)
         {
+            isUp = true;
             kcc.Move(jumpImpulse: upForce);
         }
         else
         {
+            isUping = false;
             if (airCheck)
             {
                 airTimer += Runner.DeltaTime;
@@ -90,11 +93,13 @@ public class PlayerDamageController : NetworkBehaviour
             kcc.Move(); // 일반 이동 처리
         }
 
-        if (isGrounding && isUping)
+        if (kcc.IsGrounded && isUp)
         {
+            Debug.Log("checkOn");
+
             EndAirTime();
             RPC_EndAirTime();
-            isUping = false;
+            isUp = false;
         }
     }
 
@@ -127,7 +132,7 @@ public class PlayerDamageController : NetworkBehaviour
             return;
         }
 
-        RPC_HandleRemoteDamageVisuals(damage, playerHitType, downAttack, stiffnessTime, skillPosition);        
+        RPC_HandleRemoteDamageVisuals(damage, playerHitType, downAttack, stiffnessTime, skillPosition);
     }
 
     // 소유 클라이언트에서 즉각적인 시각적 효과와 애니메이션을 처리
@@ -209,7 +214,7 @@ public class PlayerDamageController : NetworkBehaviour
                 animator.speed = stiffnessTime;
                 animator.SetFloat("TakeHitState", rnd);
                 animator.SetTrigger("TakeHit");
-                
+
                 // 권한 있는 클라이언트에서만 HP 감소 처리
                 if (HasStateAuthority)
                 {
@@ -333,16 +338,20 @@ public class PlayerDamageController : NetworkBehaviour
 
     private void EndAirTime()
     {
+        Debug.Log("EndAirTimeOn");
         animator.SetFloat("TakeHitState", 2);
+        animator.ResetTrigger("TakeHit");
         animator.SetTrigger("TakeHit");
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     private void RPC_EndAirTime()
     {
-        if (!HasStateAuthority)
+        if (HasStateAuthority)
         {
+            Debug.Log("RPCEndAirTimeOn");
             animator.SetFloat("TakeHitState", 2);
+            animator.ResetTrigger("TakeHit");
             animator.SetTrigger("TakeHit");
         }
     }
@@ -351,5 +360,11 @@ public class PlayerDamageController : NetworkBehaviour
     private void RPC_GroundCheck(bool newState)
     {
         isGrounding = newState;
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void RPC_UpCheck(bool newState)
+    {
+        isUping = newState;
     }
 }

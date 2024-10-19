@@ -1286,9 +1286,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shakeDuration: 2
-  shakeMagnitude: 5
-  shakeMagnitudeY: 0.05
-  shakeMagnitudeZ: 0.05
+  shakeMagnitude: 2
+  shakeMagnitudeY: 0.02
+  shakeMagnitudeZ: 0.02
   frequency: 4.16
   xRotation: -12.94
   shaking: 0
