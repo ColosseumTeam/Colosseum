@@ -56,6 +56,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
     private Vector3 skillPos;
     private int qCount;
     private Transform enemyTr;
+    private float baseMoveSpeed;
     // for test
     [SerializeField] private GameObject mainCam;
 
@@ -73,6 +74,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
         playableDirector = GetComponent<PlayableDirector>();
         coolTimeManager = GetComponent<RangePlayerCoolTImeManager>();
         audioSource = GetComponent<AudioSource>();
+        baseMoveSpeed = playerController.MoveSpeed;
         //crossHairLookAt = Camera.main.GetComponent<CrossHairLookAt>();
     }
 
@@ -176,7 +178,7 @@ public class PlayerFighterAttackController : NetworkBehaviour
                 mecanimAnimator.SetTrigger("Skill");
                 animator.SetInteger("SkillState", 1);
 
-                playerController.SetMoveSpeed(100f);
+                playerController.SetMoveSpeed(baseMoveSpeed - baseMoveSpeed / 5 * 3);
 
                 audioSource.PlayOneShot(qSkillClip, playerController.VolumeManager.skillVolume);
                 // Todo: 공중에 떠있는 돌 애니메이션 이벤트에 적용
@@ -194,12 +196,14 @@ public class PlayerFighterAttackController : NetworkBehaviour
 
                 RPC_QShoot();
 
+                playerController.SetMoveSpeed(baseMoveSpeed - baseMoveSpeed / 5 * qCount);
+
                 if (qCount <= 0)
                 {
                     IsQSkillOn = false;
                     isReadyToShootQ = false;
 
-                    playerController.SetMoveSpeed(200f);
+                    playerController.SetMoveSpeed(baseMoveSpeed);
 
                     coolTimeManager.SkillChecking(2);
                 }

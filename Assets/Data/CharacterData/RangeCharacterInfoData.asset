@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fc5ae0c79388f342926938f2bc1b7b1, type: 3}
   m_Name: RangeCharacterInfoData
   m_EditorClassIdentifier: 
-  characterDesciption: RangerRanger
-  characterName: Ranger
-  characterConcept: Range
-  characterStory: 'RangerRanger
-
-    RangerRanger'
+  characterName: Natali
+  characterConcept: "\uBD88\uC758 \uC0AC\uC6D0 \uC0AC\uC81C"
+  characterStory: "\uC2E0\uCCB4\uC758 \uAE30\uC6B4\uC744 \uBD88\uC758 \uD615\uD0DC\uB85C
+    \uBC29\uCD9C\uD558\uB294 \uB9C8\uBC95\uC744 \uC0AC\uC6A9\uD55C\uB2E4"
   characterRenderTexture: {fileID: 8400000, guid: 598fabe4c2e5a0847b9f19f58260553b, type: 2}
   characterPrefab: {fileID: 6723840173950459857, guid: fc9f9de439127984eb70ee8cc066f43d, type: 3}

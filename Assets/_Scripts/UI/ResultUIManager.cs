@@ -16,6 +16,9 @@ public class ResultUIManager : NetworkBehaviour
     [SerializeField] private RawImage winner;
     [SerializeField] private RawImage loser;
 
+    [SerializeField] private float stayTime = 7f;
+    [SerializeField] private float timer;
+
     private GameObject winnerObj;
 
 
@@ -54,7 +57,17 @@ public class ResultUIManager : NetworkBehaviour
         }
     }
 
-    public void LoadLobbyScene()
+    private void Update()
+    {
+        timer += Time.deltaTime;
+
+        if (timer > stayTime)
+        {
+            LoadLobbyScene();
+        }
+    }
+
+    private void LoadLobbyScene()
     {
         if (Runner.IsSceneAuthority)
         {

@@ -40,7 +40,7 @@ public class CrossHairLookAt : NetworkBehaviour
             direction = crosshairWorldPos - objectToRotate.position;
 
             // 오브젝트를 크로스헤어 방향으로 회전
-            objectToRotate.rotation = Quaternion.LookRotation(direction);
+            objectToRotate.rotation = Quaternion.LookRotation(crosshairWorldPos);
 
             // 끝 지점 참조
             endPoint = objectToRotate.position + direction.normalized * distance;

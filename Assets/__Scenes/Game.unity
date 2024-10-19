@@ -26178,7 +26178,7 @@ Transform:
   m_GameObject: {fileID: 1602521904}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.007799, y: 3.255386, z: 3.183425}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26215,7 +26215,9 @@ MonoBehaviour:
   - {fileID: 1684414125}
   - {fileID: 1692788248}
   hpBar: {fileID: 93682580}
-  bgAudioSource: {fileID: 0}
+  gameTime: {fileID: 1737048501}
+  bgAudioSource: {fileID: 1602521910}
+  gameTimer: 300
 --- !u!114 &1602521908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26248,7 +26250,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647d518630672324fa2aa87ce6c85979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneData: {fileID: 11400000, guid: e51125fe37960b741ab9b965df9c45c6, type: 2}
 --- !u!82 &1602521910
 AudioSource:
   m_ObjectHideFlags: 0
