@@ -34,15 +34,20 @@ public class PlayerDamageController : NetworkBehaviour
     private GameManager gameManager;
     private PlayerController playerController;
     private float hp;
-    private float MaxHp;
+    private float maxHp;
     private Image hpBar;
     private Vector3 playerVector;
+
+    public float Hp { get { return hp; } }
+    public float MaxHp { get { return maxHp; } }
+    public PlayerData PlayerData { get { return playerData; } }
+
     
     private void Start()
     {
         playerData = GetComponent<PlayerController>().PlayerData;
-        MaxHp = playerData.MaxHp;
-        hp = MaxHp;
+        maxHp = playerData.MaxHp;
+        hp = maxHp;
 
         playerController = GetComponent<PlayerController>();
         mecanimAnimator = GetComponent<NetworkMecanimAnimator>();
@@ -292,15 +297,19 @@ public class PlayerDamageController : NetworkBehaviour
             }
 
             hp -= newDamage;
-            hpBar.fillAmount = hp / MaxHp;
+            hpBar.fillAmount = hp / maxHp;
 
             if (hp <= 0)
             {
                 CharacterSelectManager characterSelectManager = FindObjectOfType<CharacterSelectManager>();
-                //characterSelectManager.Local_Winner(characterSelectManager.EnemyCharacterNumber, characterSelectManager.MyCharacterNumber);
-                //characterSelectManager.RPC_Winner(characterSelectManager.EnemyCharacterNumber, characterSelectManager.MyCharacterNumber);
 
                 gameManager.GetComponent<ResultSceneConversion>().RPC_ResultSceneBringIn(characterSelectManager.EnemyCharacterNumber, characterSelectManager.MyCharacterNumber);
+
+                MotionTrailGenerator[] motionTrailGenerators = GetComponentsInChildren<MotionTrailGenerator>();
+                for (int i = 0; i < motionTrailGenerators.Length; i++)
+                {
+                    motionTrailGenerators[i].enabled = false;
+                }
             }
         }
     }
