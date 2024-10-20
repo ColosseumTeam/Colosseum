@@ -25,7 +25,7 @@ public class FighterESkill : NetworkBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            if (other.GetComponentInParent<PlayerDamageController>() != null)
+            if (other.GetComponentInParent<PlayerDamageController>() != null && HasStateAuthority)
             {
                 other.GetComponentInParent<PlayerDamageController>().TakeDamage(damage, playerHitType, downAttack, stiffnessTime, other.gameObject.transform.position);
                 attackController.RPC_SetEnemyTr();

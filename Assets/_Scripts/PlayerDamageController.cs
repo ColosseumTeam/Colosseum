@@ -58,6 +58,7 @@ public class PlayerDamageController : NetworkBehaviour
         if (gameManager != null)
         {
             hpBar = gameManager.HpBar;
+            hpBar.fillAmount = hp / maxHp;
         }
     }
 
