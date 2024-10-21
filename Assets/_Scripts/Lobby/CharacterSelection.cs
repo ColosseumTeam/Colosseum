@@ -22,6 +22,9 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private TextMeshProUGUI characterName;
     [SerializeField] private TextMeshProUGUI characterConcept;
     [SerializeField] private TextMeshProUGUI characterStory;
+    [SerializeField] private Text characterNameText;
+    [SerializeField] private Text characterConceptText;
+    [SerializeField] private Text characterStoryText;
 
     private int clickedIndex;
     private AudioSource audioSource;
@@ -48,9 +51,12 @@ public class CharacterSelection : MonoBehaviour
     {
         // Init first character
         selectedCharacterImage.texture = characterDatas[characterSelectManager.MyCharacterNumber].CharacterRenderTexture;
-        characterName.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterName;
-        characterConcept.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterConcept;
-        characterStory.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterStory;
+        //characterName.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterName;
+        //characterConcept.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterConcept;
+        //characterStory.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterStory;
+        characterNameText.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterName;
+        characterConceptText.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterConcept;
+        characterStoryText.text = characterDatas[characterSelectManager.MyCharacterNumber].CharacterStory;
     }
 
     public void ClickedIcon(int index)
@@ -61,9 +67,12 @@ public class CharacterSelection : MonoBehaviour
             clickedIndex = index;
             selectedCharacterImage.texture = characterDatas[clickedIndex].CharacterRenderTexture;
 
-            characterName.text = characterDatas[index].CharacterName;
-            characterConcept.text = characterDatas[index].CharacterConcept;
-            characterStory.text = characterDatas[index].CharacterStory;
+            //characterName.text = characterDatas[index].CharacterName;
+            //characterConcept.text = characterDatas[index].CharacterConcept;
+            //characterStory.text = characterDatas[index].CharacterStory;
+            characterNameText.text = characterDatas[index].CharacterName;
+            characterConceptText.text = characterDatas[index].CharacterConcept;
+            characterStoryText.text = characterDatas[index].CharacterStory;
         }
     }
 

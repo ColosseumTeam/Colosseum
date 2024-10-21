@@ -4559,8 +4559,9 @@ MonoBehaviour:
   playerData: {fileID: 0}
   isDowning: 0
   isUping: 0
+  isUp: 0
   isGrounding: 0
-  upForce: 12
+  upForce: 4
   downTimer: 0
   downEndTimer: 3
   hitEffectPrefab: {fileID: 7728366230342544413, guid: 212ef1a41838ce044a9ac54994866708, type: 3}

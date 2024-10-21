@@ -17,6 +17,8 @@ public class GameManager : NetworkBehaviour
 
     [Header("# Game Options")]
     [SerializeField] private float gameTimer = 300;
+    [SerializeField] private Transform spawnPosition1;
+    [SerializeField] private Transform spawnPosition2;
 
     private VolumeManager volumeManager;
 
@@ -24,6 +26,8 @@ public class GameManager : NetworkBehaviour
     public List<Image> SkillUI { get { return skillUI; } }
     public Image HpBar { get { return hpBar; } }
     public AudioSource BgAudioSource { get { return bgAudioSource; } }
+    public Transform SpawnPosition1 { get { return spawnPosition1; } }
+    public Transform SpawnPosition2 { get { return spawnPosition2; } }
 
 
     private void Awake()
