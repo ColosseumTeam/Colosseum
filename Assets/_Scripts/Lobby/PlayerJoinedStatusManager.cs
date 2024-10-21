@@ -109,7 +109,7 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
                 return;
         }
 
-        if (onAllPlayersLoadedScene != null)
+        if (Runner.SceneManager.MainRunnerScene.buildIndex == 2)
         {
             Transform spawnPosition;
             if (Runner.IsSharedModeMasterClient)
