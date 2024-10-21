@@ -316,10 +316,10 @@ public class PlayerFighterAttackController : NetworkBehaviour
     {
         ultCamera.gameObject.SetActive(false);
     }
-
+    
     public void OnUltEnemyHit()
     {
-        if (enemyTr.TryGetComponent(out PlayerDamageController enemyComponent))
+        if (enemyTr.TryGetComponent(out PlayerDamageController enemyComponent) && HasStateAuthority)
         {
             enemyComponent.RPC_TakeDamage(10f, PlayerDamageController.PlayerHitType.Down, true, 1f, enemyTr.position);
         }

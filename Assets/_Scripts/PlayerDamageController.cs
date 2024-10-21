@@ -1,6 +1,5 @@
 using Fusion;
 using Fusion.Addons.SimpleKCC;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -58,6 +57,7 @@ public class PlayerDamageController : NetworkBehaviour
         if (gameManager != null)
         {
             hpBar = gameManager.HpBar;
+            hpBar.fillAmount = hp / maxHp;
         }
     }
 
@@ -141,7 +141,6 @@ public class PlayerDamageController : NetworkBehaviour
     // 소유 클라이언트에서 즉각적인 시각적 효과와 애니메이션을 처리
     private void HandleLocalDamageVisuals(float damage, PlayerHitType playerHitType, bool downAttack, float stiffnessTime, Vector3 skillPosition)
     {
-
         // 애니메이션 트리거
         switch (playerHitType)
         {

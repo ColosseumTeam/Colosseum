@@ -13,7 +13,7 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
     }
 
     private Dictionary<PlayerRef, PlayerStatus> _playerStatusDictionary = new Dictionary<PlayerRef, PlayerStatus>();
-    public event Action<SceneRef> onAllPlayersLoadedScene;
+    public event Action<SceneRef, Transform> onAllPlayersLoadedScene;
     private RoomManager roomManager;
     private CharacterSelection characterSelection;
     // for test
@@ -111,7 +111,16 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
 
         if (onAllPlayersLoadedScene != null)
         {
-            onAllPlayersLoadedScene(sceneRef);
+            Transform spawnPosition;
+            if (Runner.IsSharedModeMasterClient)
+            {
+                spawnPosition = FindObjectOfType<GameManager>().SpawnPosition1;
+            }
+            else
+            {
+                spawnPosition = FindObjectOfType<GameManager>().SpawnPosition2;
+            }
+            onAllPlayersLoadedScene(sceneRef, spawnPosition);
         }
     }
 
@@ -120,12 +129,14 @@ public class PlayerJoinedStatusManager : SimulationBehaviour, ISceneLoadDone, IP
         characterPrefab = player;
     }
 
-    private void InstantiatePlayer(SceneRef sceneRef)
+    private void InstantiatePlayer(SceneRef sceneRef, Transform spawnPosition)
     {
         if (sceneRef.AsIndex == 2)
         {
-            NetworkObject player = Runner.Spawn(characterPrefab, Vector3.zero, Quaternion.identity, Runner.LocalPlayer);
+            NetworkObject player = Runner.Spawn(characterPrefab, spawnPosition.position, spawnPosition.localRotation, Runner.LocalPlayer);
             Runner.SetPlayerObject(Runner.LocalPlayer, player);
+
+            FindObjectOfType<LoadingManager>().HideLoadingCanvas();
         }
     }
 }
